@@ -18,12 +18,19 @@
             return {
                 messageData: this.message,
                 titleData: this.title,
-                visible: true
+                visible: false
             }
         },
-        method: {
-            isVisible() {
-                return this.visible;
+        methods: {
+            show() {
+                this.visible = true
+                var component = this
+                setTimeout( () => {
+                    component.hide()
+                },30000)
+            },
+            hide(){
+                this.visible = false
             }
         },
         props: {
@@ -31,11 +38,15 @@
                 required: false
             },
             'message': {
-                required: true
+                required: false
             }
         },
         mounted() {
-            console.log('mounted');
+            var component = this
+            window.flash = function (message) {
+                component.messageData = message
+                component.show()
+            }
         }
 
     }

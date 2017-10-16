@@ -1,5 +1,5 @@
 <template>
-    <div v-cloak="">
+    <div v-cloak="" class="col-md-3">
         <ul>
             <li v-for="task in filteredTasks" v-bind:class="{ completed: isCompleted(task) }" @dblclick="editTask(task)">
                 <input type="text" id="editingTask" v-model="editingTask" v-if="task == editedTask" @keydown.enter="updateTask(task)" @keydown.esc="discardUpdate(task)">
@@ -20,8 +20,10 @@
         </ul>
 
         <p>Pending tasks: {{pendingTasksCounter}}</p>
-
+        <!-- /.box-body -->
+        <div class="box-footer"><slot name="footer">Footer here</slot></div>
     </div>
+
 </template>
 
 <style>
@@ -68,7 +70,7 @@
         },
         watch: {
             tasks() {
-                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.tasks));
+//                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.tasks));
             }
         },
         computed: {
@@ -108,10 +110,35 @@
             }
         },
         mounted() {
-//            console.log('inici');
 
-            // Per a que no peti si es troba buit que agafi el valor buit '[]'
-            this.tasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+//            this.tasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]')
+            console.log(this.tasks)
+
+            // TODO Connectat a Internet i agafam la llista de tasques
+//        this.tasks = ???
+            // HTTP CLIENT
+            let url = '/api/tasks'
+
+            var component = this
+
+            //Promises
+            this.$emit('loading', true)
+            axios.get(url).then().then((response) =>  {
+                this.tasks = response.data;
+            }).catch((error) => {
+                flash(error.message)
+            }).then(() => {
+                this.$emit('loading', false)
+            })
+//        setTimeout( () => {
+//          component.hide()
+//        },3000)
+            // API HTTP amb JSON <- Web service
+            // URL GET http://NOM_SERVIDOR/api/task
+            // URL POST http://NOM_SERVIDOR/api/task
+            // URL DELETE http://NOM_SERVIDOR/api/task/{task}
+            // URL PUT/PATCH http://NOM_SERVIDOR/api/task/{task}
+
         }
     }
 </script>

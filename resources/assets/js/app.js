@@ -21,6 +21,10 @@ Vue.component('tasks', require('./components/TasksComponent.vue'));
 
 Vue.component('message', require('./components/MessageComponent.vue'));
 
+Vue.component('widget', require('./components/WidgetComponent.vue'));
+
+Vue.component('tasks-view', require('./components/TasksViewComponent.vue'));
+
 const app = new Vue({
     el: '#app'
 });

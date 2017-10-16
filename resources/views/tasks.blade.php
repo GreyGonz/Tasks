@@ -7,9 +7,9 @@
 
 @section('main-content')
 
-    <tasks></tasks>
+    <tasks-view>
 
-    <message title="Error" message="Ha petat tot! (It's a prank)"></message>
+    </tasks-view>
 
 @endsection
 

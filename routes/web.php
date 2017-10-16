@@ -20,10 +20,12 @@ Route::group(['middleware' => 'auth'], function () {
 //        // Uses Auth Middleware
 //    });
 
-    Route::get('tasks', function() {
-        return view('tasks');
-    });
+//    Route::get('tasks', function() {
+//        return view('tasks');
+//    });
 
+    Route::get('tasks','TaskController@index');
+    Route::get('api/tasks','ApiTaskController@index');
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
 });
