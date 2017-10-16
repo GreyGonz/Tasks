@@ -26,9 +26,14 @@
                 return this.visible;
             }
         },
-        props: [
-          'title','message'
-        ],
+        props: {
+            'title': {
+                required: false
+            },
+            'message': {
+                required: true
+            }
+        },
         mounted() {
             console.log('mounted');
         }
