@@ -55,10 +55,12 @@ class DeleteTaskCommandTest extends TestCase
 
 
         Task::create(['name' => 'Hola']);
+        Task::create(['name' => 'Hola']);
 
         // run
 
         $this->artisan('task:delete');
+
 
 
         // assert
@@ -71,5 +73,29 @@ class DeleteTaskCommandTest extends TestCase
             'name' => 'Hola'
         ]);
 
+    }
+
+    public function testItDeletesTaskAndShowError()
+    {
+        $command = Mockery::mock('App\Console\Commands\DeleteTaskCommand[ask]');
+
+        $command->shouldReceive('ask')
+            ->once()
+            ->with('Task name?')
+            ->andReturn('NotExist');
+
+        $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
+
+        // run
+
+        $this->artisan('task:delete');
+
+
+
+        // assert
+
+        $resultAsText = Artisan::output();
+
+        $this->assertContains("Task specified don't exist", $resultAsText);
     }
 }

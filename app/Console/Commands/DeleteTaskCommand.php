@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Task;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class DeleteTaskCommand extends Command
 {
@@ -38,9 +39,16 @@ class DeleteTaskCommand extends Command
      */
     public function handle()
     {
-        $task = Task::where('name', $this->argument('name') ? $this->argument('name') : $this->ask('Task name?'));
-        $task->delete();
 
-        $this->info('Task deleted succesfully');
+        $collection = Task::where('name', '=', $this->argument('name') ? $this->argument('name') : $this->ask('Task name?'))->get()->toArray();
+
+        if(!empty($collection)) {
+            $tasks_to_delete = array_map(function($task){ return $task['id']; },  $collection);
+            DB::table('tasks')->whereIn('id', $tasks_to_delete)->delete();
+            $this->info('Task deleted succesfully');
+        } else {
+            $this->error("Task specified don't exist");
+        }
+
     }
 }
