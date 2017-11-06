@@ -6,12 +6,18 @@
                 <div v-else>
                     {{task.name}}
                     <i class="fa fa-pencil" aria-hidden="true" @click="editTask(task)"></i>
-                    <i class="fa fa-times" aria-hidden="true" @click="deleteTask(task)"></i>
+                    <i v-if="taskBeenDeleted == task.id" class="fa fa-refresh fa-spin fa-lg"></i>
+                    <i v-else="" class="fa fa-times" aria-hidden="true" @click="deleteTask(task)" ></i>
+
+
                 </div>
             </li>
         </ul>
         New task: <input type="text" id="newTask" v-model="newTask" @keydown.enter="addTask">
-        <button id="add" @click="addTask">Add</button>
+        <button :disabled="creating" id="add" @click="addTask">
+            Add
+            <i class="fa fa-refresh fa-spin fa-lg" v-if="creating"></i>
+        </button>
         <h2>Filtres</h2>
         <ul>
             <li @click="show('all')" :class="{ active: this.filter === 'all' }">All</li>
@@ -58,6 +64,8 @@
 
     const LOCAL_STORAGE_KEY = 'TASKS';
 
+    import { wait } from './utils.js';
+
     export default {
         data() {
             return {
@@ -65,7 +73,9 @@
                 newTask: '',
                 editingTask: '',
                 filter: 'all',
-                tasks: []
+                tasks: [],
+                creating: false,
+                taskBeenDeleted: null
             }
         },
         watch: {
@@ -86,14 +96,38 @@
                 this.filter = filter
             },
             addTask() {
-                this.tasks.push({name: this.newTask, completed: false})
-                this.newTask = ''
+                this.creating = true
+                // -- Crida metode PUT i emmagatzema a DB --
+                let url = '/api/tasks'
+
+                // POST
+                axios.post(url, { name: this.newTask } ).then(() =>  {
+                    console.log('New task added')
+                    // Emmagatzema a fitxer JSON
+                    this.tasks.push({name: this.newTask, completed: false})
+                }).catch((error) => {
+                    flash(error.message)
+                }).then(() => {
+                    this.$emit('loading', false)
+                    this.newTask = ''
+                    this.creating = false
+                })
             },
             isCompleted(task) {
                 return task.completed
             },
             deleteTask(task) {
-                this.tasks.splice(this.tasks.indexOf(task), 1)
+                this.taskBeenDeleted = task.id
+
+                let url = 'api/tasks/' + task.id
+
+                axios.delete(url).then((response) => {
+                    this.tasks.splice(this.tasks.indexOf(task), 1)
+                }).catch((error) => {
+                    flash(error.message)
+                }).then(() => {
+                    this.taskBeenDeleted = null
+                })
             },
             editTask(task) {
                 this.editedTask = task
@@ -119,11 +153,10 @@
             // HTTP CLIENT
             let url = '/api/tasks'
 
-            var component = this
-
-            //Promises
+            // -- Promises --
+            // GET
             this.$emit('loading', true)
-            axios.get(url).then().then((response) =>  {
+            axios.get(url).then((response) =>  {
                 this.tasks = response.data;
             }).catch((error) => {
                 flash(error.message)

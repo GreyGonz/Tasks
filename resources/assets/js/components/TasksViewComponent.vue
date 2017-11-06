@@ -1,8 +1,8 @@
 <template>
     <div>
-        <widget>
+        <widget :loading="loading">
             <p slot="title">Tasks:</p>
-            <tasks ></tasks>
+            <tasks @loading="load"></tasks>
             <p slot="footer">Footer</p>
         </widget>
 
@@ -18,7 +18,13 @@
     export default {
         data() {
             return {
-
+                loading: false
+            }
+        },
+        methods: {
+            load(load) {
+                console.log(load)
+                this.loading = load
             }
         },
         mounted() {

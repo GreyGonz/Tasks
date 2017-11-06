@@ -1,5 +1,5 @@
 <template>
-    <div v-cloak="" class="col-md-3">
+    <div v-cloak="">
         <div class="box box-success box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title"><slot name="title">Llista</slot></h3>
@@ -13,7 +13,7 @@
             <!-- /.box-header -->
             <div class="box-body">
                 <slot></slot>
-                <div class="overlay" v-if="loading">
+                <div class="overlay" v-if="internalLoading">
                     <i class="fa fa-refresh fa-spin"></i>
                 </div>
             </div>
@@ -31,18 +31,22 @@
 
 <script>
 
-
-
     export default {
         data() {
           return {
-            loading: false
+            internalLoading: this.loading
           }
         },
-        method: {
-            isLoading(valor) {
-
+        watch: {
+            loading(newValue) {
+                console.log('loading has changed')
+                this.internalLoading = newValue
             }
+        },
+        props: {
+          loading: {
+              required: false
+          }
         },
         mounted() {
             console.log('widget muntat')

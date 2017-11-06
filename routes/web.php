@@ -29,6 +29,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 //    Route::get('tasks','TaskController@index');
     Route::get('api/tasks','ApiTaskController@index');
+    Route::post('api/tasks','ApiTaskController@store');
+    Route::delete('api/tasks/{task}', 'ApiTaskController@destroy');
+    Route::put('api/tasks/{task}', 'ApiTaskController@update');
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
 });
