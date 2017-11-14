@@ -25,6 +25,8 @@ Vue.component('widget', require('./components/WidgetComponent.vue'));
 
 Vue.component('tasks-view', require('./components/TasksViewComponent.vue'));
 
+Vue.component('users', require('./components/Users.vue'));
+
 const app = new Vue({
     el: '#app'
 });
