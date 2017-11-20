@@ -3,7 +3,7 @@
         <widget :loading="loading">
             <p slot="title">Tasks:</p>
 
-            <div v-cloak="" class="col-md-3">
+            <div v-cloak="" class="">
 
                 <ul>
                     <li v-for="task in filteredTasks" v-bind:class="{ completed: isCompleted(task) }" @dblclick="editTask(task)">
@@ -11,7 +11,7 @@
                         <div v-else>
                             {{task.name}}
                             <i class="fa fa-pencil" aria-hidden="true" @click="editTask(task)"></i>
-                            <i v-if="taskBeenDeleted == task.id" class="fa fa-refresh fa-spin fa-lg"></i>
+                            <i v-if="task.id == taskBeenDeleted" class="fa fa-refresh fa-spin fa-lg"></i>
                             <i v-else="" class="fa fa-times" aria-hidden="true" @click="deleteTask(task)" ></i>
 
 
@@ -20,20 +20,15 @@
                 </ul>
 
                 <div class="form-group">
-                    <label for="exampleInputEmail1">User:</label>
+                    <label for="user_id">User:</label>
                     <!--<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">-->
-                    <users></users>
+                    <users id="user_id"></users>
                 </div>
 
                 <div class="form-group">
-                    <label for="newTask">Task name:</label>
-                    <input type="text" class="form-control" id="newTask" v-model="newTask" @keydown.enter="addTask">
+                    <label for="name">Task name:</label>
+                    <input type="text" class="form-control" id="name" v-model="form.name" @keydown.enter="addTask">
                 </div>
-
-                <button :disabled="creating" id="add" @click="addTask">
-                    Add
-                    <i class="fa fa-refresh fa-spin fa-lg" v-if="creating"></i>
-                </button>
 
                 <h2>Filtres</h2>
                 <ul>
@@ -42,12 +37,21 @@
                     <li @click="show('completed')" :class="{ active: this.filter === 'completed' }">Completed</li>
                 </ul>
 
-                <p>Pending tasks: {{pendingTasksCounter}}</p>
-                <!-- /.box-body -->
-                <div class="box-footer"><slot name="footer">Footer here</slot></div>
+
             </div>
 
-            <p slot="footer">Footer</p>
+            <div slot="footer">
+                Pending tasks: {{pendingTasksCounter}}
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <slot name="footer">
+                        <button class="btn btn-primary" :disabled="form.submitting" id="add" @click="addTask">
+                            <i class="fa fa-refresh fa-spin fa-lg" v-if="form.submitting"></i>
+                            Add
+                        </button>
+                    </slot>
+                </div>
+            </div>
         </widget>
 
         <message title="Error" ></message>
@@ -70,6 +74,7 @@
 <script>
 
     import Users from './Users'
+    import Form from 'acacha-forms'
 
     var filters = {
         all: function (tasks) {
@@ -95,18 +100,14 @@
         components: { Users },
         data() {
             return {
+                loading: false,
                 editedTask: null,
-                newTask: '',
                 editingTask: '',
                 filter: 'all',
                 tasks: [],
                 creating: false,
-                taskBeenDeleted: null
-            }
-        },
-        watch: {
-            tasks() {
-//                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.tasks));
+                taskBeenDeleted: null,
+                form: new Form({ user_id: '', name: '' })
             }
         },
         computed: {
@@ -117,26 +118,27 @@
                 return filters['pending'](this.tasks).length
             }
         },
+        watch: {
+            tasks() {
+//                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.tasks));
+            }
+        },
         methods: {
             show(filter) {
                 this.filter = filter
             },
             addTask() {
-                this.creating = true
                 // -- Crida metode PUT i emmagatzema a DB --
                 let url = '/api/tasks'
 
                 // POST
-                axios.post(url, { name: this.newTask } ).then(() =>  {
+                form.post(url).then((response) =>  {
                     console.log('New task added')
                     // Emmagatzema a fitxer JSON
-                    this.tasks.push({name: this.newTask, completed: false})
+                    this.tasks.push({name: this.form.name, user_id: this.form.user_id, completed: false})
+                    this.form.name=''
                 }).catch((error) => {
                     flash(error.message)
-                }).then(() => {
-                    this.$emit('loading', false)
-                    this.newTask = ''
-                    this.creating = false
                 })
             },
             isCompleted(task) {
@@ -172,7 +174,7 @@
         mounted() {
 
 //            this.tasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]')
-            console.log(this.tasks)
+//            console.log(this.tasks)
 
             // TODO Connectat a Internet i agafam la llista de tasques
 //        this.tasks = ???
@@ -181,13 +183,13 @@
 
             // -- Promises --
             // GET
-            this.$emit('loading', true)
+            this.loading = true
             axios.get(url).then((response) =>  {
                 this.tasks = response.data;
             }).catch((error) => {
                 flash(error.message)
             }).then(() => {
-                this.$emit('loading', false)
+                this.loading = false
             })
 //        setTimeout( () => {
 //          component.hide()
