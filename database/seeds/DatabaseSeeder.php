@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call('AdminUserSeeder');
         factory(Task::class, 5)->create();
     }
 }

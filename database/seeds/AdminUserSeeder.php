@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
 
 /**
@@ -23,5 +24,7 @@ class AdminUserSeeder extends Seeder
         } catch (\Illuminate\Database\QueryException $exception) {
 
         }
+
+        factory(User::class, 3)->create();
     }
 }

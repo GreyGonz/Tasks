@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'api','middleware' => 'api', 'middleware' => ['throttle','bindings']], function () {
+Route::group(['middleware' => 'api', 'middleware' => ['throttle','bindings']], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/tasks','ApiTaskController@index');
         Route::post('/tasks','ApiTaskController@store');

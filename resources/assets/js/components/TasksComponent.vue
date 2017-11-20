@@ -1,33 +1,56 @@
 <template>
-    <div v-cloak="" class="col-md-3">
-        <ul>
-            <li v-for="task in filteredTasks" v-bind:class="{ completed: isCompleted(task) }" @dblclick="editTask(task)">
-                <input type="text" id="editingTask" v-model="editingTask" v-if="task == editedTask" @keydown.enter="updateTask(task)" @keydown.esc="discardUpdate(task)">
-                <div v-else>
-                    {{task.name}}
-                    <i class="fa fa-pencil" aria-hidden="true" @click="editTask(task)"></i>
-                    <i v-if="taskBeenDeleted == task.id" class="fa fa-refresh fa-spin fa-lg"></i>
-                    <i v-else="" class="fa fa-times" aria-hidden="true" @click="deleteTask(task)" ></i>
+    <div>
+        <widget :loading="loading">
+            <p slot="title">Tasks:</p>
+
+            <div v-cloak="" class="col-md-3">
+
+                <ul>
+                    <li v-for="task in filteredTasks" v-bind:class="{ completed: isCompleted(task) }" @dblclick="editTask(task)">
+                        <input type="text" id="editingTask" v-model="editingTask" v-if="task == editedTask" @keydown.enter="updateTask(task)" @keydown.esc="discardUpdate(task)">
+                        <div v-else>
+                            {{task.name}}
+                            <i class="fa fa-pencil" aria-hidden="true" @click="editTask(task)"></i>
+                            <i v-if="taskBeenDeleted == task.id" class="fa fa-refresh fa-spin fa-lg"></i>
+                            <i v-else="" class="fa fa-times" aria-hidden="true" @click="deleteTask(task)" ></i>
 
 
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">User:</label>
+                    <!--<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">-->
+                    <users></users>
                 </div>
-            </li>
-        </ul>
-        New task: <input type="text" id="newTask" v-model="newTask" @keydown.enter="addTask">
-        <button :disabled="creating" id="add" @click="addTask">
-            Add
-            <i class="fa fa-refresh fa-spin fa-lg" v-if="creating"></i>
-        </button>
-        <h2>Filtres</h2>
-        <ul>
-            <li @click="show('all')" :class="{ active: this.filter === 'all' }">All</li>
-            <li @click="show('pending')" :class="{ active: this.filter === 'pending' }">Pending</li>
-            <li @click="show('completed')" :class="{ active: this.filter === 'completed' }">Completed</li>
-        </ul>
 
-        <p>Pending tasks: {{pendingTasksCounter}}</p>
-        <!-- /.box-body -->
-        <div class="box-footer"><slot name="footer">Footer here</slot></div>
+                <div class="form-group">
+                    <label for="newTask">Task name:</label>
+                    <input type="text" class="form-control" id="newTask" v-model="newTask" @keydown.enter="addTask">
+                </div>
+
+                <button :disabled="creating" id="add" @click="addTask">
+                    Add
+                    <i class="fa fa-refresh fa-spin fa-lg" v-if="creating"></i>
+                </button>
+
+                <h2>Filtres</h2>
+                <ul>
+                    <li @click="show('all')" :class="{ active: this.filter === 'all' }">All</li>
+                    <li @click="show('pending')" :class="{ active: this.filter === 'pending' }">Pending</li>
+                    <li @click="show('completed')" :class="{ active: this.filter === 'completed' }">Completed</li>
+                </ul>
+
+                <p>Pending tasks: {{pendingTasksCounter}}</p>
+                <!-- /.box-body -->
+                <div class="box-footer"><slot name="footer">Footer here</slot></div>
+            </div>
+
+            <p slot="footer">Footer</p>
+        </widget>
+
+        <message title="Error" ></message>
     </div>
 
 </template>
@@ -45,6 +68,8 @@
 </style>
 
 <script>
+
+    import Users from './Users'
 
     var filters = {
         all: function (tasks) {
@@ -67,6 +92,7 @@
     import { wait } from './utils.js';
 
     export default {
+        components: { Users },
         data() {
             return {
                 editedTask: null,

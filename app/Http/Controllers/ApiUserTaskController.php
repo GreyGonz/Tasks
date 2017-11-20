@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 
-class ApiUserUserController extends Controller
+class ApiUserTaskController extends Controller
 {
     public function index()
     {

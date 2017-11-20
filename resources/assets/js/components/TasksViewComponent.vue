@@ -18,17 +18,7 @@
     export default {
         data() {
             return {
-                loading: false
             }
-        },
-        methods: {
-            load(load) {
-                console.log(load)
-                this.loading = load
-            }
-        },
-        mounted() {
-            console.log('mounted tasks views')
         }
     }
 </script>
