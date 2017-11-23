@@ -132,7 +132,7 @@
                 let url = '/api/tasks'
 
                 // POST
-                form.post(url).then((response) =>  {
+                this.form.post(url).then((response) =>  {
                     console.log('New task added')
                     // Emmagatzema a fitxer JSON
                     this.tasks.push({name: this.form.name, user_id: this.form.user_id, completed: false})

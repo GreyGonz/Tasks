@@ -2,6 +2,7 @@
 
 use App\Task;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +14,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call('AdminUserSeeder');
-        factory(Task::class, 5)->create();
+        factory(Task::class, 50)->create();
+
+        initialize_task_permissions();
+
+        create_user();
+
+        first_user_as_task_manager();
+
+        Artisan::call('passport:install');
+
+
     }
 }

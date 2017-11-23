@@ -15,7 +15,16 @@ class ApiTaskControllerTest extends TestCase {
     public function setUp()
     {
         parent::setUp();
+        initialize_task_permissions();
 //        $this->withoutExceptionHandling();
+
+    }
+
+    protected function loginAsAuthorized() {
+        $user = factory(User::class)->create();
+        $user->assignRole('task-manager');
+        $this->actingAs($user, 'api');
+        return $user;
     }
 
     /**
@@ -28,8 +37,13 @@ class ApiTaskControllerTest extends TestCase {
 
         $tasks = factory(Task::class, 3)->create();
 
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+        $this->loginAsAuthorized();
+//        $user = factory(User::class)->create();
+//        $user->assignRole('task-manager');
+//        $this->actingAs($user, 'api');
+
+//        $user->givePermissionTo("list-tasks");
+
 
         // run
         $response = $this->json('GET', 'api/tasks');
@@ -53,8 +67,10 @@ class ApiTaskControllerTest extends TestCase {
     public function cannotAddTaskIfNoNameProvided() {
         // prepare
 
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+//        $user = factory(User::class)->create();
+//        $this->actingAs($user, 'api');
+
+        $this->loginAsAuthorized();
 
         // run
 
@@ -86,32 +102,34 @@ class ApiTaskControllerTest extends TestCase {
     }
 
     /**
+     * TODO
      * @test
      */
     public function canAddATask()
     {
         // prepare
 
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+//        $user = factory(User::class)->create();
+//        $this->actingAs($user, 'api');
+        $user = $this->loginAsAuthorized();
 
         $faker = Factory::create();
-
         // run
 
         $response = $this->json('POST', '/api/tasks', [
-            'name' => $name = $faker->word
+            'name' => $name = $faker->word,
+            'user_id' => $user->id
         ]);
 
         // assert
 
         $response->assertSuccessful();
         $this->assertDatabaseHas('tasks', [
-            'name' => $name
+            'name' => $name,
         ]);
 
         $response->assertJson([
-           'name' => $name
+           'name' => $name,
         ]);
 
     }
@@ -122,8 +140,9 @@ class ApiTaskControllerTest extends TestCase {
     public function canDeleteTask() {
 
         // prepare
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+//        $user = factory(User::class)->create();
+//        $this->actingAs($user, 'api');
+        $this->loginAsAuthorized();
 
         $task = factory(Task::class)->create();
 
@@ -145,8 +164,9 @@ class ApiTaskControllerTest extends TestCase {
     public function cannotDeleteUnexistingTask() {
 
         // prepare
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+//        $user = factory(User::class)->create();
+//        $this->actingAs($user, 'api');
+        $this->loginAsAuthorized();
 
         // run
 
@@ -167,8 +187,9 @@ class ApiTaskControllerTest extends TestCase {
         $faker = Factory::create();
         $task = factory(Task::class)->create();
 
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+//        $user = factory(User::class)->create();
+//        $this->actingAs($user, 'api');
+        $this->loginAsAuthorized();
 
         // run
 
