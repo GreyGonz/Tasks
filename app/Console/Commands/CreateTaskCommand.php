@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-
 use App\Task;
 use Illuminate\Console\Command;
 use Mockery\Exception;
@@ -14,7 +13,7 @@ class CreateTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = "task:create {name? : The task name}";
+    protected $signature = 'task:create {name? : The task name}';
 
     /**
      * The console command description.
@@ -42,7 +41,7 @@ class CreateTaskCommand extends Command
     {
         try {
             Task::create([
-                'name' => $this->argument('name') ? $this->argument('name') : $this->ask('Task name?')
+                'name' => $this->argument('name') ? $this->argument('name') : $this->ask('Task name?'),
             ]);
             $this->info('Task has been added to database succesfully');
         } catch (Exception $e) {

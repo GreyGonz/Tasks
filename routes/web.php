@@ -24,7 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
 //        return view('tasks');
 //    });
 
-    Route::get('tasks','TaskController@index');
+    Route::get('tasks', 'TaskController@index');
     Route::post('task', 'TaskController@store');
 
 //    Route::get('tasks','TaskController@index');
@@ -32,6 +32,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::view('/tasks', 'tasks');
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
-    #adminlte_routes
+    //adminlte_routes
 });
-

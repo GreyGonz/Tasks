@@ -5,8 +5,9 @@ use App\User;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-if (! function_exists('initialize_task_permissions')) {
-    function initialize_task_permissions() {
+if (!function_exists('initialize_task_permissions')) {
+    function initialize_task_permissions()
+    {
         Permission::firstOrCreate(['name' => 'list-tasks']);
         Permission::firstOrCreate(['name' => 'store-tasks']);
         Permission::firstOrCreate(['name' => 'show-tasks']);
@@ -22,23 +23,23 @@ if (! function_exists('initialize_task_permissions')) {
 //        $role->givePermissionTo('destroy-tasks');
 
         $role->givePermissionTo('destroy-tasks', 'list-tasks', 'show-tasks', 'store-tasks', 'update-tasks');
-
     }
 }
 
-if (! function_exists('create_user')) {
-    function create_user() {
+if (!function_exists('create_user')) {
+    function create_user()
+    {
         factory(User::class)->create([
-            'name' => env('TASKS_USER_NAME', 'Gerard Rey González'),
-            'email' => env('TASKS_USER_EMAIL', 'gerardrey@iesebre.com'),
-            'password' => bcrypt(env('TASKS_USER_PASSWORD'))
+            'name'     => env('TASKS_USER_NAME', 'Gerard Rey González'),
+            'email'    => env('TASKS_USER_EMAIL', 'gerardrey@iesebre.com'),
+            'password' => bcrypt(env('TASKS_USER_PASSWORD')),
         ]);
     }
 }
 
-if (! function_exists('first_user_as_task_manager')) {
-    function first_user_as_task_manager() {
+if (!function_exists('first_user_as_task_manager')) {
+    function first_user_as_task_manager()
+    {
         User::all()->first()->assignRole('task-manager');
     }
 }
-

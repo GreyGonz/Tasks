@@ -8,8 +8,8 @@ use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ApiTaskControllerTest extends TestCase {
-
+class ApiTaskControllerTest extends TestCase
+{
     use RefreshDatabase;
 
     public function setUp()
@@ -17,19 +17,19 @@ class ApiTaskControllerTest extends TestCase {
         parent::setUp();
         initialize_task_permissions();
 //        $this->withoutExceptionHandling();
-
     }
 
-    protected function loginAsAuthorized() {
+    protected function loginAsAuthorized()
+    {
         $user = factory(User::class)->create();
         $user->assignRole('task-manager');
         $this->actingAs($user, 'api');
+
         return $user;
     }
 
     /**
      * @test
-     *
      */
     public function canListTasks()
     {
@@ -44,7 +44,6 @@ class ApiTaskControllerTest extends TestCase {
 
 //        $user->givePermissionTo("list-tasks");
 
-
         // run
         $response = $this->json('GET', 'api/tasks');
 
@@ -56,15 +55,15 @@ class ApiTaskControllerTest extends TestCase {
             'id',
             'name',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]]);
     }
-
 
     /**
      * @test
      */
-    public function cannotAddTaskIfNoNameProvided() {
+    public function cannotAddTaskIfNoNameProvided()
+    {
         // prepare
 
 //        $user = factory(User::class)->create();
@@ -84,7 +83,8 @@ class ApiTaskControllerTest extends TestCase {
     /**
      * @test
      */
-    public function cannotAddTaskIfNotLogged() {
+    public function cannotAddTaskIfNotLogged()
+    {
 
         // prepare
 
@@ -93,7 +93,7 @@ class ApiTaskControllerTest extends TestCase {
         // run
 
         $response = $this->json('POST', '/api/tasks', [
-            'name' => $name = $faker->word
+            'name' => $name = $faker->word,
         ]);
 
         // assert
@@ -102,7 +102,8 @@ class ApiTaskControllerTest extends TestCase {
     }
 
     /**
-     * TODO
+     * TODO.
+     *
      * @test
      */
     public function canAddATask()
@@ -117,8 +118,8 @@ class ApiTaskControllerTest extends TestCase {
         // run
 
         $response = $this->json('POST', '/api/tasks', [
-            'name' => $name = $faker->word,
-            'user_id' => $user->id
+            'name'    => $name = $faker->word,
+            'user_id' => $user->id,
         ]);
 
         // assert
@@ -131,13 +132,13 @@ class ApiTaskControllerTest extends TestCase {
         $response->assertJson([
            'name' => $name,
         ]);
-
     }
 
     /**
      * @test
      */
-    public function canDeleteTask() {
+    public function canDeleteTask()
+    {
 
         // prepare
 //        $user = factory(User::class)->create();
@@ -148,20 +149,21 @@ class ApiTaskControllerTest extends TestCase {
 
         // run
 
-        $response = $this->json('DELETE', 'api/tasks/' . $task->id);
+        $response = $this->json('DELETE', 'api/tasks/'.$task->id);
 
         // assert
 
         $response->assertSuccessful();
         $this->assertDatabaseMissing('tasks', [
-            'id' => $task->id
+            'id' => $task->id,
         ]);
     }
 
     /**
      * @test
      */
-    public function cannotDeleteUnexistingTask() {
+    public function cannotDeleteUnexistingTask()
+    {
 
         // prepare
 //        $user = factory(User::class)->create();
@@ -180,7 +182,8 @@ class ApiTaskControllerTest extends TestCase {
     /**
      * @test
      */
-    public function canEditTask() {
+    public function canEditTask()
+    {
 
         // prepare
 
@@ -193,22 +196,21 @@ class ApiTaskControllerTest extends TestCase {
 
         // run
 
-        $response = $this->json('PUT', 'api/tasks/' . $task->id, [
-            'name' => $newName = $faker->word
+        $response = $this->json('PUT', 'api/tasks/'.$task->id, [
+            'name' => $newName = $faker->word,
         ]);
 
         // assert
         $response->assertSuccessful();
 
-        $this->assertDatabaseHas( 'tasks', [
-            'id' => $task->id,
-            'name' => $newName
+        $this->assertDatabaseHas('tasks', [
+            'id'   => $task->id,
+            'name' => $newName,
         ]);
 
         $this->assertDatabaseMissing('tasks', [
-            'id' => $task->id,
-            'name' => $task->name
+            'id'   => $task->id,
+            'name' => $task->name,
         ]);
-
     }
 }

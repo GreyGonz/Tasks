@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\User;
 use Illuminate\Http\Request;
 
@@ -14,36 +15,39 @@ class ApiUserTaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
 
         $user = User::create([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
 
         return $user;
     }
 
     /**
-     * Delete
+     * Delete.
+     *
      * @param Request $request
-     * @param User $user
+     * @param User    $user
      */
-    public function destroy(Request $request, User $user) {
-
+    public function destroy(Request $request, User $user)
+    {
         $user->delete();
 
         return $user;
     }
 
     /**
-     * Update
+     * Update.
+     *
      * @param Request $request
-     * @param User $user
+     * @param User    $user
      */
-    public function update(Request $request, User $user) {
+    public function update(Request $request, User $user)
+    {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
 
         $user->name = $request->name;
