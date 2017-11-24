@@ -1,7 +1,7 @@
 # Tasks
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GreyGonz/Tasks/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/GreyGonz/Tasks/?branch=master)
-
+[![StyleCI](https://styleci.io/repos/107176545/shield?branch=master)](https://styleci.io/repos/107176545)
 --Descripció--
 
 # Laravel packages
