@@ -7,8 +7,8 @@ use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ApiUserControllerTest extends TestCase {
-
+class ApiUserControllerTest extends TestCase
+{
     use RefreshDatabase;
 
     public function setUp()
@@ -19,7 +19,6 @@ class ApiUserControllerTest extends TestCase {
 
     /**
      * @test
-     *
      */
     public function canListUsers()
     {
@@ -41,15 +40,15 @@ class ApiUserControllerTest extends TestCase {
             'id',
             'name',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]]);
     }
-
 
     /**
      * @test
      */
-    public function cannotAddUserIfNoNameProvided() {
+    public function cannotAddUserIfNoNameProvided()
+    {
         // prepare
 
         $user = factory(User::class)->create();
@@ -67,7 +66,8 @@ class ApiUserControllerTest extends TestCase {
     /**
      * @test
      */
-    public function cannotAddUserIfNotLogged() {
+    public function cannotAddUserIfNotLogged()
+    {
 
         // prepare
 
@@ -76,7 +76,7 @@ class ApiUserControllerTest extends TestCase {
         // run
 
         $response = $this->json('POST', '/api/v1/users', [
-            'name' => $name = $faker->word
+            'name' => $name = $faker->word,
         ]);
 
         // assert
@@ -99,26 +99,26 @@ class ApiUserControllerTest extends TestCase {
         // run
 
         $response = $this->json('POST', '/api/v1/users', [
-            'name' => $name = $faker->word
+            'name' => $name = $faker->word,
         ]);
 
         // assert
 
         $response->assertSuccessful();
         $this->assertDatabaseHas('users', [
-            'name' => $name
+            'name' => $name,
         ]);
 
         $response->assertJson([
-           'name' => $name
+           'name' => $name,
         ]);
-
     }
 
     /**
      * @test
      */
-    public function canDeleteUser() {
+    public function canDeleteUser()
+    {
 
         // prepare
         $user = factory(User::class)->create();
@@ -128,20 +128,21 @@ class ApiUserControllerTest extends TestCase {
 
         // run
 
-        $response = $this->json('DELETE', 'api/v1/users/' . $user->id);
+        $response = $this->json('DELETE', 'api/v1/users/'.$user->id);
 
         // assert
 
         $response->assertSuccessful();
         $this->assertDatabaseMissing('users', [
-            'id' => $user->id
+            'id' => $user->id,
         ]);
     }
 
     /**
      * @test
      */
-    public function cannotDeleteUnexistingUser() {
+    public function cannotDeleteUnexistingUser()
+    {
 
         // prepare
         $user = factory(User::class)->create();
@@ -159,7 +160,8 @@ class ApiUserControllerTest extends TestCase {
     /**
      * @test
      */
-    public function canEditUser() {
+    public function canEditUser()
+    {
 
         // prepare
 
@@ -171,22 +173,21 @@ class ApiUserControllerTest extends TestCase {
 
         // run
 
-        $response = $this->json('PUT', 'api/v1/users/' . $user->id, [
-            'name' => $newName = $faker->word
+        $response = $this->json('PUT', 'api/v1/users/'.$user->id, [
+            'name' => $newName = $faker->word,
         ]);
 
         // assert
         $response->assertSuccessful();
 
-        $this->assertDatabaseHas( 'users', [
-            'id' => $user->id,
-            'name' => $newName
+        $this->assertDatabaseHas('users', [
+            'id'   => $user->id,
+            'name' => $newName,
         ]);
 
         $this->assertDatabaseMissing('users', [
-            'id' => $user->id,
-            'name' => $user->name
+            'id'   => $user->id,
+            'name' => $user->name,
         ]);
-
     }
 }

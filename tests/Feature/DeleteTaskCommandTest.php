@@ -6,7 +6,6 @@ use App\Task;
 use Illuminate\Support\Facades\Artisan;
 use Mockery;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DeleteTaskCommandTest extends TestCase
 {
@@ -24,8 +23,7 @@ class DeleteTaskCommandTest extends TestCase
 
         // run
 
-        $this->artisan('task:delete', [ 'name' => 'Hola' ]);
-
+        $this->artisan('task:delete', ['name' => 'Hola']);
 
         // assert
 
@@ -34,9 +32,8 @@ class DeleteTaskCommandTest extends TestCase
         $this->assertContains('Task deleted succesfully', $resultAsText);
 
         $this->assertDatabaseMissing('tasks', [
-            'name' => 'Hola'
+            'name' => 'Hola',
         ]);
-
     }
 
     public function testItDeletesTaskAndThenAsksForTaskName()
@@ -53,15 +50,12 @@ class DeleteTaskCommandTest extends TestCase
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-
         Task::create(['name' => 'Hola']);
         Task::create(['name' => 'Hola']);
 
         // run
 
         $this->artisan('task:delete');
-
-
 
         // assert
 
@@ -70,9 +64,8 @@ class DeleteTaskCommandTest extends TestCase
         $this->assertContains('Task deleted succesfully', $resultAsText);
 
         $this->assertDatabaseMissing('tasks', [
-            'name' => 'Hola'
+            'name' => 'Hola',
         ]);
-
     }
 
     public function testItDeletesTaskAndShowError()
@@ -89,8 +82,6 @@ class DeleteTaskCommandTest extends TestCase
         // run
 
         $this->artisan('task:delete');
-
-
 
         // assert
 

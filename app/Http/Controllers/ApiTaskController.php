@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Requests\DestroyTask;
 use App\Http\Requests\ListTask;
 use App\Http\Requests\ShowTask;
@@ -16,40 +17,41 @@ class ApiTaskController extends Controller
         return Task::all();
     }
 
-    public function show(ShowTask $request,Task $task)
+    public function show(ShowTask $request, Task $task)
     {
         return $task;
     }
 
     public function store(StoreTask $request)
     {
-
         $task = Task::create([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
 
         return $task;
     }
 
     /**
-     * Delete
+     * Delete.
+     *
      * @param Request $request
-     * @param Task $task
+     * @param Task    $task
      */
-    public function destroy(DestroyTask $request, Task $task) {
-
+    public function destroy(DestroyTask $request, Task $task)
+    {
         $task->delete();
 
         return $task;
     }
 
     /**
-     * Update
+     * Update.
+     *
      * @param Request $request
-     * @param Task $task
+     * @param Task    $task
      */
-    public function update(UpdateTask $request, Task $task) {
-
+    public function update(UpdateTask $request, Task $task)
+    {
         $task->name = $request->name;
         $task->save();
 

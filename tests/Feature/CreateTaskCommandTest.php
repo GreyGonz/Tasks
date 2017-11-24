@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Mockery;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateTaskCommandTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * Create task test
+     * Create task test.
      *
      * @return void
      */
@@ -26,12 +26,11 @@ class CreateTaskCommandTest extends TestCase
         // comprova
         $resultAsText = Artisan::output();
 
-        $this->assertDatabaseHas( 'tasks', [
-            'name' => 'Compra pa'
+        $this->assertDatabaseHas('tasks', [
+            'name' => 'Compra pa',
         ]);
 
         $this->assertContains('Task has been added to database succesfully', $resultAsText);
-
     }
 
     public function testItAsksForATaskNameAndThenCreateNewTask2()
