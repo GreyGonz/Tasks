@@ -3,17 +3,16 @@
 namespace Tests\Feature;
 
 use App\Task;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ListTaskCommandTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /**
-     * task:list command test
+     * task:list command test.
      *
      * @return void
      */
@@ -33,6 +32,5 @@ class ListTaskCommandTest extends TestCase
         $responseAsText = Artisan::output();
 
         // assert
-
     }
 }
