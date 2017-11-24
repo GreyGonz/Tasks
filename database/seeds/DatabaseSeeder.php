@@ -23,7 +23,5 @@ class DatabaseSeeder extends Seeder
         factory(Task::class, 50)->create();
 
         Artisan::call('passport:install');
-
-
     }
 }

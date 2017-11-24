@@ -15,7 +15,8 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::all();
-        return view('tasks',['tasks' => json_encode($tasks)]);
+
+        return view('tasks', ['tasks' => json_encode($tasks)]);
     }
 
     /**
@@ -31,20 +32,22 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         Task::create([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Task  $task
+     * @param \App\Task $task
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Task $task)
@@ -55,7 +58,8 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Task  $task
+     * @param \App\Task $task
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Task $task)
@@ -66,8 +70,9 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Task  $task
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Task                $task
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Task $task)
@@ -78,7 +83,8 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Task  $task
+     * @param \App\Task $task
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Task $task)
