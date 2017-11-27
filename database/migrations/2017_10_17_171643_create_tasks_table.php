@@ -19,6 +19,8 @@ class CreateTasksTable extends Migration
             $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
+
+        // FOREIGN KEYS TODO
     }
 
     /**

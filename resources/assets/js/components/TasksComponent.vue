@@ -19,15 +19,21 @@
                     </li>
                 </ul>
 
-                <div class="form-group">
+                <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('user_id') }">
                     <label for="user_id">User:</label>
+                    <transition name="fade">
+                        <span v-text="form.errors.get('user_id')" v-if="form.errors.has('user_id')" class="help-block"></span>
+                    </transition>
                     <!--<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">-->
-                    <users id="user_id"></users>
+                    <users id="user_id" :value="form.user_id" @select="userSelected"></users>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('name') }">
                     <label for="name">Task name:</label>
-                    <input type="text" class="form-control" id="name" v-model="form.name" @keydown.enter="addTask">
+                    <transition name="fade">
+                        <span v-text="form.errors.get('name')" v-if="form.errors.has('name')" class="help-block"></span>
+                    </transition>
+                    <input @input="form.errors.clear('name')" type="text" class="form-control" id="name" v-model="form.name" @keydown.enter="addTask">
                 </div>
 
                 <h2>Filtres</h2>
@@ -45,7 +51,7 @@
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <slot name="footer">
-                        <button class="btn btn-primary" :disabled="form.submitting" id="add" @click="addTask">
+                        <button class="btn btn-primary" :disabled="form.submitting || form.errors.any()" id="add" @click="addTask">
                             <i class="fa fa-refresh fa-spin fa-lg" v-if="form.submitting"></i>
                             Add
                         </button>
@@ -54,7 +60,7 @@
             </div>
         </widget>
 
-        <message title="Error" ></message>
+        <message title="Error" message="" color="info"></message>
     </div>
 
 </template>
@@ -69,6 +75,15 @@
     li.active {
         background-color: darkgray;
     }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity 3s ease;
+    }
+
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
+    }
+
 </style>
 
 <script>
@@ -107,7 +122,7 @@
                 tasks: [],
                 creating: false,
                 taskBeenDeleted: null,
-                form: new Form({ user_id: '', name: '' })
+                form: new Form({ user_id: 1, name: 'prova' })
             }
         },
         computed: {
@@ -124,6 +139,9 @@
             }
         },
         methods: {
+            userSelected(user) {
+              this.form.user_id = user.id
+            },
             show(filter) {
                 this.filter = filter
             },
@@ -135,7 +153,7 @@
                 this.form.post(url).then((response) =>  {
                     console.log('New task added')
                     // Emmagatzema a fitxer JSON
-                    this.tasks.push({name: this.form.name, user_id: this.form.user_id, completed: false})
+                    this.tasks.push({name: this.form.name, user_id: this.form.user_id})
                     this.form.name=''
                 }).catch((error) => {
                     flash(error.message)

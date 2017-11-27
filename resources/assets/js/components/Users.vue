@@ -1,6 +1,6 @@
 <template>
     <div>
-        <multiselect :id="id" v-model="user" :options="users" :custom-label="customLabel"></multiselect>
+        <multiselect @select="select(this.user)" :id="id" v-model="user" :options="users" :custom-label="customLabel"></multiselect>
     </div>
 </template>
 
@@ -23,18 +23,34 @@
                 users: []
             }
         },
-        props: ['id'],
+        props: ['id', 'value'],
         computed: {
           numUsers() {
               return this.users.length
           },
         },
+        watch: {
+            value(newValue) {
+                this.user = this.users.find( user => {
+                    return user.id == newValue
+                });
+
+            }
+        },
         methods: {
-          customLabel({ name, email}) {
-              return `${name} - ${email}`
-          }
+            customLabel({ name, email}) {
+                return `${name} - ${email}`
+            },
+            select(user) {
+                this.$emit('select', user)
+            },
         },
         mounted() {
+
+            this.user = this.users.find( user => {
+                return user.id == this.value
+            });
+
             console.log('Mounted ok')
 
             axios.get('api/v1/users').then( response => {
