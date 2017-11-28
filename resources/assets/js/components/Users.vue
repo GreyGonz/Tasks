@@ -47,14 +47,13 @@
         },
         mounted() {
 
-            this.user = this.users.find( user => {
-                return user.id == this.value
-            });
-
             console.log('Mounted ok')
 
             axios.get('api/v1/users').then( response => {
                 this.users = response.data;
+                this.user = this.users.find( user => {
+                    return user.id == this.value
+                });
             }).catch( error => {
                 console.log(error);
             }).then()
