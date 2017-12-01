@@ -16,7 +16,7 @@ class ApiTaskControllerTest extends TestCase
     {
         parent::setUp();
         initialize_task_permissions();
-        $this->withoutExceptionHandling();
+//        $this->withoutExceptionHandling();
     }
 
     protected function loginAsAuthorized()
