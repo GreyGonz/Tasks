@@ -78,8 +78,8 @@ class ApiUserControllerTest extends TestCase
         // run
 
         $response = $this->json('POST', '/api/v1/users', [
-            'name' => $name = $faker->word,
-            'email' => $email = $faker->email,
+            'name'     => $name = $faker->word,
+            'email'    => $email = $faker->email,
             'password' => $passwd = $faker->password,
         ]);
 
@@ -103,8 +103,8 @@ class ApiUserControllerTest extends TestCase
         // run
 
         $response = $this->json('POST', '/api/v1/users', [
-            'name' => $name = $faker->word,
-            'email' => $email = $faker->email,
+            'name'     => $name = $faker->word,
+            'email'    => $email = $faker->email,
             'password' => $passwd = $faker->password,
         ]);
 
@@ -112,13 +112,13 @@ class ApiUserControllerTest extends TestCase
 
         $response->assertSuccessful();
         $this->assertDatabaseHas('users', [
-            'name' => $name,
+            'name'  => $name,
             'email' => $email,
         ]);
 
         $response->assertJson([
-            'name' => $name,
-            'email' => $email
+            'name'  => $name,
+            'email' => $email,
         ]);
     }
 
