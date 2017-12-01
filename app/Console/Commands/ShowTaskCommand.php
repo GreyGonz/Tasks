@@ -6,14 +6,14 @@ use App\Task;
 use Illuminate\Console\Command;
 use Mockery\Exception;
 
-class ListTasksCommand extends Command
+class ShowTaskCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'task:list { name ? : Name of the task }';
+    protected $signature = 'task:show { name? : Task name }';
 
     /**
      * The console command description.
@@ -40,20 +40,21 @@ class ListTasksCommand extends Command
     public function handle()
     {
         try {
-            $header = ['id', 'name', 'created', 'modified'];
-
-            $task = Task::all()->toArray();
+            $task = Task::where('name', '=', $name = $this->argument('name') ? $this->argument('name') : $this->ask('Task name?'))->get()->toArray();
 
             $tasksShown = count($task);
 
+            $header = ['id', 'name', 'created', 'modified'];
+
             if($task) {
                 $this->table($header, $task);
-                $this->info($tasksShown . 'tasks shown');
+                $this->info($tasksShown . ' Tasks shown');
             } else {
-                $this->info('There are no tasks to show');
+                $this->error('Task ' . $name . ' not found');
             }
+
         } catch (Exception $e) {
-            $this->error('Uup! Something go wrong :(');
+            $this->error('Uups! Somthing go wrong!');
         }
 
     }

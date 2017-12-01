@@ -12,25 +12,40 @@ class ListTaskCommandTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * task:list command test.
-     *
-     * @return void
+     * ListTask
+     * @test
      */
-    public function testItListATask()
+    public function list_all_tasks()
     {
 
         // prepare
 
-        Task::create(['name' => 'NewTask']);
+        Task::create(['name' => 'ProvaList']);
 
-        $tasks = Task::all()->toArray();
+        $tasks = Task::all();
 
         // run
 
         $this->artisan('task:list');
 
-        $responseAsText = Artisan::output();
+        $response = Artisan::output();
 
-        // assert
+        foreach ($tasks as $task) {
+            $this->assertContains($task->name, $response);
+        }
+
+    }
+
+    /**
+     * ListTask
+     * @test
+     */
+    public function list_tasks_not_found()
+    {
+        $this->artisan('task:list');
+
+        $response = Artisan::output();
+
+        $this->assertContains('There are no tasks to show', $response);
     }
 }
