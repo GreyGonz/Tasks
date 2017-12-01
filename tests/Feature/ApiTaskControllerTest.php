@@ -6,6 +6,7 @@ use App\Task;
 use App\User;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class ApiTaskControllerTest extends TestCase
@@ -16,6 +17,7 @@ class ApiTaskControllerTest extends TestCase
     {
         parent::setUp();
         initialize_task_permissions();
+        Artisan::call('passport:install');
 //        $this->withoutExceptionHandling();
     }
 

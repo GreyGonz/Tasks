@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\User;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class ApiUserControllerTest extends TestCase
@@ -14,6 +15,7 @@ class ApiUserControllerTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        Artisan::call('passport:install');
 //        $this->withoutExceptionHandling();
     }
 
