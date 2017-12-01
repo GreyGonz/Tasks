@@ -11,6 +11,7 @@ use Tests\TestCase;
 class DeleteTaskCommandTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic test example.
      *
