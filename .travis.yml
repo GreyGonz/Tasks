@@ -4,7 +4,7 @@ php:
   - 7.0
   - 7.1
 
-before_sript:
+before_script:
   - travis_retry composer self-update
   - travis_retry composer update --no-interaction --prefer-dist
   - composer config --list --global
