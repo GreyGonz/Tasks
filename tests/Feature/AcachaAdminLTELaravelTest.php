@@ -23,7 +23,8 @@ class AcachaAdminLTELaravelTest extends TestCase
     {
         parent::setUp();
         App::setLocale('en');
-        $this->withoutExceptionHandling();
+        Artisan::call('passport:install');
+//        $this->withoutExceptionHandling();
 
     }
 
