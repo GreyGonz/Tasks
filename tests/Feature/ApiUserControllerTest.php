@@ -77,6 +77,8 @@ class ApiUserControllerTest extends TestCase
 
         $response = $this->json('POST', '/api/v1/users', [
             'name' => $name = $faker->word,
+            'email' => $email = $faker->email,
+            'password' => $passwd = $faker->password,
         ]);
 
         // assert
