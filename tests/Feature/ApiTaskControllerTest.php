@@ -17,7 +17,6 @@ class ApiTaskControllerTest extends TestCase
     {
         parent::setUp();
         initialize_task_permissions();
-        Artisan::call('passport:install');
 //        $this->withoutExceptionHandling();
     }
 
@@ -89,7 +88,7 @@ class ApiTaskControllerTest extends TestCase
     {
 
         // prepare
-
+        Artisan::call('passport:install');
         $faker = Factory::create();
 
         // run

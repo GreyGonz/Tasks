@@ -15,7 +15,6 @@ class ApiUserControllerTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        Artisan::call('passport:install');
 //        $this->withoutExceptionHandling();
     }
 
@@ -72,7 +71,7 @@ class ApiUserControllerTest extends TestCase
     {
 
         // prepare
-
+        Artisan::call('passport:install');
         $faker = Factory::create();
 
         // run
