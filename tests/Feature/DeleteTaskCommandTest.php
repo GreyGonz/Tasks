@@ -3,12 +3,14 @@
 namespace Tests\Feature;
 
 use App\Task;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Mockery;
 use Tests\TestCase;
 
 class DeleteTaskCommandTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic test example.
      *
@@ -19,11 +21,11 @@ class DeleteTaskCommandTest extends TestCase
 
         // prepare
 
-        Task::create(['name' => 'Hola']);
+        Task::create(['name' => 'ProvaDelete']);
 
         // run
 
-        $this->artisan('task:delete', ['name' => 'Hola']);
+        $this->artisan('task:delete', ['name' => 'ProvaDelete']);
 
         // assert
 
@@ -32,7 +34,7 @@ class DeleteTaskCommandTest extends TestCase
         $this->assertContains('Task deleted succesfully', $resultAsText);
 
         $this->assertDatabaseMissing('tasks', [
-            'name' => 'Hola',
+            'name' => 'ProvaDelete',
         ]);
     }
 
