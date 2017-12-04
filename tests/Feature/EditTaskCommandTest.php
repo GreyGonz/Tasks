@@ -3,18 +3,15 @@
 namespace Tests\Feature;
 
 use App\Task;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Mockery;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EditTaskCommandTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     *
-     */
     public function setUp()
     {
         parent::setUp();
@@ -22,12 +19,12 @@ class EditTaskCommandTest extends TestCase
     }
 
     /**
-     * EditTask
+     * EditTask.
+     *
      * @test
      */
     public function edit_a_task()
     {
-
         $command = Mockery::mock('App\Console\Commands\EditTaskCommand[ask]');
 
         $command->shouldReceive('ask')
@@ -37,27 +34,28 @@ class EditTaskCommandTest extends TestCase
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        $task = Task::create([ 'name' => 'ProvaEdit' ]);
+        $task = Task::create(['name' => 'ProvaEdit']);
 
-        $this->artisan('task:edit', [ 'id' => 1 ]);
+        $this->artisan('task:edit', ['id' => 1]);
 
         $response = Artisan::output();
 
         $this->assertContains('Task edited successfully', $response);
 
         $this->assertDatabaseHas('tasks', [
-            'id' => $task->id,
+            'id'   => $task->id,
             'name' => 'NewName',
         ]);
     }
 
     /**
-     * EditTask
+     * EditTask.
+     *
      * @test
      */
     public function edit_a_task_and_not_found()
     {
-        $this->artisan('task:edit', [ 'id' => 1 ]);
+        $this->artisan('task:edit', ['id' => 1]);
 
         $response = Artisan::output();
 
@@ -65,12 +63,12 @@ class EditTaskCommandTest extends TestCase
     }
 
     /**
-     * EditTask
+     * EditTask.
+     *
      * @test
      */
     public function edit_ask_for_task_and_edit()
     {
-
         $command = Mockery::mock('App\Console\Commands\EditTaskCommand[ask]');
 
         $command->shouldReceive('ask')
@@ -85,7 +83,7 @@ class EditTaskCommandTest extends TestCase
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        $task = Task::create([ 'name' => 'ProvaTask' ]);
+        $task = Task::create(['name' => 'ProvaTask']);
 
         $this->artisan('task:edit');
 
@@ -94,19 +92,18 @@ class EditTaskCommandTest extends TestCase
         $this->assertContains('Task edited successfully', $response);
 
         $this->assertDatabaseHas('tasks', [
-            'id' => $task->id,
+            'id'   => $task->id,
             'name' => 'NewName',
         ]);
-
     }
 
     /**
-     * EditTask
+     * EditTask.
+     *
      * @test
      */
     public function edit_ask_for_task_and_not_found()
     {
-
         $command = Mockery::mock('App\Console\Commands\EditTaskCommand[ask]');
 
         $command->shouldReceive('ask')
@@ -121,6 +118,5 @@ class EditTaskCommandTest extends TestCase
         $response = Artisan::output();
 
         $this->assertContains('Task with id 1 not found', $response);
-
     }
 }

@@ -40,7 +40,6 @@ class EditTaskCommand extends Command
     public function handle()
     {
         try {
-
             $task = Task::find($id = $this->argument('id') ? $this->argument('id') : $this->ask('Task id?'));
 
             if ($task) {
@@ -48,10 +47,8 @@ class EditTaskCommand extends Command
                 $task->save();
                 $this->info('Task edited successfully');
             } else {
-                $this->error('Task with id ' . $id . ' not found');
+                $this->error('Task with id '.$id.' not found');
             }
-
-
         } catch (Exception $e) {
             $this->error('Uups! Something go wrong :(');
         }

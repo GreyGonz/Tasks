@@ -46,16 +46,14 @@ class ShowTaskCommand extends Command
 
             $header = ['id', 'name', 'created', 'modified'];
 
-            if($task) {
+            if ($task) {
                 $this->table($header, $task);
-                $this->info($tasksShown . ' Tasks shown');
+                $this->info($tasksShown.' Tasks shown');
             } else {
-                $this->error('Task ' . $name . ' not found');
+                $this->error('Task '.$name.' not found');
             }
-
         } catch (Exception $e) {
             $this->error('Uups! Somthing go wrong!');
         }
-
     }
 }
