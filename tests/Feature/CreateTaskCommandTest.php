@@ -12,7 +12,7 @@ class CreateTaskCommandTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * CreateTask
+     * CreateTask.
      *
      * @test
      */
@@ -32,13 +32,13 @@ class CreateTaskCommandTest extends TestCase
 
         $this->assertContains('Task has been added to database succesfully', $resultAsText);
         $this->assertDatabaseHas('tasks', [
-            'id' => 1,
-            'name' => 'ProvaCreate'
+            'id'   => 1,
+            'name' => 'ProvaCreate',
         ]);
     }
 
     /**
-     * CreateTask
+     * CreateTask.
      *
      * @test
      */
@@ -62,7 +62,7 @@ class CreateTaskCommandTest extends TestCase
         $resultAsText = Artisan::output();
         $this->assertContains('Task has been added to database succesfully', $resultAsText);
         $this->assertDatabaseHas('tasks', [
-            'id' => 1,
+            'id'   => 1,
             'name' => 'ProvaCreate',
         ]);
     }
