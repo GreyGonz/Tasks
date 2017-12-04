@@ -3,6 +3,8 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GreyGonz/Tasks/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/GreyGonz/Tasks/?branch=master)
 [![StyleCI](https://styleci.io/repos/107176545/shield?branch=master)](https://styleci.io/repos/107176545)
 [![Build Status](https://travis-ci.org/GreyGonz/Tasks.svg?branch=master)](https://travis-ci.org/GreyGonz/Tasks)
+[![Latest Stable Version](https://poser.pugx.org/greygonz/tasks/v/stable)](https://packagist.org/packages/greygonz/tasks)
+[![License](https://poser.pugx.org/greygonz/tasks/license)](https://packagist.org/packages/greygonz/tasks)
 
 # Laravel packages
 

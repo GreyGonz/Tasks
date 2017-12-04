@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6df2b5b2cceeacebfed57cc865c1c98f",
+    "content-hash": "bf45890ae721179f248a31b1f532b2b7",
     "packages": [
         {
             "name": "acacha/admin-lte-template-laravel",
@@ -134,16 +134,16 @@
         },
         {
             "name": "acacha/forge-publish",
-            "version": "0.1.10",
+            "version": "0.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/acacha/forge-publish.git",
-                "reference": "c20d7437f395269d82b103c40c62e896d16052b8"
+                "reference": "114b81972de7d30eab26c36a6ce2ebf3651976e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/acacha/forge-publish/zipball/c20d7437f395269d82b103c40c62e896d16052b8",
-                "reference": "c20d7437f395269d82b103c40c62e896d16052b8",
+                "url": "https://api.github.com/repos/acacha/forge-publish/zipball/114b81972de7d30eab26c36a6ce2ebf3651976e8",
+                "reference": "114b81972de7d30eab26c36a6ce2ebf3651976e8",
                 "shasum": ""
             },
             "require": {
@@ -195,7 +195,7 @@
                 "acacha",
                 "forge-publish"
             ],
-            "time": "2017-11-27T17:22:50+00:00"
+            "time": "2017-11-28T17:09:14+00:00"
         },
         {
             "name": "acacha/helpers",
