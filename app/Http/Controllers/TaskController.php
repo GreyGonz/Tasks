@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class TaskController extends Controller
 {
@@ -16,7 +17,8 @@ class TaskController extends Controller
     {
         $tasks = Task::all();
 
-        return view('tasks', ['tasks' => json_encode($tasks)]);
+        return View::make('tasks_php.index')->with('tasks', $tasks);
+
     }
 
     /**
@@ -26,7 +28,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return View::make('tasks_php.create');
     }
 
     /**

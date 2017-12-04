@@ -15,22 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => 'auth'], function () {
-    //    Route::get('/link1', function ()    {
-//        // Uses Auth Middleware
-//    });
-
-//    Route::get('tasks', function() {
-//        return view('tasks');
-//    });
-
-    Route::get('tasks', 'TaskController@index');
-    Route::post('task', 'TaskController@store');
-
-//    Route::get('tasks','TaskController@index');
-
-    Route::view('/tasks', 'tasks');
-
-    //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
-    //adminlte_routes
+Route::group(['middleware' => ['auth']], function () {
+        Route::resource('/tasks_php', 'TaskController');
 });
