@@ -48,7 +48,7 @@ class ListTasksCommand extends Command
 
             if ($task) {
                 $this->table($header, $task);
-                $this->info($tasksShown.'tasks shown');
+                $this->info($tasksShown.' tasks shown');
             } else {
                 $this->info('There are no tasks to show');
             }

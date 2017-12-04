@@ -21,7 +21,7 @@ class ListTaskCommandTest extends TestCase
 
         // prepare
 
-        Task::create(['name' => 'ProvaList']);
+        factory(Task::class, 10)->create();
 
         $tasks = Task::all();
 
@@ -34,6 +34,8 @@ class ListTaskCommandTest extends TestCase
         foreach ($tasks as $task) {
             $this->assertContains($task->name, $response);
         }
+
+        $this->assertContains('10 tasks shown', $response);
     }
 
     /**

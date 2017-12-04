@@ -13,7 +13,7 @@ class DeleteTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'task:delete { name? : The Task name }';
+    protected $signature = 'task:delete { id? : Task id }';
 
     /**
      * The console command description.
@@ -39,7 +39,7 @@ class DeleteTaskCommand extends Command
      */
     public function handle()
     {
-        $collection = Task::where('name', '=', $this->argument('name') ? $this->argument('name') : $this->ask('Task name?'))->get()->toArray();
+        $collection = Task::where('id', '=', $this->argument('id') ? $this->argument('id') : $this->ask('Task id?'))->get()->toArray();
 
         if (!empty($collection)) {
             $tasks_to_delete = array_map(function ($task) {

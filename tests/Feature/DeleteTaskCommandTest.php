@@ -13,20 +13,20 @@ class DeleteTaskCommandTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * A basic test example.
+     * DeleteTask
      *
-     * @return void
+     * @test
      */
-    public function testItDeletesTask()
+    public function delete_task()
     {
 
         // prepare
 
-        Task::create(['name' => 'ProvaDelete']);
+        $task = Task::create(['name' => 'ProvaDelete']);
 
         // run
 
-        $this->artisan('task:delete', ['name' => 'ProvaDelete']);
+        $this->artisan('task:delete', [ 'id' => $task->id ]);
 
         // assert
 
@@ -39,7 +39,27 @@ class DeleteTaskCommandTest extends TestCase
         ]);
     }
 
-    public function testItDeletesTaskAndThenAsksForTaskName()
+    /**
+     * DeleteTask
+     *
+     * @test
+     */
+    public function delete_task_and_not_found()
+    {
+        $this->artisan('task:delete', [ 'id' => 1 ]);
+
+        $response = Artisan::output();
+
+        $this->assertContains('Task specified don\'t exist', $response);
+
+    }
+
+    /**
+     * DeleteTask
+     *
+     * @test
+     */
+    public function delete_ask_for_task_and_delete()
     {
 
         // prepare
@@ -48,13 +68,12 @@ class DeleteTaskCommandTest extends TestCase
 
         $command->shouldReceive('ask')
             ->once()
-            ->with('Task name?')
-            ->andReturn('Hola');
+            ->with('Task id?')
+            ->andReturn(1);
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        Task::create(['name' => 'Hola']);
-        Task::create(['name' => 'Hola']);
+        Task::create(['name' => 'ProvaDelete']);
 
         // run
 
@@ -67,18 +86,24 @@ class DeleteTaskCommandTest extends TestCase
         $this->assertContains('Task deleted succesfully', $resultAsText);
 
         $this->assertDatabaseMissing('tasks', [
-            'name' => 'Hola',
+            'id' => 1,
+            'name' => 'ProvaDelte',
         ]);
     }
 
-    public function testItDeletesTaskAndShowError()
+    /**
+     * DeleteTask
+     *
+     * @test
+     */
+    public function delete_ask_for_task_and_not_found()
     {
         $command = Mockery::mock('App\Console\Commands\DeleteTaskCommand[ask]');
 
         $command->shouldReceive('ask')
             ->once()
-            ->with('Task name?')
-            ->andReturn('NotExist');
+            ->with('Task id?')
+            ->andReturn(1);
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 

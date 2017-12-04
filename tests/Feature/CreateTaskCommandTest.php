@@ -12,28 +12,37 @@ class CreateTaskCommandTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * Create task test.
+     * CreateTask
      *
-     * @return void
+     * @test
      */
-    public function testItCreatesNewTask()
+    public function create_task()
     {
         // prepara
 
         // executa
-        $this->artisan('task:create', ['name' => 'Compra pa']);
+        $this->artisan('task:create', ['name' => 'ProvaCreate']);
 
         // comprova
         $resultAsText = Artisan::output();
 
         $this->assertDatabaseHas('tasks', [
-            'name' => 'Compra pa',
+            'name' => 'ProvaCreate',
         ]);
 
         $this->assertContains('Task has been added to database succesfully', $resultAsText);
+        $this->assertDatabaseHas('tasks', [
+            'id' => 1,
+            'name' => 'ProvaCreate'
+        ]);
     }
 
-    public function testItAsksForATaskNameAndThenCreateNewTask2()
+    /**
+     * CreateTask
+     *
+     * @test
+     */
+    public function create_ask_for_task_and_create()
     {
         // prepara
 
@@ -42,7 +51,7 @@ class CreateTaskCommandTest extends TestCase
         $command->shouldReceive('ask')
             ->once()
             ->with('Task name?')
-            ->andReturn('Comprar alguna cosa');
+            ->andReturn('ProvaCreate');
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
@@ -52,5 +61,9 @@ class CreateTaskCommandTest extends TestCase
         // comprova
         $resultAsText = Artisan::output();
         $this->assertContains('Task has been added to database succesfully', $resultAsText);
+        $this->assertDatabaseHas('tasks', [
+            'id' => 1,
+            'name' => 'ProvaCreate',
+        ]);
     }
 }
