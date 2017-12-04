@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
 
         create_user();
 
+        create_user_sergi();
+
         first_user_as_task_manager();
 
 //        $this->call('AdminUserSeeder');

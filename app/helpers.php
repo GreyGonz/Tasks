@@ -37,9 +37,21 @@ if (!function_exists('create_user')) {
     }
 }
 
+if (!function_exists('create_user_sergi')) {
+    function create_user_sergi()
+    {
+        factory(User::class)->create([
+            'name'     => env('TASKS_USER_SERGI_NAME', 'Sergi Tur Bardenas'),
+            'email'    => env('TASKS_USER_SERGI_EMAIL', 'sergiturbardenas@iesebre.com'),
+            'password' => bcrypt(env('TASKS_USER_SERGI_PASSWORD')),
+        ]);
+    }
+}
+
 if (!function_exists('first_user_as_task_manager')) {
     function first_user_as_task_manager()
     {
         User::all()->first()->assignRole('task-manager');
+        User::findOrFail(2)->assignRole('task-manager');
     }
 }
