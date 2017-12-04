@@ -3,14 +3,15 @@
 namespace Tests\Feature;
 
 use App\Task;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Mockery;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShowTaskCommandTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic test example.
      *
@@ -23,12 +24,12 @@ class ShowTaskCommandTest extends TestCase
     }
 
     /**
-     * ShowTask
+     * ShowTask.
+     *
      * @test
      */
     public function show_a_task()
     {
-
         $task = Task::create(['name'=> 'ProvaShow']);
 
         $this->artisan('task:show', ['name' => 'ProvaShow']);
@@ -40,7 +41,8 @@ class ShowTaskCommandTest extends TestCase
     }
 
     /**
-     * ShowTask
+     * ShowTask.
+     *
      * @test
      */
     public function show_multiple_tasks_with_same_name()
@@ -59,7 +61,8 @@ class ShowTaskCommandTest extends TestCase
     }
 
     /**
-     * ShowTask
+     * ShowTask.
+     *
      * @test
      */
     public function show_a_task_but_not_found()
@@ -72,7 +75,8 @@ class ShowTaskCommandTest extends TestCase
     }
 
     /**
-     * ShowTask
+     * ShowTask.
+     *
      * @test
      */
     public function show_ask_for_task_and_show()
@@ -97,7 +101,8 @@ class ShowTaskCommandTest extends TestCase
     }
 
     /**
-     * ShowTask
+     * ShowTask.
+     *
      * @test
      */
     public function show_ask_for_task_and_not_found()

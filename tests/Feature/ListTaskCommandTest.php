@@ -12,7 +12,8 @@ class ListTaskCommandTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * ListTask
+     * ListTask.
+     *
      * @test
      */
     public function list_all_tasks()
@@ -33,11 +34,11 @@ class ListTaskCommandTest extends TestCase
         foreach ($tasks as $task) {
             $this->assertContains($task->name, $response);
         }
-
     }
 
     /**
-     * ListTask
+     * ListTask.
+     *
      * @test
      */
     public function list_tasks_not_found()
