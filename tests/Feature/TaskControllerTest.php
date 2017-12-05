@@ -15,7 +15,7 @@ class TaskControllerTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-//        $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
     }
 
     protected function loginAsUser()
@@ -38,7 +38,7 @@ class TaskControllerTest extends TestCase
 
         $tasks = factory(Task::class, 50)->create();
 
-        $response = $this->get('/tasks_php');
+        $response = $this->get('/tasks');
 
         $response->assertSuccessful();
         $response->assertSeeText('Tasks PHP');
@@ -56,10 +56,10 @@ class TaskControllerTest extends TestCase
     {
         $this->loginAsUser();
 
-        $response = $this->get('/tasks_php/create');
+        $response = $this->get('/tasks/create');
 
         $response->assertSuccessful();
-        $response->assertViewIs('tasks_php.create');
+        $response->assertViewIs('tasks.create');
         $response->assertSeeText('Create task');
         $response->assertSeeText('Name:');
     }
@@ -69,15 +69,43 @@ class TaskControllerTest extends TestCase
      *
      * @test
      */
-    public function testStoreTask()
+    public function store_task()
     {
         $this->loginAsUser();
 
-        $response = $this->post('/tasks_php', ['name' => 'ProvaStore']);
+        $task = factory(Task::class)->create();
+
+        $response = $this->post('/tasks',['name' => $task->name]);
+
+        $response->assertStatus(302);
+//        $response->assertViewIs('tasks.index');
+        $this->assertDatabaseHas('tasks', [
+            'name' => $task->name,
+        ]);
+    }
+
+    /**
+     * TODO STORE
+     */
+
+    /**
+     * ShowTask
+     *
+     * @test
+     */
+    public function show_task()
+    {
+        $this->loginAsUser();
+
+        $task = factory(Task::class)->create();
+
+        $response = $this->get('/tasks/'.$task->id);
 
         $response->assertSuccessful();
+
         $this->assertDatabaseHas('tasks', [
-            'name' => 'ProvaStore',
+            'id' => $task->id
         ]);
+        $response->assertSeeText($task->name);
     }
 }

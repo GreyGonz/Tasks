@@ -16,5 +16,7 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
-        Route::resource('/tasks_php', 'TaskController');
+        Route::resource('/tasks', 'TaskController');
+
+        Route::view('/tasks_component', 'taskscomponent');
 });

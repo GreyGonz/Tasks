@@ -17,7 +17,7 @@ class TaskController extends Controller
     {
         $tasks = Task::all();
 
-        return View::make('tasks_php.index')->with('tasks', $tasks);
+        return View::make('tasks.index')->with('tasks', $tasks);
 
     }
 
@@ -28,7 +28,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return View::make('tasks_php.create');
+        return View::make('tasks.create');
     }
 
     /**
@@ -40,9 +40,19 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        Task::create([
-            'name' => $request->name,
+        $request->validate([
+            'name' => 'required',
         ]);
+
+        // Guarda una nova Thread entrada des del formulari que es troba a
+        // create.blade.php
+        $task = new Task;
+        $task->name = $request->input('name');
+        $task->save();
+
+        // Redirigeix cap a l'inici
+        // TODO: es podria redirigir a la vista especifica de la nova thread
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -54,7 +64,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return view('tasks.show')->with('task', $task);
     }
 
     /**

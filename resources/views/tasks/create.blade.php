@@ -14,7 +14,7 @@
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="{{ URL::to('tasks_php') }}">View All Tasks</a></li>
-                <li><a href="{{ URL::to('tasks_php/create') }}">Create a Tasks</a>
+                <li><a href="{{ URL::to('tasks') }}">Create a Tasks</a>
             </ul>
         </nav>
 
