@@ -26,6 +26,7 @@ class ApiTaskController extends Controller
     {
         $task = Task::create([
             'name' => $request->name,
+            'description' => $request->description,
         ]);
 
         return $task;
@@ -53,6 +54,7 @@ class ApiTaskController extends Controller
     public function update(UpdateTask $request, Task $task)
     {
         $task->name = $request->name;
+        $task->description = $request->description;
         $task->save();
 
         return $task;

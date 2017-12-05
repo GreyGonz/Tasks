@@ -13,10 +13,12 @@
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="{{ URL::to('tasks') }}">View All Tasks</a></li>
-                <li><a href="{{ URL::to('tasks') }}">Create a Tasks</a>
+                <li><a href="{{ URL::to('tasks/create') }}">Create a Tasks</a>
             </ul>
         </nav>
     </div>
+
+    {{ Session::get('status') }}
 
     <div class="container">
         <h1>Showing {{ $task->name }}</h1>

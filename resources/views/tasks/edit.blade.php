@@ -1,8 +1,7 @@
-
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-    Create task
+    Edit Task
 @endsection
 
 @section('main-content')
@@ -14,26 +13,29 @@
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="{{ URL::to('tasks') }}">View All Tasks</a></li>
-                <li><a href="{{ URL::to('tasks/create') }}">Create a Tasks</a>
+                <li><a href="{{ URL::to('tasks/create') }}">Create a Task</a>
             </ul>
         </nav>
 
-        {{ Session::get('status') }}
 
-        {{ Form::open(array('url' => 'tasks')) }}
+        <h1> Edit Task {{ $task->title }}</h1>
+
+        {{ Form::model($task, array('url' => array('tasks', $task), 'method' => 'PUT' )) }}
 
         <div class="form-group">
             {{ Form::label('name', 'Name: ') }}
-            {{ Form::text('name', null, array('class' => "form-control", 'required' => 'required')) }}
+            {{ Form::text('name', $task->title, array('class' => "form-control", 'required' => 'required')) }}
         </div>
 
         <div class="form-group">
             {{ Form::label('description', 'Description: ') }}
-            {{ Form::text('description', null, array('class' => "form-control", 'required' => 'required')) }}
+            {{ Form::text('description', $task->description, array('class' => "form-control", 'required' => 'required')) }}
         </div>
 
-        {{ Form::submit('Create the Task!', array('class' => 'btn btn-primary')) }}
+
+        {{ Form::submit('Edit the Task!', array('class' => 'btn btn-primary')) }}
 
         {{ Form::close() }}
+
     </div>
 @endsection

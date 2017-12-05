@@ -17,7 +17,7 @@ class TaskController extends Controller
     {
         $tasks = Task::all();
 
-        return View::make('tasks.index')->with('tasks', $tasks);
+        return view('tasks.index')->with('tasks', $tasks);
 
     }
 
@@ -28,7 +28,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return View::make('tasks.create');
+        return view('tasks.create');
     }
 
     /**
@@ -40,18 +40,23 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'name' => 'required',
+            'description' => 'required',
+            'user_id' => 'required',
         ]);
 
         // Guarda una nova Thread entrada des del formulari que es troba a
         // create.blade.php
         $task = new Task;
         $task->name = $request->input('name');
+        $task->description = $request->input('description');
         $task->save();
 
         // Redirigeix cap a l'inici
         // TODO: es podria redirigir a la vista especifica de la nova thread
+
         return redirect()->route('tasks.index');
     }
 
@@ -76,7 +81,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        return view('tasks.edit')->with('task', $task);
     }
 
     /**
@@ -89,7 +94,17 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+        ]);
+
+        $task->name = $request->name;
+        $task->description = $request->description;
+        $task->save();
+
+        return redirect()->route('tasks.index');
+
     }
 
     /**
@@ -101,6 +116,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return redirect()->route('tasks.index');
     }
 }

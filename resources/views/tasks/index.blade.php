@@ -33,8 +33,8 @@
                     <td>{{ $task->name }}</td>
                     <td>{{ $task->description }}</td>
                     <td>
-                        {{ Form::open(array('url' => 'tasks/' . $task->id, 'class' => 'pull-right', 'method' => 'DELETE')) }}
-                        {{ Form::submit('Delete this Thread', array('class' => 'btn btn-small btn-warning')) }}
+                        {{ Form::open(array('url' => '/tasks/' . $task->id, 'class' => 'pull-right', 'method' => 'DELETE')) }}
+                        {{ Form::submit('Delete this task', array('class' => 'btn btn-small btn-warning')) }}
                         {{ Form::close() }}
 
                         <a class="btn btn-small btn-success pull-right" href="{{ URL::to('/tasks/' . $task->id) }}">Show this Task</a>

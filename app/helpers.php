@@ -16,13 +16,17 @@ if (!function_exists('initialize_task_permissions')) {
 
         $role = Role::firstOrCreate(['name' => 'task-manager']);
 
-//        $role->givePermissionTo('list-tasks');
-//        $role->givePermissionTo('show-tasks');
-//        $role->givePermissionTo('store-tasks');
-//        $role->givePermissionTo('update-tasks');
-//        $role->givePermissionTo('destroy-tasks');
-
         $role->givePermissionTo('destroy-tasks', 'list-tasks', 'show-tasks', 'store-tasks', 'update-tasks');
+
+        Permission::firstOrCreate(['name' => 'list-users']);
+        Permission::firstOrCreate(['name' => 'store-users']);
+        Permission::firstOrCreate(['name' => 'show-users']);
+        Permission::firstOrCreate(['name' => 'update-users']);
+        Permission::firstOrCreate(['name' => 'destroy-users']);
+
+        $role = Role::firstOrCreate(['name' => 'user-manager']);
+
+        $role->givePermissionTo('destroy-users', 'list-users', 'show-users', 'store-users', 'update-users');
     }
 }
 

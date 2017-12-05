@@ -15,7 +15,7 @@ class TaskControllerTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->withoutExceptionHandling();
+//        $this->withoutExceptionHandling();
     }
 
     protected function loginAsUser()
@@ -48,6 +48,20 @@ class TaskControllerTest extends TestCase
     }
 
     /**
+     * ListTasks
+     *
+     * @test
+     */
+    public function index_view_fail_not_logged()
+    {
+        factory(Task::class, 50)->create();
+
+        $response = $this->get('tasks');
+
+        $response->assertRedirect('login');
+    }
+
+    /**
      * CreateTask
      *
      * @test
@@ -65,6 +79,18 @@ class TaskControllerTest extends TestCase
     }
 
     /**
+     * CreateTask
+     *
+     * @test
+     */
+    public function create_task_view_fail_not_logged()
+    {
+        $response = $this->get('/tasks/create');
+
+        $response->assertRedirect('login');
+    }
+
+    /**
      * StoreTask
      *
      * @test
@@ -75,10 +101,9 @@ class TaskControllerTest extends TestCase
 
         $task = factory(Task::class)->create();
 
-        $response = $this->post('/tasks',['name' => $task->name]);
+        $response = $this->post('/tasks',['name' => $task->name, 'description' => $task->description]);
 
-        $response->assertStatus(302);
-//        $response->assertViewIs('tasks.index');
+        $response->assertRedirect('/tasks');
         $this->assertDatabaseHas('tasks', [
             'name' => $task->name,
         ]);
@@ -102,10 +127,100 @@ class TaskControllerTest extends TestCase
         $response = $this->get('/tasks/'.$task->id);
 
         $response->assertSuccessful();
+        $response->assertSeeText($task->name);
+        $response->assertSeeText($task->description);
 
         $this->assertDatabaseHas('tasks', [
             'id' => $task->id
         ]);
-        $response->assertSeeText($task->name);
+    }
+
+    /**
+     * ShowTask
+     *
+     * @test
+     */
+    public function show_task_not_found()
+    {
+        $this->loginAsUser();
+
+        $response = $this->get('/tasks/1');
+
+        $response->assertStatus(404);
+
+    }
+
+    /**
+     * EditTask
+     *
+     * @test
+     */
+    public function edit_view_task()
+    {
+        $this->loginAsUser();
+
+        $task = factory(Task::class)->create();
+
+        $request = $this->get('tasks/'.$task->id.'/edit');
+
+        $request->assertSuccessful();
+
+        $request->assertSeeText('Name:');
+        $request->assertSeeText('Description:');
+        $request->assertSee($task->name);
+        $request->assertSee($task->description);
+    }
+
+    /**
+     * UpdateTask
+     *
+     * @test
+     */
+    public function update_task()
+    {
+        $this->loginAsUser();
+
+        $task = factory(Task::class)->create();
+        $newTask = factory(Task::class)->make();
+
+        $response = $this->put('tasks/'.$task->id, [
+            'name' => $newTask->name,
+            'description' => $newTask->description,
+        ]);
+
+        $response->assertRedirect('/tasks');
+
+        $this->assertDatabaseHas('tasks', [
+            'id' => $task->id,
+            'name' => $newTask->name,
+            'description' => $newTask->description,
+        ]);
+
+        $this->assertDatabaseMissing('tasks', [
+            'id' => $task->id,
+            'name' => $task->name,
+            'description' => $task->description,
+        ]);
+
+    }
+
+    /**
+     * DestroyTask
+     *
+     * @test
+     */
+    public function destroy_task()
+    {
+        $this->loginAsUser();
+
+        $task = factory(Task::class)->create();
+
+        $response = $this->delete('tasks/'.$task->id);
+
+        $response->assertRedirect('/tasks');
+
+        $this->assertDatabaseMissing('tasks', [
+            'id' => $task->id,
+        ]);
     }
 }

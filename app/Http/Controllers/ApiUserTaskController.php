@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DestroyUser;
+use App\Http\Requests\ListUsers;
+use App\Http\Requests\StoreUser;
+use App\Http\Requests\UpdateUser;
 use App\User;
 use Illuminate\Http\Request;
 
 class ApiUserTaskController extends Controller
 {
-    public function index()
+    public function index(ListUsers $request)
     {
         return User::all();
     }
 
-    public function store(Request $request)
+    public function store(StoreUser $request)
     {
-        $request->validate([
-            'name' => 'required',
-        ]);
-
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
@@ -33,7 +33,7 @@ class ApiUserTaskController extends Controller
      * @param Request $request
      * @param User    $user
      */
-    public function destroy(Request $request, User $user)
+    public function destroy(DestroyUser $request, User $user)
     {
         $user->delete();
 
@@ -46,7 +46,7 @@ class ApiUserTaskController extends Controller
      * @param Request $request
      * @param User    $user
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUser $request, User $user)
     {
         $request->validate([
             'name' => 'required',
