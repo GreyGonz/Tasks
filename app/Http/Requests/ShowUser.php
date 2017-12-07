@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class UpdateTask extends FormRequest
+class ShowUser extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class UpdateTask extends FormRequest
      */
     public function authorize()
     {
-        return Auth::user()->hasPermissionTo('update-tasks');
+        return Auth::user()->hasPermissionTo('show-users');
     }
 
     /**
@@ -25,8 +25,7 @@ class UpdateTask extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'description' => 'required',
+            //
         ];
     }
 }

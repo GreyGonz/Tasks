@@ -21,11 +21,13 @@ Route::group(['middleware' => 'api', 'middleware' => ['throttle', 'bindings']], 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/tasks', 'ApiTaskController@index');
         Route::post('/tasks', 'ApiTaskController@store');
+        Route::get('/tasks/{task}', 'ApiTaskController@show');
         Route::delete('/tasks/{task}', 'ApiTaskController@destroy');
         Route::put('/tasks/{task}', 'ApiTaskController@update');
 
         Route::get('/v1/users', 'ApiUserTaskController@index');
         Route::post('/v1/users', 'ApiUserTaskController@store');
+        Route::get('/v1/users/{user}', 'ApiUserTaskController@show');
         Route::delete('/v1/users/{user}', 'ApiUserTaskController@destroy');
         Route::put('/v1/users/{user}', 'ApiUserTaskController@update');
     });

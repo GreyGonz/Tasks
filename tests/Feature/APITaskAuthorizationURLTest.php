@@ -7,7 +7,7 @@ use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class APITaskAuthenticationURLTest extends TestCase
+class APITaskAuthorizationURLTest extends TestCase
 {
 
     use RefreshDatabase;
@@ -15,14 +15,17 @@ class APITaskAuthenticationURLTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        initialize_task_permissions();
         factory(Task::class)->create();
+        $user = factory(User::class)->create();
+        $this->actingAs($user, 'api');
 
 //        $this->withoutExceptionHandling();
 
 
     }
 
-    public function authenticatedURLs()
+    public function authorizatedURLs()
     {
         return [
             ['get', 'api/tasks'],
@@ -42,11 +45,11 @@ class APITaskAuthenticationURLTest extends TestCase
      * URI authorized user
      *
      * @test
-     * @dataProvider authenticatedURLs
+     * @dataProvider authorizatedURLs
      */
-    public function uri_authenticated_user($method, $uri)
+    public function uri_authorized_user($method, $uri)
     {
         $response = $this->json($method,$uri);
-        $response->assertStatus(401);
+        $response->assertStatus(403);
     }
 }

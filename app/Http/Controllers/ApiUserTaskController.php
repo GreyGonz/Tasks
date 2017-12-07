@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyUser;
 use App\Http\Requests\ListUsers;
+use App\Http\Requests\ShowUser;
 use App\Http\Requests\StoreUser;
 use App\Http\Requests\UpdateUser;
 use App\User;
@@ -14,6 +15,11 @@ class ApiUserTaskController extends Controller
     public function index(ListUsers $request)
     {
         return User::all();
+    }
+
+    public function show(ShowUser $request, User $user)
+    {
+        return $user;
     }
 
     public function store(StoreUser $request)

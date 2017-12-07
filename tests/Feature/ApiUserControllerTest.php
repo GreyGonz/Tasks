@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\User;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class ApiUserControllerTest extends TestCase
@@ -15,20 +14,31 @@ class ApiUserControllerTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        initialize_task_permissions();
 //        $this->withoutExceptionHandling();
     }
 
+    public function loginAsAuthorizedUser()
+    {
+        $user = factory(User::class)->create();
+        $user->assignRole('user-manager');
+        $this->actingAs($user, 'api');
+
+        return $user;
+    }
+
     /**
+     * ListUsers API
+     *
      * @test
      */
-    public function canListUsers()
+    public function list_users()
     {
         //prepare
 
         $users = factory(User::class, 3)->create();
 
-        $user = factory(User::class)->create();
-        $this->actingAs($user, 'api');
+        $this->loginAsAuthorizedUser();
 
         // run
         $response = $this->json('GET', 'api/v1/users');
@@ -43,59 +53,60 @@ class ApiUserControllerTest extends TestCase
             'created_at',
             'updated_at',
         ]]);
+
+        foreach ($users as $user) {
+            $response->assertJsonFragment([
+                'id' => $user->id,
+                'name' => $user->name,
+            ]);
+        }
     }
 
     /**
+     * ShowUser API
+     *
      * @test
      */
-    public function cannotAddUserIfNoNameProvided()
+    public function show_user()
     {
-        // prepare
+        $this->loginAsAuthorizedUser();
 
         $user = factory(User::class)->create();
-        $this->actingAs($user, 'api');
 
-        // run
+        $response = $this->json('GET', 'api/v1/users/'.$user->id);
 
-        $response = $this->json('POST', '/api/v1/users');
+        $response->assertSuccessful();
 
-        // assert
-
-        $response->assertStatus(422);
-    }
-
-    /**
-     * @test
-     */
-    public function cannotAddUserIfNotLogged()
-    {
-
-        // prepare
-        Artisan::call('passport:install');
-        $faker = Factory::create();
-
-        // run
-
-        $response = $this->json('POST', '/api/v1/users', [
-            'name'     => $name = $faker->word,
-            'email'    => $email = $faker->email,
-            'password' => $passwd = $faker->password,
+        $response->assertJsonFragment([
+            'id' => $user->id,
+            'name' => $user->name,
         ]);
-
-        // assert
-
-        $response->assertStatus(401);
     }
 
     /**
+     * ShowUser API
+     *
      * @test
      */
-    public function canAddAUser()
+    public function show_user_api_fail_if_user_not_found()
+    {
+        $this->loginAsAuthorizedUser();
+
+        $response = $this->json('GET', 'api/v1/users/2');
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * StoreUser API
+     *
+     * @test
+     */
+    public function store_user()
     {
         // prepare
 
-        $user = factory(User::class)->create();
-        $this->actingAs($user, 'api');
+        $this->loginAsAuthorizedUser();
 
         $faker = Factory::create();
 
@@ -122,14 +133,35 @@ class ApiUserControllerTest extends TestCase
     }
 
     /**
+     * StoreUser API
+     *
      * @test
      */
-    public function canDeleteUser()
+    public function store_user_api_fail_if_no_name_provided()
+    {
+        // prepare
+
+        $this->loginAsAuthorizedUser();
+
+        // run
+
+        $response = $this->json('POST', '/api/v1/users');
+
+        // assert
+
+        $response->assertStatus(422);
+    }
+
+    /**
+     * DeleteUser API
+     *
+     * @test
+     */
+    public function delete_user()
     {
 
         // prepare
-        $user = factory(User::class)->create();
-        $this->actingAs($user, 'api');
+        $this->loginAsAuthorizedUser();
 
         $user = factory(User::class)->create();
 
@@ -146,14 +178,15 @@ class ApiUserControllerTest extends TestCase
     }
 
     /**
+     * DeleteUser API
+     *
      * @test
      */
-    public function cannotDeleteUnexistingUser()
+    public function delete_user_api_fail_if_user_not_found()
     {
 
         // prepare
-        $user = factory(User::class)->create();
-        $this->actingAs($user, 'api');
+        $this->loginAsAuthorizedUser();
 
         // run
 
@@ -165,18 +198,20 @@ class ApiUserControllerTest extends TestCase
     }
 
     /**
+     * EditUser API
+     *
      * @test
      */
-    public function canEditUser()
+    public function edit_user()
     {
 
         // prepare
 
+        $this->loginAsAuthorizedUser();
+
         $faker = Factory::create();
-        $user = factory(User::class)->create();
 
         $user = factory(User::class)->create();
-        $this->actingAs($user, 'api');
 
         // run
 
@@ -196,5 +231,22 @@ class ApiUserControllerTest extends TestCase
             'id'   => $user->id,
             'name' => $user->name,
         ]);
+    }
+
+    /**
+     * EditUser API
+     *
+     * @test
+     */
+    public function edit_user_api_fail_if_user_not_found()
+    {
+        $this->loginAsAuthorizedUser();
+
+        $response = $this->json('PUT', 'api/v1/users/2', [
+            'name' => 'ProvaEdit',
+        ]);
+
+        $response->assertStatus(404);
+
     }
 }

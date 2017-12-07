@@ -28,7 +28,6 @@ class StoreTask extends FormRequest
         return [
             'name'    => 'required',
             'description' => 'required',
-            'user_id' => 'required',
         ];
     }
 }

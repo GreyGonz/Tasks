@@ -30,14 +30,15 @@ class ApiTaskControllerTest extends TestCase
     }
 
     /**
+     * ListTask API
+     *
      * @test
      */
-    public function canListTasks()
+    public function List_task()
     {
         //prepare
 
-        factory(Task::class, 3)->create();
-
+        $tasks = factory(Task::class, 3)->create();
         $this->loginAsAuthorized();
 
         // run
@@ -47,18 +48,104 @@ class ApiTaskControllerTest extends TestCase
 
         $response->assertSuccessful();
 
+        foreach ($tasks as $task) {
+            $response->assertJsonFragment([
+                'id' => $task->id,
+                'name' => $task->name,
+                'description' => $task->description,
+                'user_id' => (string)$task->user_id,
+                'created_at' => $task->created_at->format('Y-m-d H:i:s'),
+                'updated_at' => $task->updated_at->format('Y-m-d H:i:s'),
+            ]);
+        }
+
         $response->assertJsonStructure([[
             'id',
             'name',
+            'description',
+            'user_id',
             'created_at',
             'updated_at',
         ]]);
     }
 
     /**
+     * ShowTask API
+     *
      * @test
      */
-    public function cannotAddTaskIfNoNameProvided()
+    public function show_task()
+    {
+        $this->loginAsAuthorized();
+        $task = factory(Task::class)->create();
+
+        $response = $this->json('GET', 'api/tasks/'.$task->id);
+
+        $response->assertSuccessful();
+
+        $response->assertJson([
+            'id' => $task->id,
+            'name' => $task->name,
+            'description' => $task->description,
+            'user_id' => $task->user_id,
+        ]);
+
+    }
+
+    /**
+     * ShowTask API
+     *
+     * @test
+     */
+    public function show_task_fail_if_not_found()
+    {
+        $this->loginAsAuthorized();
+
+        $response = $this->json('GET', 'api/tasks/1');
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * StoreTask API
+     *
+     * @test
+     */
+    public function store_task()
+    {
+        // prepare
+
+        $user = $this->loginAsAuthorized();
+
+        $faker = Factory::create();
+        // run
+
+//        dd($user);
+        $response = $this->json('POST', '/api/tasks', [
+            'name'    => $name = $faker->word,
+            'description' => $description = $faker->text,
+        ]);
+
+        // assert
+
+        $response->assertSuccessful();
+        $this->assertDatabaseHas('tasks', [
+            'name' => $name,
+            'description' => $description,
+        ]);
+
+        $response->assertJson([
+            'name' => $name,
+            'description' => $description,
+        ]);
+    }
+
+    /**
+     * StoreTask API
+     *
+     * @test
+     */
+    public function store_api_fail_if_no_name_provided()
     {
         // prepare
 
@@ -73,65 +160,13 @@ class ApiTaskControllerTest extends TestCase
         $response->assertStatus(422);
     }
 
+
     /**
-     * StoreTask API
+     * DeleteTask API
      *
      * @test
      */
-    public function cannotAddTaskIfNotLogged()
-    {
-
-        // prepare
-        Artisan::call('passport:install');
-        $faker = Factory::create();
-
-        // run
-
-        $response = $this->json('POST', '/api/tasks', [
-            'name' => $name = $faker->word,
-        ]);
-
-        // assert
-
-        $response->assertStatus(401);
-    }
-
-    /**
-     * StoreTask API
-     *
-     * @test
-     */
-    public function canAddATask()
-    {
-        // prepare
-
-        $user = $this->loginAsAuthorized();
-
-        $faker = Factory::create();
-        // run
-
-        $response = $this->json('POST', '/api/tasks', [
-            'name'    => $name = $faker->word,
-            'description' => $description = $faker->text,
-            'user_id' => $user->id,
-        ]);
-
-        // assert
-
-        $response->assertSuccessful();
-        $this->assertDatabaseHas('tasks', [
-            'name' => $name,
-        ]);
-
-        $response->assertJson([
-           'name' => $name,
-        ]);
-    }
-
-    /**
-     * @test
-     */
-    public function canDeleteTask()
+    public function delete_task()
     {
 
         $this->loginAsAuthorized();
@@ -147,9 +182,11 @@ class ApiTaskControllerTest extends TestCase
     }
 
     /**
+     * DeleteTask API
+     *
      * @test
      */
-    public function cannotDeleteUnexistingTask()
+    public function delete_task_fail_if_task_dont_exist()
     {
 
         $this->loginAsAuthorized();
@@ -160,9 +197,11 @@ class ApiTaskControllerTest extends TestCase
     }
 
     /**
+     * EditTask API
+     *
      * @test
      */
-    public function canEditTask()
+    public function edit_task()
     {
 
         // prepare
@@ -176,8 +215,7 @@ class ApiTaskControllerTest extends TestCase
 
         $response = $this->json('PUT', 'api/tasks/'.$task->id, [
             'name' => $newName = $faker->word,
-            'description' => $description = $faker->text,
-            'user_id' => $task->user_id,
+            'description' => $newDescription = $faker->text,
         ]);
 
         // assert
@@ -186,11 +224,30 @@ class ApiTaskControllerTest extends TestCase
         $this->assertDatabaseHas('tasks', [
             'id'   => $task->id,
             'name' => $newName,
+            'description' => $newDescription,
         ]);
 
         $this->assertDatabaseMissing('tasks', [
             'id'   => $task->id,
             'name' => $task->name,
+            'description' => $task->description,
         ]);
+    }
+
+    /**
+     * EditTask API
+     *
+     * @test
+     */
+    public function edit_task_api_fail_if_task_not_found()
+    {
+        $this->loginAsAuthorized();
+
+        $response = $this->json('PUT', 'api/tasks/1', [
+            'name' => 'ProvaEdit',
+            'description' => 'ProvaEdit',
+        ]);
+
+        $response->assertStatus(404);
     }
 }
