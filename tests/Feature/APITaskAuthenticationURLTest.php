@@ -16,8 +16,9 @@ class APITaskAuthenticationURLTest extends TestCase
     {
         parent::setUp();
         factory(Task::class)->create();
+        $this->artisan('passport:install');
 
-        $this->withoutExceptionHandling();
+//        $this->withoutExceptionHandling();
 
 
     }
