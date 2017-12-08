@@ -28,7 +28,7 @@ class TaskControllerTest extends TestCase
     }
 
     /**
-     * ListTasks
+     * ListTasks.
      *
      * @test
      */
@@ -48,7 +48,7 @@ class TaskControllerTest extends TestCase
     }
 
     /**
-     * ListTasks
+     * ListTasks.
      *
      * @test
      */
@@ -62,7 +62,7 @@ class TaskControllerTest extends TestCase
     }
 
     /**
-     * CreateTask
+     * CreateTask.
      *
      * @test
      */
@@ -79,7 +79,7 @@ class TaskControllerTest extends TestCase
     }
 
     /**
-     * CreateTask
+     * CreateTask.
      *
      * @test
      */
@@ -91,7 +91,7 @@ class TaskControllerTest extends TestCase
     }
 
     /**
-     * StoreTask
+     * StoreTask.
      *
      * @test
      */
@@ -101,10 +101,10 @@ class TaskControllerTest extends TestCase
 
         $task = factory(Task::class)->create();
 
-        $response = $this->post('/tasks',[
-            'name' => $task->name,
+        $response = $this->post('/tasks', [
+            'name'        => $task->name,
             'description' => $task->description,
-            'user_id' => 1,
+            'user_id'     => 1,
         ]);
 
         $response->assertRedirect('/tasks');
@@ -114,7 +114,7 @@ class TaskControllerTest extends TestCase
     }
 
     /**
-     * ShowTask
+     * ShowTask.
      *
      * @test
      */
@@ -131,12 +131,12 @@ class TaskControllerTest extends TestCase
         $response->assertSeeText($task->description);
 
         $this->assertDatabaseHas('tasks', [
-            'id' => $task->id
+            'id' => $task->id,
         ]);
     }
 
     /**
-     * ShowTask
+     * ShowTask.
      *
      * @test
      */
@@ -147,11 +147,10 @@ class TaskControllerTest extends TestCase
         $response = $this->get('/tasks/1');
 
         $response->assertStatus(404);
-
     }
 
     /**
-     * EditTask
+     * EditTask.
      *
      * @test
      */
@@ -172,7 +171,7 @@ class TaskControllerTest extends TestCase
     }
 
     /**
-     * UpdateTask
+     * UpdateTask.
      *
      * @test
      */
@@ -184,28 +183,27 @@ class TaskControllerTest extends TestCase
         $newTask = factory(Task::class)->make();
 
         $response = $this->put('tasks/'.$task->id, [
-            'name' => $newTask->name,
+            'name'        => $newTask->name,
             'description' => $newTask->description,
         ]);
 
         $response->assertRedirect('/tasks');
 
         $this->assertDatabaseHas('tasks', [
-            'id' => $task->id,
-            'name' => $newTask->name,
+            'id'          => $task->id,
+            'name'        => $newTask->name,
             'description' => $newTask->description,
         ]);
 
         $this->assertDatabaseMissing('tasks', [
-            'id' => $task->id,
-            'name' => $task->name,
+            'id'          => $task->id,
+            'name'        => $task->name,
             'description' => $task->description,
         ]);
-
     }
 
     /**
-     * DestroyTask
+     * DestroyTask.
      *
      * @test
      */

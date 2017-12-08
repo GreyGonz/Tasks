@@ -31,9 +31,9 @@ class ShowTaskCommandTest extends TestCase
     public function show_a_task()
     {
         Task::create([
-            'name'=> 'ProvaShow',
+            'name'        => 'ProvaShow',
             'description' => 'ProvaShow',
-            'user_id' => 1
+            'user_id'     => 1,
         ]);
 
         $this->artisan('task:show', ['name' => 'ProvaShow']);
@@ -52,14 +52,14 @@ class ShowTaskCommandTest extends TestCase
     public function show_multiple_tasks_with_same_name()
     {
         Task::create([
-            'name'=> 'ProvaShow',
+            'name'        => 'ProvaShow',
             'description' => 'ProvaShow',
-            'user_id' => 1
+            'user_id'     => 1,
         ]);
         Task::create([
-            'name'=> 'ProvaShow',
+            'name'        => 'ProvaShow',
             'description' => 'ProvaShow',
-            'user_id' => 1
+            'user_id'     => 1,
         ]);
 
         $this->artisan('task:show', ['name' => 'ProvaShow']);
@@ -103,9 +103,9 @@ class ShowTaskCommandTest extends TestCase
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
         Task::create([
-            'name'=> 'ProvaShow',
+            'name'        => 'ProvaShow',
             'description' => 'ProvaShow',
-            'user_id' => 1
+            'user_id'     => 1,
         ]);
 
         $this->artisan('task:show');

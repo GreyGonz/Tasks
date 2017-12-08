@@ -41,7 +41,7 @@ class CreateTaskCommand extends Command
     {
         try {
             Task::create([
-                'name' => $this->argument('name') ? $this->argument('name') : $this->ask('Task name?'),
+                'name'        => $this->argument('name') ? $this->argument('name') : $this->ask('Task name?'),
                 'description' => $this->argument('description') ? $this->argument('description') : $this->ask('Task description?'),
             ]);
             $this->info('Task has been added to database succesfully');

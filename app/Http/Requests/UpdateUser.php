@@ -15,7 +15,6 @@ class UpdateUser extends FormRequest
     public function authorize()
     {
         return Auth::user()->hasPermissionTo('update-users');
-
     }
 
     /**

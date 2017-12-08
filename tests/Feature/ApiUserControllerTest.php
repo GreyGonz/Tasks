@@ -28,7 +28,7 @@ class ApiUserControllerTest extends TestCase
     }
 
     /**
-     * ListUsers API
+     * ListUsers API.
      *
      * @test
      */
@@ -56,14 +56,14 @@ class ApiUserControllerTest extends TestCase
 
         foreach ($users as $user) {
             $response->assertJsonFragment([
-                'id' => $user->id,
+                'id'   => $user->id,
                 'name' => $user->name,
             ]);
         }
     }
 
     /**
-     * ShowUser API
+     * ShowUser API.
      *
      * @test
      */
@@ -78,13 +78,13 @@ class ApiUserControllerTest extends TestCase
         $response->assertSuccessful();
 
         $response->assertJsonFragment([
-            'id' => $user->id,
+            'id'   => $user->id,
             'name' => $user->name,
         ]);
     }
 
     /**
-     * ShowUser API
+     * ShowUser API.
      *
      * @test
      */
@@ -98,7 +98,7 @@ class ApiUserControllerTest extends TestCase
     }
 
     /**
-     * StoreUser API
+     * StoreUser API.
      *
      * @test
      */
@@ -133,7 +133,7 @@ class ApiUserControllerTest extends TestCase
     }
 
     /**
-     * StoreUser API
+     * StoreUser API.
      *
      * @test
      */
@@ -153,7 +153,7 @@ class ApiUserControllerTest extends TestCase
     }
 
     /**
-     * DeleteUser API
+     * DeleteUser API.
      *
      * @test
      */
@@ -178,7 +178,7 @@ class ApiUserControllerTest extends TestCase
     }
 
     /**
-     * DeleteUser API
+     * DeleteUser API.
      *
      * @test
      */
@@ -198,7 +198,7 @@ class ApiUserControllerTest extends TestCase
     }
 
     /**
-     * EditUser API
+     * EditUser API.
      *
      * @test
      */
@@ -234,7 +234,7 @@ class ApiUserControllerTest extends TestCase
     }
 
     /**
-     * EditUser API
+     * EditUser API.
      *
      * @test
      */
@@ -247,6 +247,5 @@ class ApiUserControllerTest extends TestCase
         ]);
 
         $response->assertStatus(404);
-
     }
 }

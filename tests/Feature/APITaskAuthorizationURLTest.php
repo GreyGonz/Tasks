@@ -4,12 +4,11 @@ namespace Tests\Feature;
 
 use App\Task;
 use App\User;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class APITaskAuthorizationURLTest extends TestCase
 {
-
     use RefreshDatabase;
 
     public function setUp()
@@ -21,8 +20,6 @@ class APITaskAuthorizationURLTest extends TestCase
         $this->actingAs($user, 'api');
 
 //        $this->withoutExceptionHandling();
-
-
     }
 
     public function authorizatedURLs()
@@ -42,14 +39,14 @@ class APITaskAuthorizationURLTest extends TestCase
     }
 
     /**
-     * URI authorized user
+     * URI authorized user.
      *
      * @test
      * @dataProvider authorizatedURLs
      */
     public function uri_authorized_user($method, $uri)
     {
-        $response = $this->json($method,$uri);
+        $response = $this->json($method, $uri);
         $response->assertStatus(403);
     }
 }
