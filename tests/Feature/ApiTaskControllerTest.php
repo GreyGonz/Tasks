@@ -6,7 +6,6 @@ use App\Task;
 use App\User;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class ApiTaskControllerTest extends TestCase
@@ -30,7 +29,7 @@ class ApiTaskControllerTest extends TestCase
     }
 
     /**
-     * ListTask API
+     * ListTask API.
      *
      * @test
      */
@@ -50,12 +49,12 @@ class ApiTaskControllerTest extends TestCase
 
         foreach ($tasks as $task) {
             $response->assertJsonFragment([
-                'id' => $task->id,
-                'name' => $task->name,
+                'id'          => $task->id,
+                'name'        => $task->name,
                 'description' => $task->description,
-                'user_id' => (string)$task->user_id,
-                'created_at' => $task->created_at->format('Y-m-d H:i:s'),
-                'updated_at' => $task->updated_at->format('Y-m-d H:i:s'),
+                'user_id'     => (string) $task->user_id,
+                'created_at'  => $task->created_at->format('Y-m-d H:i:s'),
+                'updated_at'  => $task->updated_at->format('Y-m-d H:i:s'),
             ]);
         }
 
@@ -70,7 +69,7 @@ class ApiTaskControllerTest extends TestCase
     }
 
     /**
-     * ShowTask API
+     * ShowTask API.
      *
      * @test
      */
@@ -84,16 +83,15 @@ class ApiTaskControllerTest extends TestCase
         $response->assertSuccessful();
 
         $response->assertJson([
-            'id' => $task->id,
-            'name' => $task->name,
+            'id'          => $task->id,
+            'name'        => $task->name,
             'description' => $task->description,
-            'user_id' => $task->user_id,
+            'user_id'     => $task->user_id,
         ]);
-
     }
 
     /**
-     * ShowTask API
+     * ShowTask API.
      *
      * @test
      */
@@ -107,7 +105,7 @@ class ApiTaskControllerTest extends TestCase
     }
 
     /**
-     * StoreTask API
+     * StoreTask API.
      *
      * @test
      */
@@ -122,7 +120,7 @@ class ApiTaskControllerTest extends TestCase
 
 //        dd($user);
         $response = $this->json('POST', '/api/tasks', [
-            'name'    => $name = $faker->word,
+            'name'        => $name = $faker->word,
             'description' => $description = $faker->text,
         ]);
 
@@ -130,18 +128,18 @@ class ApiTaskControllerTest extends TestCase
 
         $response->assertSuccessful();
         $this->assertDatabaseHas('tasks', [
-            'name' => $name,
+            'name'        => $name,
             'description' => $description,
         ]);
 
         $response->assertJson([
-            'name' => $name,
+            'name'        => $name,
             'description' => $description,
         ]);
     }
 
     /**
-     * StoreTask API
+     * StoreTask API.
      *
      * @test
      */
@@ -160,15 +158,13 @@ class ApiTaskControllerTest extends TestCase
         $response->assertStatus(422);
     }
 
-
     /**
-     * DeleteTask API
+     * DeleteTask API.
      *
      * @test
      */
     public function delete_task()
     {
-
         $this->loginAsAuthorized();
 
         $task = factory(Task::class)->create();
@@ -182,13 +178,12 @@ class ApiTaskControllerTest extends TestCase
     }
 
     /**
-     * DeleteTask API
+     * DeleteTask API.
      *
      * @test
      */
     public function delete_task_fail_if_task_dont_exist()
     {
-
         $this->loginAsAuthorized();
 
         $response = $this->json('DELETE', 'api/tasks/1');
@@ -197,7 +192,7 @@ class ApiTaskControllerTest extends TestCase
     }
 
     /**
-     * EditTask API
+     * EditTask API.
      *
      * @test
      */
@@ -214,7 +209,7 @@ class ApiTaskControllerTest extends TestCase
         // run
 
         $response = $this->json('PUT', 'api/tasks/'.$task->id, [
-            'name' => $newName = $faker->word,
+            'name'        => $newName = $faker->word,
             'description' => $newDescription = $faker->text,
         ]);
 
@@ -222,20 +217,20 @@ class ApiTaskControllerTest extends TestCase
         $response->assertSuccessful();
 
         $this->assertDatabaseHas('tasks', [
-            'id'   => $task->id,
-            'name' => $newName,
+            'id'          => $task->id,
+            'name'        => $newName,
             'description' => $newDescription,
         ]);
 
         $this->assertDatabaseMissing('tasks', [
-            'id'   => $task->id,
-            'name' => $task->name,
+            'id'          => $task->id,
+            'name'        => $task->name,
             'description' => $task->description,
         ]);
     }
 
     /**
-     * EditTask API
+     * EditTask API.
      *
      * @test
      */
@@ -244,7 +239,7 @@ class ApiTaskControllerTest extends TestCase
         $this->loginAsAuthorized();
 
         $response = $this->json('PUT', 'api/tasks/1', [
-            'name' => 'ProvaEdit',
+            'name'        => 'ProvaEdit',
             'description' => 'ProvaEdit',
         ]);
 

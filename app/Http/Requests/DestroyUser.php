@@ -15,7 +15,6 @@ class DestroyUser extends FormRequest
     public function authorize()
     {
         return Auth::user()->hasPermissionTo('destroy-users');
-
     }
 
     /**

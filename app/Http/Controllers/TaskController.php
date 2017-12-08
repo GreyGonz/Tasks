@@ -18,7 +18,6 @@ class TaskController extends Controller
         $tasks = Task::all();
 
         return view('tasks.index')->with('tasks', $tasks);
-
     }
 
     /**
@@ -40,14 +39,13 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
-            'name' => 'required',
+            'name'        => 'required',
             'description' => 'required',
-            'user_id' => 'required',
+            'user_id'     => 'required',
         ]);
 
-        $task = new Task;
+        $task = new Task();
         $task->name = $request->input('name');
         $task->description = $request->input('description');
         $task->save();
@@ -90,7 +88,7 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $request->validate([
-            'name' => 'required',
+            'name'        => 'required',
             'description' => 'required',
         ]);
 
@@ -99,7 +97,6 @@ class TaskController extends Controller
         $task->save();
 
         return redirect()->route('tasks.index');
-
     }
 
     /**

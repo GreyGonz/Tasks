@@ -4,12 +4,11 @@ namespace Tests\Feature;
 
 use App\Task;
 use App\User;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class APITaskAuthenticationURLTest extends TestCase
 {
-
     use RefreshDatabase;
 
     public function setUp()
@@ -19,8 +18,6 @@ class APITaskAuthenticationURLTest extends TestCase
         $this->artisan('passport:install');
 
 //        $this->withoutExceptionHandling();
-
-
     }
 
     public function authenticatedURLs()
@@ -40,14 +37,14 @@ class APITaskAuthenticationURLTest extends TestCase
     }
 
     /**
-     * URI authorized user
+     * URI authorized user.
      *
      * @test
      * @dataProvider authenticatedURLs
      */
     public function uri_authenticated_user($method, $uri)
     {
-        $response = $this->json($method,$uri);
+        $response = $this->json($method, $uri);
         $response->assertStatus(401);
     }
 }

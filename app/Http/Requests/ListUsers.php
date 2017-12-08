@@ -15,7 +15,6 @@ class ListUsers extends FormRequest
     public function authorize()
     {
         return Auth::user()->hasPermissionTo('list-users');
-
     }
 
     /**

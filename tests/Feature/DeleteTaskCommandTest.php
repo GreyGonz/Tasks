@@ -13,7 +13,7 @@ class DeleteTaskCommandTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * DeleteTask
+     * DeleteTask.
      *
      * @test
      */
@@ -23,14 +23,14 @@ class DeleteTaskCommandTest extends TestCase
         // prepare
 
         $task = Task::create([
-            'name'=> 'ProvaDelete',
+            'name'        => 'ProvaDelete',
             'description' => 'ProvaDelete',
-            'user_id' => 1
+            'user_id'     => 1,
         ]);
 
         // run
 
-        $this->artisan('task:delete', [ 'id' => $task->id ]);
+        $this->artisan('task:delete', ['id' => $task->id]);
 
         // assert
 
@@ -44,22 +44,21 @@ class DeleteTaskCommandTest extends TestCase
     }
 
     /**
-     * DeleteTask
+     * DeleteTask.
      *
      * @test
      */
     public function delete_task_and_not_found()
     {
-        $this->artisan('task:delete', [ 'id' => 1 ]);
+        $this->artisan('task:delete', ['id' => 1]);
 
         $response = Artisan::output();
 
         $this->assertContains('Task specified don\'t exist', $response);
-
     }
 
     /**
-     * DeleteTask
+     * DeleteTask.
      *
      * @test
      */
@@ -78,9 +77,9 @@ class DeleteTaskCommandTest extends TestCase
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
         Task::create([
-            'name'=> 'ProvaDelete',
+            'name'        => 'ProvaDelete',
             'description' => 'ProvaDelete',
-            'user_id' => 1
+            'user_id'     => 1,
         ]);
 
         // run
@@ -94,13 +93,13 @@ class DeleteTaskCommandTest extends TestCase
         $this->assertContains('Task deleted succesfully', $resultAsText);
 
         $this->assertDatabaseMissing('tasks', [
-            'id' => 1,
+            'id'   => 1,
             'name' => 'ProvaDelte',
         ]);
     }
 
     /**
-     * DeleteTask
+     * DeleteTask.
      *
      * @test
      */
