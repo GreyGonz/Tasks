@@ -17,7 +17,7 @@ class APITaskAuthenticationURLTest extends TestCase
         parent::setUp();
         factory(Task::class)->create();
 
-//        $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
 
     }
