@@ -5,7 +5,8 @@
 [![Build Status](https://travis-ci.org/GreyGonz/Tasks.svg?branch=master)](https://travis-ci.org/GreyGonz/Tasks)
 [![Latest Stable Version](https://poser.pugx.org/greygonz/tasks/v/stable)](https://packagist.org/packages/greygonz/tasks)
 [![License](https://poser.pugx.org/greygonz/tasks/license)](https://packagist.org/packages/greygonz/tasks)
-[![Build Status](https://scrutinizer-ci.com/g/GreyGonz/Tasks/badges/build.png?b=master)](https://scrutinizer-ci.com/g/GreyGonz/Tasks/build-status/master)
+[![Latest Unstable Version](https://poser.pugx.org/greygonz/tasks/v/unstable)](https://packagist.org/packages/greygonz/tasks)
+[![Total Downloads](https://poser.pugx.org/greygonz/tasks/downloads)](https://packagist.org/packages/greygonz/tasks)
 
 # Laravel packages
 
