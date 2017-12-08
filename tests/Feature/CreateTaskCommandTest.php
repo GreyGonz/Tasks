@@ -24,7 +24,6 @@ class CreateTaskCommandTest extends TestCase
         $this->artisan('task:create', [
             'name' => 'ProvaCreate',
             'description' => 'ProvaCreate',
-            'user_id' => 1
         ]);
 
         // comprova
@@ -32,6 +31,7 @@ class CreateTaskCommandTest extends TestCase
 
         $this->assertDatabaseHas('tasks', [
             'name' => 'ProvaCreate',
+            'description' => 'ProvaCreate',
         ]);
 
         $this->assertContains('Task has been added to database succesfully', $resultAsText);
@@ -57,6 +57,11 @@ class CreateTaskCommandTest extends TestCase
             ->with('Task name?')
             ->andReturn('ProvaCreate');
 
+        $command->shouldReceive('ask')
+            ->once()
+            ->with('Task description?')
+            ->andReturn('ProvaCreate');
+
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
         // executa
@@ -68,6 +73,7 @@ class CreateTaskCommandTest extends TestCase
         $this->assertDatabaseHas('tasks', [
             'id' => 1,
             'name' => 'ProvaCreate',
+            'description' => 'ProvaCreate',
         ]);
     }
 }

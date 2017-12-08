@@ -13,7 +13,7 @@ class CreateTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'task:create {name? : The task name}';
+    protected $signature = 'task:create {name? : The task name} { description? : Description of the task}';
 
     /**
      * The console command description.
@@ -42,6 +42,7 @@ class CreateTaskCommand extends Command
         try {
             Task::create([
                 'name' => $this->argument('name') ? $this->argument('name') : $this->ask('Task name?'),
+                'description' => $this->argument('description') ? $this->argument('description') : $this->ask('Task description?'),
             ]);
             $this->info('Task has been added to database succesfully');
         } catch (Exception $e) {
