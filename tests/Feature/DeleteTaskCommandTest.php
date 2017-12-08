@@ -22,7 +22,11 @@ class DeleteTaskCommandTest extends TestCase
 
         // prepare
 
-        $task = Task::create(['name' => 'ProvaDelete']);
+        $task = Task::create([
+            'name'=> 'ProvaDelete',
+            'description' => 'ProvaDelete',
+            'user_id' => 1
+        ]);
 
         // run
 
@@ -73,7 +77,11 @@ class DeleteTaskCommandTest extends TestCase
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        Task::create(['name' => 'ProvaDelete']);
+        Task::create([
+            'name'=> 'ProvaDelete',
+            'description' => 'ProvaDelete',
+            'user_id' => 1
+        ]);
 
         // run
 

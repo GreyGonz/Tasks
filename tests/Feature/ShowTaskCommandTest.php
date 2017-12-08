@@ -107,7 +107,7 @@ class ShowTaskCommandTest extends TestCase
             'description' => 'ProvaShow',
             'user_id' => 1
         ]);
-        
+
         $this->artisan('task:show');
 
         $response = Artisan::output();

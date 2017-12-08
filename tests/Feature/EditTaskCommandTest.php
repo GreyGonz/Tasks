@@ -34,7 +34,11 @@ class EditTaskCommandTest extends TestCase
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        $task = Task::create(['name' => 'ProvaEdit']);
+        $task = Task::create([
+            'name'=> 'ProvaEdit',
+            'description' => 'ProvaEdit',
+            'user_id' => 1
+        ]);
 
         $this->artisan('task:edit', ['id' => 1]);
 
@@ -83,7 +87,11 @@ class EditTaskCommandTest extends TestCase
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        $task = Task::create(['name' => 'ProvaTask']);
+        $task = Task::create([
+            'name'=> 'ProvaEdit',
+            'description' => 'ProvaEdit',
+            'user_id' => 1
+        ]);
 
         $this->artisan('task:edit');
 

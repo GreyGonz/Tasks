@@ -21,7 +21,11 @@ class CreateTaskCommandTest extends TestCase
         // prepara
 
         // executa
-        $this->artisan('task:create', ['name' => 'ProvaCreate']);
+        $this->artisan('task:create', [
+            'name' => 'ProvaCreate',
+            'description' => 'ProvaCreate',
+            'user_id' => 1
+        ]);
 
         // comprova
         $resultAsText = Artisan::output();
