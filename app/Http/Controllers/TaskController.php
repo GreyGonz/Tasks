@@ -47,15 +47,10 @@ class TaskController extends Controller
             'user_id' => 'required',
         ]);
 
-        // Guarda una nova Thread entrada des del formulari que es troba a
-        // create.blade.php
         $task = new Task;
         $task->name = $request->input('name');
         $task->description = $request->input('description');
         $task->save();
-
-        // Redirigeix cap a l'inici
-        // TODO: es podria redirigir a la vista especifica de la nova thread
 
         return redirect()->route('tasks.index');
     }

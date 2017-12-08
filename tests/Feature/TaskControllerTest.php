@@ -101,17 +101,17 @@ class TaskControllerTest extends TestCase
 
         $task = factory(Task::class)->create();
 
-        $response = $this->post('/tasks',['name' => $task->name, 'description' => $task->description]);
+        $response = $this->post('/tasks',[
+            'name' => $task->name,
+            'description' => $task->description,
+            'user_id' => 1,
+        ]);
 
         $response->assertRedirect('/tasks');
         $this->assertDatabaseHas('tasks', [
             'name' => $task->name,
         ]);
     }
-
-    /**
-     * TODO STORE
-     */
 
     /**
      * ShowTask
