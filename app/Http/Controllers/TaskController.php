@@ -42,7 +42,6 @@ class TaskController extends Controller
         $request->validate([
             'name'        => 'required',
             'description' => 'required',
-            'user_id'     => 'required',
         ]);
 
         $task = new Task();
