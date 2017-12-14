@@ -1,23 +1,76 @@
 <template>
     <div>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-description">
+            Launch Default Modal
+        </button>
+        <div class="modal fade" id="modal-description">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Description</h4>
+                    </div>
+                    <div class="modal-body">
+                        <!--<div id="editor">-->
+                            <!--{{ description }}-->
+                        <!--</div>-->
+                        <quill-editor v-model="description" :options="editorOption"></quill-editor>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
         <widget :loading="loading">
             <p slot="title">Tasks:</p>
 
             <div v-cloak="" class="">
 
-                <ul>
-                    <li v-for="task in filteredTasks" v-bind:class="{ completed: isCompleted(task) }" @dblclick="editTask(task)">
-                        <input type="text" id="editingTask" v-model="editingTask" v-if="task == editedTask" @keydown.enter="updateTask(task)" @keydown.esc="discardUpdate(task)">
-                        <div v-else>
-                            {{task.name}}
-                            <i class="fa fa-pencil" aria-hidden="true" @click="editTask(task)"></i>
-                            <i v-if="task.id == taskBeenDeleted" class="fa fa-refresh fa-spin fa-lg"></i>
-                            <i v-else="" class="fa fa-times" aria-hidden="true" @click="deleteTask(task)" ></i>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Name</th>
+                            <th>Completed</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                        <tr v-for="(task, index) in filteredTasks">
+                            <td>{{ index }}</td>
+                            <td>{{ task.name }}</td>
+                            <td><toggle-button :value="task.completed"></toggle-button></td>
+                            <td class="description" data-toggle="modal" data-target="#modal-description" @click="setDescription(task.description)">{{ task.description }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-xs btn-success">Show</button>
+                                    <button type="button" class="btn btn-xs btn-primary">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
 
-                        </div>
-                    </li>
-                </ul>
+                <!--<ul>-->
+                    <!--<li v-for="task in filteredTasks" v-bind:class="{ completed: isCompleted(task) }" @dblclick="editTask(task)">-->
+                        <!--<input type="text" id="editingTask" v-model="editingTask" v-if="task == editedTask" @keydown.enter="updateTask(task)" @keydown.esc="discardUpdate(task)">-->
+                        <!--<div v-else>-->
+                            <!--{{task.name}}-->
+                            <!--<i class="fa fa-pencil" aria-hidden="true" @click="editTask(task)"></i>-->
+                            <!--<i v-if="task.id == taskBeenDeleted" class="fa fa-refresh fa-spin fa-lg"></i>-->
+                            <!--<i v-else="" class="fa fa-times" aria-hidden="true" @click="deleteTask(task)" ></i>-->
+
+
+                        <!--</div>-->
+                    <!--</li>-->
+                <!--</ul>-->
 
                 <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('user_id') }">
                     <label for="user_id">User:</label>
@@ -65,6 +118,8 @@
 
 </template>
 
+<style src="quill/dist/quill.snow.css" />
+
 <style>
     [v-cloak] { display: none; }
 
@@ -84,12 +139,21 @@
         opacity: 0;
     }
 
+    .description {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
 </style>
 
 <script>
 
     import Users from './Users'
     import Form from 'acacha-forms'
+    import Quill from 'quill'
+    import { vueQuill } from 'vue-quill-editor'
 
     var filters = {
         all: function (tasks) {
@@ -110,9 +174,14 @@
     const LOCAL_STORAGE_KEY = 'TASKS';
 
     import { wait } from './utils.js';
+    import QuillEditor from "../../../../node_modules/vue-quill-editor/src/editor.vue";
 
     export default {
-        components: { Users },
+        components: {
+            QuillEditor,
+            Users,
+            vueQuill,
+        },
         data() {
             return {
                 loading: false,
@@ -122,7 +191,17 @@
                 tasks: [],
                 creating: false,
                 taskBeenDeleted: null,
-                form: new Form({ user_id: 1, name: 'prova' })
+                form: new Form({ user_id: 1, name: 'prova' }),
+                description: "",
+                editorOption: {
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic'],
+                            [{'list': 'ordered'}, {'list': 'bullet'}],
+                            ['link'],
+                        ],
+                    }
+                }
             }
         },
         computed: {
@@ -136,9 +215,12 @@
         watch: {
             tasks() {
 //                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.tasks));
-            }
+            },
         },
         methods: {
+            setDescription(description) {
+              this.description = description
+            },
             userSelected(user) {
               this.form.user_id = user.id
             },
@@ -191,6 +273,9 @@
         },
         mounted() {
 
+            var quill = new Quill('#editor', {
+                theme: 'snow'
+            });
 //            this.tasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]')
 //            console.log(this.tasks)
 
