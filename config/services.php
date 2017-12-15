@@ -43,6 +43,18 @@ return [
     */
     #llum_services
 
+    'github' => [
+        'client_id' => env('GITHUB_OAUTH_APP_ID'),
+        'client_secret' => env('GITHUB_OAUTH_APP_SECRET'),
+        'redirect' => env('GITHUB_OAUTH_APP_REDIRECT_URL'),
+    ],
+
+    'github' => [
+        'client_id' => env('GITHUB_OAUTH_APP_ID'),
+        'client_secret' => env('GITHUB_OAUTH_APP_SECRET'),
+        'redirect' => env('GITHUB_OAUTH_APP_REDIRECT_URL'),
+    ],
+
     'google' => [
         'client_id' => env('GOOGLE_OAUTH_APP_ID'),
         'client_secret' => env('GOOGLE_OAUTH_APP_SECRET'),

@@ -31,7 +31,10 @@ Route::group(['middleware' => 'api', 'middleware' => ['throttle', 'bindings']], 
         Route::delete('/v1/users/{user}', 'ApiUserTaskController@destroy');
         Route::put('/v1/users/{user}', 'ApiUserTaskController@update');
 
+        Route::put('/v1/tasks/{task}/description', 'ApiTaskDescriptionController@update');
 
+        Route::post('/v1/completed-tasks/{task}', 'ApiCompletedTaskController@store');
+        Route::delete('/v1/completed-tasks/{task}', 'ApiCompletedTaskController@destroy');
     });
     //    Route::resource('task', 'TasksController');
 
