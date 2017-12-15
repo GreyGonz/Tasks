@@ -33,7 +33,7 @@
         </div>
 
 
-        {{ Form::submit('Edit the Task!', array('class' => 'btn btn-primary')) }}
+        {{ Form::submit('TaskResource', array('class' => 'btn btn-primary')) }}
 
         {{ Form::close() }}
 

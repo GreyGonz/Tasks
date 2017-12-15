@@ -32,7 +32,7 @@
             {{ Form::text('description', null, array('class' => "form-control", 'required' => 'required')) }}
         </div>
 
-        {{ Form::submit('Create the Task!', array('class' => 'btn btn-primary')) }}
+        {{ Form::submit('TaskResource', array('class' => 'btn btn-primary')) }}
 
         {{ Form::close() }}
     </div>

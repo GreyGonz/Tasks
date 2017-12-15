@@ -13,7 +13,7 @@ class DeleteTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'task:delete { id? : Task id }';
+    protected $signature = 'task:delete { id? : TaskResource id }';
 
     /**
      * The console command description.
@@ -39,16 +39,16 @@ class DeleteTaskCommand extends Command
      */
     public function handle()
     {
-        $collection = Task::where('id', '=', $this->argument('id') ? $this->argument('id') : $this->ask('Task id?'))->get()->toArray();
+        $collection = Task::where('id', '=', $this->argument('id') ? $this->argument('id') : $this->ask('TaskResource id?'))->get()->toArray();
 
         if (!empty($collection)) {
             $tasks_to_delete = array_map(function ($task) {
                 return $task['id'];
             }, $collection);
             DB::table('tasks')->whereIn('id', $tasks_to_delete)->delete();
-            $this->info('Task deleted succesfully');
+            $this->info('TaskResource deleted succesfully');
         } else {
-            $this->error("Task specified don't exist");
+            $this->error("TaskResource specified don't exist");
         }
     }
 }

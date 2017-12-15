@@ -13,7 +13,7 @@ class ShowTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'task:show { name? : Task name }';
+    protected $signature = 'task:show { name? : TaskResource name }';
 
     /**
      * The console command description.
@@ -40,7 +40,7 @@ class ShowTaskCommand extends Command
     public function handle()
     {
         try {
-            $task = Task::where('name', '=', $name = $this->argument('name') ? $this->argument('name') : $this->ask('Task name?'))->get()->toArray();
+            $task = Task::where('name', '=', $name = $this->argument('name') ? $this->argument('name') : $this->ask('TaskResource name?'))->get()->toArray();
 
             $tasksShown = count($task);
 
@@ -50,7 +50,7 @@ class ShowTaskCommand extends Command
                 $this->table($header, $task);
                 $this->info($tasksShown.' Tasks shown');
             } else {
-                $this->error('Task '.$name.' not found');
+                $this->error('TaskResource '.$name.' not found');
             }
         } catch (Exception $e) {
             $this->error('Uups! Somthing go wrong!');

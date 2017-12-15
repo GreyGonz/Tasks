@@ -83,7 +83,7 @@ class ShowTaskCommandTest extends TestCase
 
         $response = Artisan::output();
 
-        $this->assertContains('Task ProvaShow not found', $response);
+        $this->assertContains('TaskResource ProvaShow not found', $response);
     }
 
     /**
@@ -97,7 +97,7 @@ class ShowTaskCommandTest extends TestCase
 
         $command->shouldReceive('ask')
             ->once()
-            ->with('Task name?')
+            ->with('TaskResource name?')
             ->andReturn('ProvaShow');
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
@@ -127,7 +127,7 @@ class ShowTaskCommandTest extends TestCase
 
         $command->shouldReceive('ask')
             ->once()
-            ->with('Task name?')
+            ->with('TaskResource name?')
             ->andReturn('NoExist');
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
@@ -136,7 +136,7 @@ class ShowTaskCommandTest extends TestCase
 
         $response = Artisan::output();
 
-        $this->assertNotContains('Task shown', $response);
-        $this->assertContains('Task NoExist not found', $response);
+        $this->assertNotContains('TaskResource shown', $response);
+        $this->assertContains('TaskResource NoExist not found', $response);
     }
 }

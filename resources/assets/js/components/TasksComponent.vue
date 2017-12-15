@@ -45,7 +45,7 @@
                         <tr v-for="(task, index) in filteredTasks">
                             <td>{{ index }}</td>
                             <td>{{ task.name }}</td>
-                            <td><toggle-button :value="task.completed"></toggle-button></td>
+                            <td><toggle-button :value="task.completed"></toggle-button>{{ task.completed }}</td>
                             <td class="description" data-toggle="modal" data-target="#modal-description" @click="setDescription(task.description)">{{ task.description }}</td>
                             <td>
                                 <div class="btn-group">

@@ -41,10 +41,10 @@ class CreateTaskCommand extends Command
     {
         try {
             Task::create([
-                'name'        => $this->argument('name') ? $this->argument('name') : $this->ask('Task name?'),
-                'description' => $this->argument('description') ? $this->argument('description') : $this->ask('Task description?'),
+                'name'        => $this->argument('name') ? $this->argument('name') : $this->ask('TaskResource name?'),
+                'description' => $this->argument('description') ? $this->argument('description') : $this->ask('TaskResource description?'),
             ]);
-            $this->info('Task has been added to database succesfully');
+            $this->info('TaskResource has been added to database succesfully');
         } catch (Exception $e) {
             $this->error('Error');
         }

@@ -13,7 +13,7 @@ class EditTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'task:edit { id? : Task id }';
+    protected $signature = 'task:edit { id? : TaskResource id }';
 
     /**
      * The console command description.
@@ -40,14 +40,14 @@ class EditTaskCommand extends Command
     public function handle()
     {
         try {
-            $task = Task::find($id = $this->argument('id') ? $this->argument('id') : $this->ask('Task id?'));
+            $task = Task::find($id = $this->argument('id') ? $this->argument('id') : $this->ask('TaskResource id?'));
 
             if ($task) {
                 $task->name = $this->ask('New task name?');
                 $task->save();
-                $this->info('Task edited successfully');
+                $this->info('TaskResource edited successfully');
             } else {
-                $this->error('Task with id '.$id.' not found');
+                $this->error('TaskResource with id '.$id.' not found');
             }
         } catch (Exception $e) {
             $this->error('Uups! Something go wrong :(');

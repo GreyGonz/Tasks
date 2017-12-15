@@ -64,7 +64,7 @@ class APICompletedTaskControllerTest extends TestCase
             'user_id' => $task->user_id,
         ]);
 
-        $response->assertJson([
+        $response->assertJsonFragment([
             'id' => $task->id,
             'name' => $task->name,
             'description' => $task->description,

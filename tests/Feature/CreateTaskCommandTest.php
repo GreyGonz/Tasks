@@ -34,7 +34,7 @@ class CreateTaskCommandTest extends TestCase
             'description' => 'ProvaCreate',
         ]);
 
-        $this->assertContains('Task has been added to database succesfully', $resultAsText);
+        $this->assertContains('TaskResource has been added to database succesfully', $resultAsText);
         $this->assertDatabaseHas('tasks', [
             'id'   => 1,
             'name' => 'ProvaCreate',
@@ -54,12 +54,12 @@ class CreateTaskCommandTest extends TestCase
 
         $command->shouldReceive('ask')
             ->once()
-            ->with('Task name?')
+            ->with('TaskResource name?')
             ->andReturn('ProvaCreate');
 
         $command->shouldReceive('ask')
             ->once()
-            ->with('Task description?')
+            ->with('TaskResource description?')
             ->andReturn('ProvaCreate');
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
@@ -69,7 +69,7 @@ class CreateTaskCommandTest extends TestCase
 
         // comprova
         $resultAsText = Artisan::output();
-        $this->assertContains('Task has been added to database succesfully', $resultAsText);
+        $this->assertContains('TaskResource has been added to database succesfully', $resultAsText);
         $this->assertDatabaseHas('tasks', [
             'id'          => 1,
             'name'        => 'ProvaCreate',

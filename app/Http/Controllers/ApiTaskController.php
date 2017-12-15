@@ -8,6 +8,7 @@ use App\Http\Requests\ShowTask;
 use App\Http\Requests\StoreTask;
 use App\Http\Requests\UpdateTask;
 use App\Task;
+use App\Http\Resources\TaskResource;
 use Illuminate\Http\Request;
 
 class ApiTaskController extends Controller

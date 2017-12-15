@@ -36,7 +36,7 @@ class DeleteTaskCommandTest extends TestCase
 
         $resultAsText = Artisan::output();
 
-        $this->assertContains('Task deleted succesfully', $resultAsText);
+        $this->assertContains('TaskResource deleted succesfully', $resultAsText);
 
         $this->assertDatabaseMissing('tasks', [
             'name' => 'ProvaDelete',
@@ -54,7 +54,7 @@ class DeleteTaskCommandTest extends TestCase
 
         $response = Artisan::output();
 
-        $this->assertContains('Task specified don\'t exist', $response);
+        $this->assertContains('TaskResource specified don\'t exist', $response);
     }
 
     /**
@@ -71,7 +71,7 @@ class DeleteTaskCommandTest extends TestCase
 
         $command->shouldReceive('ask')
             ->once()
-            ->with('Task id?')
+            ->with('TaskResource id?')
             ->andReturn(1);
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
@@ -90,7 +90,7 @@ class DeleteTaskCommandTest extends TestCase
 
         $resultAsText = Artisan::output();
 
-        $this->assertContains('Task deleted succesfully', $resultAsText);
+        $this->assertContains('TaskResource deleted succesfully', $resultAsText);
 
         $this->assertDatabaseMissing('tasks', [
             'id'   => 1,
@@ -109,7 +109,7 @@ class DeleteTaskCommandTest extends TestCase
 
         $command->shouldReceive('ask')
             ->once()
-            ->with('Task id?')
+            ->with('TaskResource id?')
             ->andReturn(1);
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
@@ -122,6 +122,6 @@ class DeleteTaskCommandTest extends TestCase
 
         $resultAsText = Artisan::output();
 
-        $this->assertContains("Task specified don't exist", $resultAsText);
+        $this->assertContains("TaskResource specified don't exist", $resultAsText);
     }
 }

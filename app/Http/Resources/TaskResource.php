@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class Task extends Resource
+class TaskResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +18,7 @@ class Task extends Resource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'completed' => $this->completed,
+            'completed' => $this->completed == 0 ? false : true,
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

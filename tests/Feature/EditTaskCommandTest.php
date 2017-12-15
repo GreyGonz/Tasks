@@ -44,7 +44,7 @@ class EditTaskCommandTest extends TestCase
 
         $response = Artisan::output();
 
-        $this->assertContains('Task edited successfully', $response);
+        $this->assertContains('TaskResource edited successfully', $response);
 
         $this->assertDatabaseHas('tasks', [
             'id'   => $task->id,
@@ -63,7 +63,7 @@ class EditTaskCommandTest extends TestCase
 
         $response = Artisan::output();
 
-        $this->assertContains('Task with id 1 not found', $response);
+        $this->assertContains('TaskResource with id 1 not found', $response);
     }
 
     /**
@@ -77,7 +77,7 @@ class EditTaskCommandTest extends TestCase
 
         $command->shouldReceive('ask')
             ->once()
-            ->with('Task id?')
+            ->with('TaskResource id?')
             ->andReturn(1);
 
         $command->shouldReceive('ask')
@@ -97,7 +97,7 @@ class EditTaskCommandTest extends TestCase
 
         $response = Artisan::output();
 
-        $this->assertContains('Task edited successfully', $response);
+        $this->assertContains('TaskResource edited successfully', $response);
 
         $this->assertDatabaseHas('tasks', [
             'id'   => $task->id,
@@ -116,7 +116,7 @@ class EditTaskCommandTest extends TestCase
 
         $command->shouldReceive('ask')
             ->once()
-            ->with('Task id?')
+            ->with('TaskResource id?')
             ->andReturn(1);
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
@@ -125,6 +125,6 @@ class EditTaskCommandTest extends TestCase
 
         $response = Artisan::output();
 
-        $this->assertContains('Task with id 1 not found', $response);
+        $this->assertContains('TaskResource with id 1 not found', $response);
     }
 }
