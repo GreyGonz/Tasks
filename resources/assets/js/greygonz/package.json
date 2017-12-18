@@ -1,0 +1,14 @@
+{
+  "name": "greygonz-tasks",
+  "version": "1.0.0",
+  "description": "k t kalles",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tasks"
+  ],
+  "author": "GreyGonz <gerardrey@iesebre.com>",
+  "license": "MIT"
+}

@@ -1,6 +1,6 @@
 import {mount} from 'vue-test-utils'
 import expect from 'expect'
-import Users from '../../resources/assets/js/components/Users.vue'
+import Users from '../../resources/assets/js/greygonz/components/Users.vue'
 import moxios from 'moxios'
 
 describe('Users', () => {
