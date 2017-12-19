@@ -1,8 +1,5 @@
 <template>
     <div>
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-description">
-            Launch Default Modal
-        </button>
         <div class="modal fade" id="modal-description">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -12,10 +9,29 @@
                         <h4 class="modal-title">Description</h4>
                     </div>
                     <div class="modal-body">
-                        <!--<div id="editor">-->
-                            <!--{{ description }}-->
-                        <!--</div>-->
                         <quill-editor v-model="description" :options="editorOption"></quill-editor>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <div class="modal fade" id="modal-show">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">{{ task.name }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        Go flex
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
@@ -33,7 +49,7 @@
 
             <div v-cloak="" class="">
 
-                <table class="table table-bordered">
+                <table class="table table-bordered table-hover">
                     <tbody>
                         <tr>
                             <th style="width: 10px">#</th>
@@ -45,11 +61,11 @@
                         <tr v-for="(task, index) in filteredTasks">
                             <td>{{ index }}</td>
                             <td>{{ task.name }}</td>
-                            <td><toggle-button :value="task.completed"></toggle-button>{{ task.completed }}</td>
+                            <td><toggle-button :value="task.completed"></toggle-button></td>
                             <td class="description" data-toggle="modal" data-target="#modal-description" @click="setDescription(task.description)">{{ task.description }}</td>
                             <td>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-xs btn-success">Show</button>
+                                    <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#modal-show" @click="showTask(task)">Show</button>
                                     <button type="button" class="btn btn-xs btn-primary">Delete</button>
                                 </div>
                             </td>
@@ -189,6 +205,7 @@
                 editingTask: '',
                 filter: 'all',
                 tasks: [],
+                task: '',
                 creating: false,
                 taskBeenDeleted: null,
                 form: new Form({ user_id: 1, name: 'prova' }),
@@ -218,6 +235,9 @@
             },
         },
         methods: {
+            showTask(task) {
+                this.task = task;
+            },
             setDescription(description) {
               this.description = description
             },
@@ -228,12 +248,11 @@
                 this.filter = filter
             },
             addTask() {
-                // -- Crida metode PUT i emmagatzema a DB --
+                // -- Crida metode POST i emmagatzema a DB --
                 let url = '/api/tasks'
 
                 // POST
                 this.form.post(url).then((response) =>  {
-                    console.log('New task added')
                     // Emmagatzema a fitxer JSON
                     this.tasks.push({name: this.form.name, user_id: this.form.user_id})
                     this.form.name=''
@@ -273,36 +292,15 @@
         },
         mounted() {
 
-            var quill = new Quill('#editor', {
-                theme: 'snow'
-            });
-//            this.tasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]')
-//            console.log(this.tasks)
-
-            // TODO Connectat a Internet i agafam la llista de tasques
-//        this.tasks = ???
-            // HTTP CLIENT
             let url = '/api/tasks'
-
-            // -- Promises --
-            // GET
             this.loading = true
-            axios.get(url).then((response) =>  {
-                this.tasks = response.data;
+            axios.get(url).then((response) => {
+                this.tasks = response.data.data;
             }).catch((error) => {
                 flash(error.message)
             }).then(() => {
                 this.loading = false
             })
-//        setTimeout( () => {
-//          component.hide()
-//        },3000)
-            // API HTTP amb JSON <- Web service
-            // URL GET http://NOM_SERVIDOR/api/task
-            // URL POST http://NOM_SERVIDOR/api/task
-            // URL DELETE http://NOM_SERVIDOR/api/task/{task}
-            // URL PUT/PATCH http://NOM_SERVIDOR/api/task/{task}
-
         }
     }
 </script>

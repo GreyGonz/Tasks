@@ -1,6 +1,6 @@
 <template>
     <div>
-        <multiselect @select="select(this.user)" :id="id" v-model="user" :options="users" :custom-label="customLabel"></multiselect>
+        <multiselect @select="select(this.user)" :id="id" :name="name" v-model="user" :options="users" :custom-label="customLabel"></multiselect>
     </div>
 </template>
 
@@ -23,7 +23,7 @@
                 users: []
             }
         },
-        props: ['id', 'value'],
+        props: ['id', 'name'],
         computed: {
           numUsers() {
               return this.users.length
@@ -31,13 +31,15 @@
         },
         watch: {
             value(newValue) {
-                this.user = this.users.find( user => {
-                    return user.id == newValue
-                });
-
+                this.user = this.userObject(newValue);
             }
         },
         methods: {
+            userObject(id) {
+                return this.users.find( user => {
+                    return user.id == id;
+                })
+            },
             customLabel({ name, email}) {
                 return `${name} - ${email}`
             },
@@ -46,40 +48,15 @@
             },
         },
         mounted() {
-
-            console.log('Mounted ok')
-
-            axios.get('api/v1/users').then( response => {
+            axios.get('api/v1/users').then(response => {
                 this.users = response.data;
-                this.user = this.users.find( user => {
-                    return user.id == this.value
-                });
-            }).catch( error => {
+                this.user = this.userObject(this.id)
+//                this.user = this.users.find( user => {
+//                    return user.id == this.value
+//                });
+            }).catch(error => {
                 console.log(error);
             }).then()
-
-//            this.users = [
-//                {
-//                    id: 1,
-//                    name: 'Perropolesia',
-//                    email: 'adfas@adfsafd.com'
-//
-//                },
-//                {
-//                    id: 2,
-//                    name: 'Perropolesia2',
-//                    email: 'adfas2@adfsafd.com'
-//
-//                },
-//                {
-//                    id: 3,
-//                    name: 'Perropolesia3',
-//                    email: 'adfas3@adfsafd.com'
-//
-//                }
-//            ]
-
-//            console.log(numUsers);
         }
     }
 </script>

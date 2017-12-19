@@ -56,6 +56,8 @@ if (!function_exists('first_user_as_task_manager')) {
     function first_user_as_task_manager()
     {
         User::findOrFail(1)->assignRole('task-manager');
+        User::findOrFail(1)->assignRole('user-manager');
         User::findOrFail(2)->assignRole('task-manager');
+        User::findOrFail(2)->assignRole('user-manager');
     }
 }

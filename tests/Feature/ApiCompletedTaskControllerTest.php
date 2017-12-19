@@ -25,7 +25,7 @@ class APICompletedTaskControllerTest extends TestCase
     {
         parent::setUp();
         initialize_task_permissions();
-        $this->withoutExceptionHandling();
+//        $this->withoutExceptionHandling();
     }
 
     /**
@@ -64,7 +64,7 @@ class APICompletedTaskControllerTest extends TestCase
             'user_id' => $task->user_id,
         ]);
 
-        $response->assertJsonFragment([
+        $response->assertJson([
             'id' => $task->id,
             'name' => $task->name,
             'description' => $task->description,

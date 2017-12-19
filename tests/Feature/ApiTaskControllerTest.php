@@ -52,9 +52,11 @@ class ApiTaskControllerTest extends TestCase
                 'id'          => $task->id,
                 'name'        => $task->name,
                 'description' => $task->description,
-                'user_id'     => (string) $task->user_id,
-                'created_at'  => $task->created_at->format('Y-m-d H:i:s'),
-                'updated_at'  => $task->updated_at->format('Y-m-d H:i:s'),
+                'completed'   => $task->completed,
+                'user_id'     => $task->user_id,
+                'created_at'  => $task->created_at->toDateTimeString(),
+                'updated_at'  => $task->updated_at->toDateTimeString(),
+
             ]);
         }
 
@@ -62,6 +64,7 @@ class ApiTaskControllerTest extends TestCase
             'id',
             'name',
             'description',
+            'completed',
             'user_id',
             'created_at',
             'updated_at',
@@ -82,10 +85,11 @@ class ApiTaskControllerTest extends TestCase
 
         $response->assertSuccessful();
 
-        $response->assertJson([
+        $response->assertJsonFragment([
             'id'          => $task->id,
             'name'        => $task->name,
             'description' => $task->description,
+            'completed'   => $task->completed,
             'user_id'     => $task->user_id,
         ]);
     }
@@ -122,6 +126,7 @@ class ApiTaskControllerTest extends TestCase
         $response = $this->json('POST', '/api/tasks', [
             'name'        => $name = $faker->word,
             'description' => $description = $faker->text,
+            'completed'   => $completed = $faker->boolean,
         ]);
 
         // assert
@@ -130,11 +135,13 @@ class ApiTaskControllerTest extends TestCase
         $this->assertDatabaseHas('tasks', [
             'name'        => $name,
             'description' => $description,
+            'completed'   => $completed,
         ]);
 
         $response->assertJson([
             'name'        => $name,
             'description' => $description,
+            'completed'   => $completed,
         ]);
     }
 
