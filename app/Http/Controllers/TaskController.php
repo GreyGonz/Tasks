@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -27,7 +28,13 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('tasks.create');
+        $users = User::all();
+
+        foreach ($users as $user) {
+            $users_array[$user->id] = $user->name . " - " . $user->email;
+        }
+
+        return view('tasks.create', ['users' => $users_array]);
     }
 
     /**

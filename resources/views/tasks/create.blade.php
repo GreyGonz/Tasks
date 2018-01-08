@@ -6,6 +6,25 @@
 @endsection
 
 @section('main-content')
+
+    @if (Session::get('status') )
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-check"></i> Alert!</h4>
+            {{ Session::get('status') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="container-fluid">
 
         <nav class="navbar navbar-inverse">
@@ -22,17 +41,23 @@
 
         {{ Form::open(array('url' => 'tasks')) }}
 
-        <div class="form-group">
-            {{ Form::label('name', 'Name: ') }}
-            {{ Form::text('name', null, array('class' => "form-control", 'required' => 'required')) }}
-        </div>
+        {{ csrf_field() }}
+            <div class="form-group">
+                {{ Form::label('name', 'Name: ') }}
+                {{ Form::text('name', null, array('class' => "form-control")) }}
+            </div>
 
-        <div class="form-group">
-            {{ Form::label('description', 'Description: ') }}
-            {{ Form::text('description', null, array('class' => "form-control", 'required' => 'required')) }}
-        </div>
+            <div class="form-group">
+                {{ Form::label('description', 'Description: ') }}
+                {{ Form::text('description', null, array('class' => "form-control")) }}
+            </div>
 
-        {{ Form::submit('TaskResource', array('class' => 'btn btn-primary')) }}
+            <div class="form-group">
+                {{ Form::label('user_id', 'User ID: ') }}
+                {{ Form::select('user_id', $users, array('class' => "form-control")) }}
+            </div>
+
+            {{ Form::submit('Create', array('class' => 'btn btn-primary')) }}
 
         {{ Form::close() }}
     </div>

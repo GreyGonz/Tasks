@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    protected $fillable = ['name', 'description', 'completed'];
+    protected $fillable = ['name', 'description', 'completed', 'user_id'];
 
 }

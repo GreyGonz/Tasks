@@ -6,6 +6,15 @@
 @endsection
 
 @section('main-content')
+
+    @if (Session::get('status') )
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-check"></i> Alert!</h4>
+            {{ Session::get('status') }}
+        </div>
+    @endif
+
     <div class="container-fluid">
 
         <nav class="navbar navbar-inverse">
@@ -14,11 +23,11 @@
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="{{ URL::to('tasks') }}">View All Tasks</a></li>
-                <li><a href="{{ URL::to('tasks/create') }}">Create a Tasks</a>
+                <li><a href="{{ URL::to('tasks/create') }}">Create a Task</a>
             </ul>
         </nav>
 
-        {{ Session::get('status') }}
+        {{ Session::get('status') or ''}}
 
         <table class="table table-striped table-bordered">
             <thead>
