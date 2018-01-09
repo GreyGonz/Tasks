@@ -33,7 +33,7 @@
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="{{ URL::to('tasks') }}">View All Tasks</a></li>
-                <li><a href="{{ URL::to('tasks/create') }}">Create a Tasks</a>
+                <li><a href="{{ URL::to('tasks/create') }}">Create a Task</a>
             </ul>
         </nav>
 

@@ -55,31 +55,32 @@ class PHPTasksTest extends DuskTestCase
             $this->loginAndAuthorize($browser);
 
             $browser->visit('/tasks');
-            $browser->assertTitleContains('Tasks list');
+            $browser->assertTitleContains('Tasks PHP');
             //don't see alert message (only show when errors or ok messages)
             $browser->assertMissing('.alert');
-            $browser->assertSeeLink('Create Task');
+            $browser->assertSeeLink('Create a Task');
 
             // See tasks box
             $browser->assertVisible('.box');
             //See box title
             $browser->assertSeein('.box .box-title','Tasks:');
             //see table in box body
-            $browser->assertVisible('.box .box-body .table');
+            $browser->assertVisible('.box .table');
 
 //            $browser->pause('50000');
 
             foreach ($tasks as $task) {
                 $browser->assertSee($task->id);
                 $browser->assertSee($task->name);
-                $browser->assertSee($task->user->id);
-                $browser->assertSee($task->user->name);
+                $browser->assertSee($task->user_id);
+//                $browser->assertSee($task->user->id);
+//                $browser->assertSee($task->user->name);
                 $browser->assertVisible('#show-task-' . $task->id);
                 $this->assertContains('Show',$browser->text('#show-task-' . $task->id));
                 $browser->assertVisible('#edit-task-' . $task->id);
                 $this->assertContains('Edit',$browser->text('#edit-task-' . $task->id));
                 $browser->assertVisible('#delete-task-' . $task->id);
-                $this->assertContains('Delete',$browser->text('#delete-task-' . $task->id));
+                $this->assertContains($browser->text('#delete-task-' . $task->id), 'Delete');
             }
         });
     }
@@ -175,23 +176,49 @@ class PHPTasksTest extends DuskTestCase
 
             $browser->visit('/tasks');
 
-            $browser->click('#show-task-1');
-//            $browser->pause(500000);
-
-            //Test back button
-            $browser->assertSeeLink('Back');
-            $browser->clickLink('Back');
-            $browser->click('#show-task-1');
-
-            //Test edit button
-            $browser->assertSeeLink('Edit');
-            $browser->clickLink('Edit');
 //            $browser->click('#show-task-1');
+//            $browser->pause(500000);
+//            $browser->assertSee($tasks[0]->name);
+//
+//            //Test back button
+//            $browser->assertSeeLink('View All Tasks');
+//            $browser->clickLink('View All Tasks');
+//            $browser->click('#show-task-1');
+//
+//            //Test edit button
+//            $browser->assertSeeLink('Edit Task');
+//            $browser->clickLink('Edit Task');
+////            $browser->click('#show-task-1');
+//
+//            $browser->assertPathIs('/tasks/1/edit');
+//            $browser->assertSeeLink('View All Tasks');
+//            $browser->clickLink('View All Tasks');
+//
+//            $browser->assertPathIs('/tasks');
 
-            $browser->assertPathIs('/tasks_php/edit/1');
-            $browser->assertSeeLink('Back');
-            $browser->clickLink('Back');
+            foreach ($tasks as $task) {
 
+                // Test view all tasks
+                $browser->assertSeeLink('View All Tasks');
+                $browser->clickLink('View All Tasks');
+                $browser->assertPathIs('/tasks');
+
+                // Test show task
+                $browser->click('#show-task-' . $task->id);
+                $browser->assertPathIs('/tasks/' . $task->id);
+                $browser->assertVisible('.name');
+                $browser->assertVisible('.description');
+
+                // Test edit button
+                $browser->assertSeeLink('Edit Task');
+                $browser->clickLink('Edit Task');
+                $browser->assertPathIs('/tasks/' . $task->id . '/edit');
+
+                // Return index
+                $browser->assertSeeLink('View All Tasks');
+                $browser->clickLink('View All Tasks');
+                $browser->assertPathIs('/tasks');
+            }
             //Test delete button
 //            $browser->assertSeeLink('Delete');
 //            $browser->clickLink('Delete');

@@ -54,6 +54,8 @@ class TaskController extends Controller
         $task = new Task();
         $task->name = $request->input('name');
         $task->description = $request->input('description');
+        $task->completed = false;
+        $task->user_id = $request->input('user_id');
         $task->save();
 
         return redirect()->route('tasks.index');

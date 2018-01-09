@@ -14,6 +14,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{ URL::to('tasks') }}">View All Tasks</a></li>
                 <li><a href="{{ URL::to('tasks/create') }}">Create a Tasks</a>
+                <li><a href="{{ URL::to('tasks/' . $task->id . '/edit/' ) }}">Edit Task</a></li>
             </ul>
         </nav>
     </div>
@@ -24,8 +25,8 @@
         <h1>Showing {{ $task->name }}</h1>
 
         <div class="jumbotron">
-            <h2>{{ $task->name }}</h2>
-            <p>
+            <h2 class="name">{{ $task->name }}</h2>
+            <p class="description">
                 <strong>Description: </strong> {{ $task->description }}
             </p>
         </div>
