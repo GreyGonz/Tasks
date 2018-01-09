@@ -17,13 +17,19 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
-Vue.component('tasks', require('./components/TasksComponent.vue'));
+Vue.component('tasks-component', require('./components/TasksComponent.vue'));
+
+Vue.component('tasks-list', require('./components/TasksListComponent.vue'));
 
 Vue.component('message', require('./components/MessageComponent.vue'));
 
 Vue.component('widget', require('./components/WidgetComponent.vue'));
 
 Vue.component('users', require('./components/Users.vue'));
+
+Vue.component('tasks-crud-list', require('./components/tasks/TasksCrudListComponent.vue'));
+
+Vue.component('tasks-container', require('./components/tasks/TasksContainerComponent.vue'));
 
 Vue.component(
     'passport-clients',

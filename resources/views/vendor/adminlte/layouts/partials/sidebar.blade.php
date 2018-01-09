@@ -36,6 +36,7 @@
             <li class="active"><a href="{{ url('home') }}"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
             <li><a href="/tasks"><i class='fa fa-link'></i> <span>Tasks PHP</span></a></li>
             <li><a href="/tasks_component"><i class='fa fa-link'></i> <span>Tasks</span></a></li>
+            <li><a href="/tasks_container"><i class='fa fa-link'></i><span>Tasks container</span></a></li>
             <li class="header">Settings</li>
 
             <li class="header">Tokens</li>

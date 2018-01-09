@@ -7,10 +7,7 @@
 
 @section('main-content')
 
-
-    <tasks></tasks>
-
-
+    <tasks-component></tasks-component>
 
 @endsection
 

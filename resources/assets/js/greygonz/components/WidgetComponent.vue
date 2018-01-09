@@ -1,4 +1,5 @@
 <template>
+
     <div v-cloak="">
         <div class="box box-success box-solid">
             <div class="box-header with-border">
@@ -13,7 +14,7 @@
             <!-- /.box-header -->
             <div class="box-body">
                 <slot></slot>
-                <div class="overlay" v-if="internalLoading">
+                <div class="overlay" v-if="loading">
                     <i class="fa fa-refresh fa-spin"></i>
                 </div>
             </div>
@@ -32,17 +33,6 @@
 <script>
 
     export default {
-        data() {
-          return {
-            internalLoading: this.loading
-          }
-        },
-        watch: {
-            loading(newValue) {
-                console.log('loading has changed')
-                this.internalLoading = newValue
-            }
-        },
         props: {
           loading: {
               required: false
