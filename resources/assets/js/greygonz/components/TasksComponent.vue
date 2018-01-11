@@ -7,7 +7,6 @@
 
 <script>
 
-    import axios from 'axios'
     import createApi from './tasks/api/tasks.js'
 
     const crud = createApi('/api/tasks');

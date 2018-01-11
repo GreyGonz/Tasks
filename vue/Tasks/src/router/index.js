@@ -7,7 +7,7 @@ import MainLayout from '@/components/layouts/MainLayout'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   routes: [
     {
       path: '/',
@@ -17,7 +17,10 @@ export default new Router({
         {
           path: 'prova',
           name: 'Prova',
-          component: Prova
+          component: Prova,
+          meta: {
+            requiredAuth: true
+          }
         },
         {
           path: 'hello',
@@ -34,3 +37,18 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiredAuth) && (!router.app.$store.state.token || router.app.$store.state.token === 'null')) {
+    window.console.log('BEFORE EACH ROUTE')
+    const logged = true
+    if (to.path === '/login') next()
+    if (!logged) {
+      next({
+        path: '/login'
+      })
+    }
+    next()
+  }
+})
+export default router
