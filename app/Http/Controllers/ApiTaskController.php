@@ -58,6 +58,7 @@ class ApiTaskController extends Controller
     {
         $task->name = $request->name;
         $task->description = $request->description;
+        $task->completed = $request->completed;
         $task->save();
 
         return $task;

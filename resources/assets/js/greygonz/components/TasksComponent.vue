@@ -1,6 +1,6 @@
 <template>
 
-    <tasks-list :tasks="tasks" :loading="loading"></tasks-list>
+    <tasks-list :tasks="tasks" :loading="loading" @toggle="updateTask"></tasks-list>
 
 </template>
 
@@ -19,11 +19,23 @@
                 loading: true,
             }
         },
-        events: {
-            toggle: function (task) {
-                console.log('Yas')
-                console.log(task)
-            },
+        // events: {
+        //     toggle: function (task) {
+        //         console.log('Yas')
+        //         console.log(task)
+        //     },
+        // },
+        methods: {
+            updateTask: function (task) {
+
+                crud.update(task).then((response) => {
+                    task.completed = !task.completed
+                    this.tasks[task.id-1] = task
+                }).catch((error) => {
+                    flash(error.message)
+                })
+
+            }
         },
         mounted() {
             crud.getAll().then((response) => {

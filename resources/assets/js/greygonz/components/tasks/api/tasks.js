@@ -7,6 +7,9 @@ class Crud {
   getAll() {
     return axios.get(this.endPoint)
   }
+  update(task) {
+    return axios.put(this.endPoint + '/' + task.id, task)
+  }
 }
 
 export default function createApi(endPoint) {
