@@ -37,6 +37,7 @@ class EditTaskCommandTest extends TestCase
         $task = Task::create([
             'name'        => 'ProvaEdit',
             'description' => 'ProvaEdit',
+            'completed'   => false,
             'user_id'     => 1,
         ]);
 
@@ -90,6 +91,7 @@ class EditTaskCommandTest extends TestCase
         $task = Task::create([
             'name'        => 'ProvaEdit',
             'description' => 'ProvaEdit',
+            'completed'   => false,
             'user_id'     => 1,
         ]);
 

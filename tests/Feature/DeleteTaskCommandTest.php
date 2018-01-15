@@ -25,6 +25,7 @@ class DeleteTaskCommandTest extends TestCase
         $task = Task::create([
             'name'        => 'ProvaDelete',
             'description' => 'ProvaDelete',
+            'completed'   => false,
             'user_id'     => 1,
         ]);
 
@@ -79,6 +80,7 @@ class DeleteTaskCommandTest extends TestCase
         Task::create([
             'name'        => 'ProvaDelete',
             'description' => 'ProvaDelete',
+            'completed'   => false,
             'user_id'     => 1,
         ]);
 

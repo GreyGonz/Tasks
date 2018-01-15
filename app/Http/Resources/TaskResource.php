@@ -18,7 +18,7 @@ class TaskResource extends Resource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'completed' => $this->completed == 0 ? false : true,
+            'completed' => (boolean) $this->completed,
             'user_id' => (integer)$this->user_id,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),

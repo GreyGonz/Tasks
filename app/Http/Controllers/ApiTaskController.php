@@ -9,14 +9,13 @@ use App\Http\Requests\StoreTask;
 use App\Http\Requests\UpdateTask;
 use App\Task;
 use App\Http\Resources\TaskResource;
-use App\Http\Resources\TaskCollection;
 use Illuminate\Http\Request;
 
 class ApiTaskController extends Controller
 {
     public function index(ListTask $request)
     {
-        return new TaskCollection(Task::all());
+        return TaskResource::collection(Task::all());
     }
 
     public function show(ShowTask $request, Task $task)

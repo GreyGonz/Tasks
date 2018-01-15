@@ -33,6 +33,7 @@ class ShowTaskCommandTest extends TestCase
         Task::create([
             'name'        => 'ProvaShow',
             'description' => 'ProvaShow',
+            'completed'   => false,
             'user_id'     => 1,
         ]);
 
@@ -54,11 +55,13 @@ class ShowTaskCommandTest extends TestCase
         Task::create([
             'name'        => 'ProvaShow',
             'description' => 'ProvaShow',
+            'completed'   => false,
             'user_id'     => 1,
         ]);
         Task::create([
             'name'        => 'ProvaShow',
             'description' => 'ProvaShow',
+            'completed'   => false,
             'user_id'     => 1,
         ]);
 
@@ -105,6 +108,7 @@ class ShowTaskCommandTest extends TestCase
         Task::create([
             'name'        => 'ProvaShow',
             'description' => 'ProvaShow',
+            'completed'   => false,
             'user_id'     => 1,
         ]);
 

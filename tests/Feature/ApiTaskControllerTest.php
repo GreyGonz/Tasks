@@ -16,7 +16,7 @@ class ApiTaskControllerTest extends TestCase
     {
         parent::setUp();
         initialize_task_permissions();
-        $this->withoutExceptionHandling();
+//        $this->withoutExceptionHandling();
     }
 
     protected function loginAsAuthorized()
@@ -56,19 +56,20 @@ class ApiTaskControllerTest extends TestCase
                 'user_id'     => $task->user_id,
                 'created_at'  => $task->created_at->toDateTimeString(),
                 'updated_at'  => $task->updated_at->toDateTimeString(),
-
             ]);
         }
 
-        $response->assertJsonStructure([[
-            'id',
-            'name',
-            'description',
-            'completed',
-            'user_id',
-            'created_at',
-            'updated_at',
-        ]]);
+        $response->assertJsonStructure([
+            'data' => [[
+                'id',
+                'name',
+                'description',
+                'completed',
+                'user_id',
+                'created_at',
+                'updated_at',
+            ]]
+        ]);
     }
 
     /**
@@ -218,6 +219,7 @@ class ApiTaskControllerTest extends TestCase
         $response = $this->json('PUT', 'api/tasks/'.$task->id, [
             'name'        => $newName = $faker->word,
             'description' => $newDescription = $faker->text,
+            'completed'   => $newCompleted = $faker->boolean
         ]);
 
         // assert
@@ -227,12 +229,14 @@ class ApiTaskControllerTest extends TestCase
             'id'          => $task->id,
             'name'        => $newName,
             'description' => $newDescription,
+            'completed'   => $newCompleted
         ]);
 
         $this->assertDatabaseMissing('tasks', [
             'id'          => $task->id,
             'name'        => $task->name,
             'description' => $task->description,
+            'completed'   => $task->completed
         ]);
     }
 

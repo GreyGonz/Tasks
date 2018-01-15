@@ -43,6 +43,7 @@ class CreateTaskCommand extends Command
             Task::create([
                 'name'        => $this->argument('name') ? $this->argument('name') : $this->ask('TaskResource name?'),
                 'description' => $this->argument('description') ? $this->argument('description') : $this->ask('TaskResource description?'),
+                'completed'   => false
             ]);
             $this->info('TaskResource has been added to database succesfully');
         } catch (Exception $e) {

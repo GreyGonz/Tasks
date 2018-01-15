@@ -65,11 +65,13 @@ class APICompletedTaskControllerTest extends TestCase
         ]);
 
         $response->assertJson([
-            'id' => $task->id,
-            'name' => $task->name,
-            'description' => $task->description,
-            'completed' => true,
-            'user_id' => $task->user_id,
+            'data' => [
+                'id' => $task->id,
+                'name' => $task->name,
+                'description' => $task->description,
+                'completed' => true,
+                'user_id' => $task->user_id
+            ]
         ]);
     }
 
@@ -100,12 +102,14 @@ class APICompletedTaskControllerTest extends TestCase
         ]);
 
         $response->assertJson([
-            'id' => $task->id,
-            'name' => $task->name,
-            'description' => $task->description,
-            'completed' => false,
-            'user_id' => $task->user_id,
-        ]);
+            'data' => [
+                'id' => $task->id,
+                'name' => $task->name,
+                'description' => $task->description,
+                'completed' => false,
+                'user_id' => $task->user_id
+            ]
+       ]);
     }
 
 }

@@ -74,6 +74,7 @@ class CreateTaskCommandTest extends TestCase
             'id'          => 1,
             'name'        => 'ProvaCreate',
             'description' => 'ProvaCreate',
+            'completed'   => false
         ]);
     }
 }
