@@ -2,8 +2,8 @@
     <body>
         <div class="container">
             <main>
-                <section class="content-header">CONTENT HEADER</section>
-                <section>content header 2</section>
+                <section>CONTENT</section>
+                <section>CONTENT</section>
             </main>
             <aside class="left-side-bar">
                 aside left
@@ -53,45 +53,54 @@ export default {
 
     main, header, footer, aside, section {
         display: grid;
-        border: solid black 1px;
+        /*border: solid black 1px;*/
         padding: 0.5em;
     }
 
     main {
-        background: #0a568c;
+        background: #ECEFF5;
         grid-row: 2;
         grid-column: 2;
     }
 
+    .content-header {
+        position: relative;
+        padding: 10px;
+    }
+
     header {
-        background: #00a157;
+        background: #4e8aba;
+        color: #FFFFFF;
         grid-row: 1;
         grid-column-start: 1;
         grid-column-end: 4;
     }
 
+    aside {
+        background: #283135;
+    }
     .left-side-bar {
-        grid-row: 2;
+        grid-row-start: 2;
+        grid-row-end: 4;
         grid-column: 1;
     }
 
     .right-side-bar {
-        grid-row: 2;
+        grid-row-start: 2;
+        grid-row-end: 4;
         grid-column: 3;
     }
     section {
-        background: #2e9ad0;
+        background: #FFFFFF;
+        box-shadow: 0 1px 1px rgba(0,0,0,0.1);
     }
 
     footer {
-        background: #2e383c;
-        color: whitesmoke;
+        background: #FFFFFF;
+        color: #464646;
+        border-top: 1px solid #d2d6de;
         grid-row: 3;
-        grid-column-start: 1;
-        grid-column-end: 4;
-    }
-
-    .content-header {
-        background: #9cc2cb;
+        grid-column-start: 2;
+        grid-column-end: 3;
     }
 </style>
