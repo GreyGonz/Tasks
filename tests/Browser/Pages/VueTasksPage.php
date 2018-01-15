@@ -22,7 +22,7 @@ class VueTasksPage extends BasePage
      */
     public function url()
     {
-        return '/tasks';
+        return '/tasks_container';
     }
 
     /**
@@ -246,7 +246,6 @@ class VueTasksPage extends BasePage
 
     /**
      * Destroy task.
-     *
      * @param Browser $browser
      * @param $task
      */

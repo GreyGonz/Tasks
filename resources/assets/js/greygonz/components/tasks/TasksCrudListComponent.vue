@@ -3,7 +3,7 @@
         <div class="box-header ui-sortable-handle" style="cursor: move;">
             <i class="ion ion-clipboard"></i>
 
-            <h3 class="box-title">To Do List</h3>
+            <h3 class="box-title">Tasks</h3>
 
             <div class="box-tools pull-right">
                 <ul class="pagination pagination-sm inline">

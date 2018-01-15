@@ -64,6 +64,7 @@ class VueTasksTest extends DuskTestCase
      *
      * @test
      * @return void
+     * @group run
      */
     public function list_tasks()
     {
@@ -72,9 +73,10 @@ class VueTasksTest extends DuskTestCase
             $tasks = factory(Task::class,5)->create();
             $browser->maximize();
             $browser->visit(new VueTasksPage())
-                    ->seeTitle('Tasques new')
-                    ->dontSeeAlert('Tasques new')
-                    ->seeBox('Tasques new')
+                    ->assert($browser)
+                    ->seeTitle($browser)
+                    ->dontSeeAlert($browser)
+                    ->seeBox('Tasks')
                     ->assertVue('tasks', $tasks->toArray(), '@tasks')
                     ->seeTasks($tasks);
         });

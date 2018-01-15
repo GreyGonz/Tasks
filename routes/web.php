@@ -23,15 +23,4 @@ Route::group(['middleware' => ['auth']], function () {
 
     // PROVES
     Route::view('/proves', 'proves');
-    Route::get('tasca',function() {
-        return new \App\Http\Resources\TaskResource(App\Task::find(1));
-    });
-
-    Route::get('tasca1',function() {
-        return App\Task::find(1);
-    });
-
-    Route::get('tascas',function() {
-        return \App\Http\Resources\TaskResource::collection(App\Task::all());
-    });
 });

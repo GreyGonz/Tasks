@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-    Tasks container
+    Tasks
 @endsection
 
 @section('main-content')
