@@ -17,6 +17,7 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
+            <button id="reload" type="button" class="btn btn-default">Reload</button>
             <ul class="todo-list ui-sortable">
                 <li v-for="(task, index) in tasks">
                     <span class="handle ui-sortable-handle">
@@ -36,6 +37,7 @@
         </div>
         <div class="box-footer clearfix no-border">
             <button type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
+            <span>{{ tasks.length }} tasks left</span>
         </div>
     </div>
 </template>
@@ -52,6 +54,8 @@
         type: Array,
         required: true
       }
+    },
+    mounted() {
     }
   }
 </script>

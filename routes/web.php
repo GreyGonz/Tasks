@@ -1,5 +1,7 @@
 <?php
 
+use App\Mail\Hello;
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +23,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('/tasks_component', 'taskscomponent');
     Route::view('/tasks_container', 'tasks_api/tasksContainer');
 
+  /*Route::get('/send_mail', function () {
+        $user = 'App\User'::find(1);
+        $mail = new Hello($user);
+        Mail::to($user)->send($mail);
+    });
+ */
+    Route::get('/mail',         'MailController@index');
+    Route::get('/send_mail',    'MailController@store');
     // PROVES
     Route::view('/proves', 'proves');
 });

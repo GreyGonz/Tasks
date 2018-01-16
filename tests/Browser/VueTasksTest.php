@@ -64,7 +64,6 @@ class VueTasksTest extends DuskTestCase
      *
      * @test
      * @return void
-     * @group run
      */
     public function list_tasks()
     {
@@ -73,11 +72,11 @@ class VueTasksTest extends DuskTestCase
             $tasks = factory(Task::class,5)->create();
             $browser->maximize();
             $browser->visit(new VueTasksPage())
-                    ->assert($browser)
-                    ->seeTitle($browser)
-                    ->dontSeeAlert($browser)
+                    ->assert('Tasks')
+                    ->seeTitle('Tasks')
+                    ->dontSeeAlert('Tasks')
                     ->seeBox('Tasks')
-                    ->assertVue('tasks', $tasks->toArray(), '@tasks')
+                    ->assertVue('tasks', $tasks->toArray(), '@component')
                     ->seeTasks($tasks);
         });
     }
@@ -86,6 +85,7 @@ class VueTasksTest extends DuskTestCase
      * Reload.
      *
      * @test
+     * @group run
      */
     public function reload()
     {
@@ -94,10 +94,10 @@ class VueTasksTest extends DuskTestCase
             $tasks = factory(Task::class,5)->create();
             $browser->maximize();
             $browser->visit(new VueTasksPage())
-                ->seeTitle('Tasques new')
+                ->seeTitle('Tasks')
                 ->dontSeeAlert('Tasques new')
-                ->seeBox('Tasques new')
-                ->assertVue('tasks', $tasks->toArray(), '@tasks')
+                ->seeBox('Tasks')
+                ->assertVue('tasks', $tasks->toArray(), '@component')
                 ->seeTasks($tasks);
 
             $task = factory(Task::class)->create();

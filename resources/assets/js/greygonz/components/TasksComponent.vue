@@ -37,6 +37,7 @@
             }
         },
         mounted() {
+            console.log('mounted');
             crud.getAll().then((response) => {
                 this.tasks = response.data.data
             }).catch((error) => {
