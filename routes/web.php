@@ -30,7 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
  */
     Route::get('/mail',         'MailController@index');
-    Route::get('/send_mail',    'MailController@store');
+    Route::post('/send_mail',    'MailController@store');
     // PROVES
     Route::view('/proves', 'proves');
 });

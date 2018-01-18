@@ -23,7 +23,7 @@ class VueTasksTest extends DuskTestCase
     public function setUp()
     {
         parent::setUp();
-        initialize_task_permissions();
+       initialize_task_permissions();
 //        Artisan::call('passport:install');
 //        $this->withoutExceptionHandling();
     }
@@ -103,10 +103,10 @@ class VueTasksTest extends DuskTestCase
             $task = factory(Task::class)->create();
 
             $browser->reload()
-//                ->assertVisible('div.overlay>.fa-refresh')
-                ->assertVue('loading', true, '@tasks')
+                ->assertVisible('div.overlay>.fa-refresh')
+                ->assertVue('loading', true, '@component')
                 ->waitUntilMissing('div.overlay>.fa-refresh')
-                ->assertVue('loading', false, '@tasks')
+                ->assertVue('loading', false, '@component')
                 ->seeTask($task);
         });
     }

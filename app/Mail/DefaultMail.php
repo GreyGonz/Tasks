@@ -11,6 +11,7 @@ class DefaultMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $content;
     /**
      * Create a new message instance.
      *
@@ -29,6 +30,6 @@ class DefaultMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mail.blade.php');
+        return $this->markdown('mail.mail');
     }
 }

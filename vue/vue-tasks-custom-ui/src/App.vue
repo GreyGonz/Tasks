@@ -1,6 +1,21 @@
 <template>
     <body>
         <div class="container">
+            <div class="logo">
+                <span>HEADER</span>
+            </div>
+            <nav>
+                <a class="hamburger" href="#">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+                </a>
+                <ul class="nav-ul">
+                    <li class="nav-ul-li"><a href="#">mail</a></li>
+                    <li class="nav-ul-li"><a href="#">notification</a></li>
+                    <li class="nav-ul-li"><a href="#">tasks</a></li>
+                    <li class="nav-ul-li"><a href="#">logged_user</a></li>
+                    <li class="nav-ul-li"><a href="#">preferences</a></li>
+                </ul>
+            </nav>
             <main>
                 <section>CONTENT</section>
                 <section>CONTENT</section>
@@ -12,11 +27,7 @@
                 aside right
             </aside>
             <footer>Footer</footer>
-            <header>
-                <!-- <i class="fa fa-address-card"></i> -->
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-                HEADER
-            </header>
+            
         </div>
     </body>
 </template>
@@ -38,8 +49,14 @@ export default {
         font-size: 14px;
         color: #333;
     }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
     .icon {
-        display: inline;
+        display: inline-block;
         height: 1em;
         width: 1em;
         fill: currentColor;
@@ -47,14 +64,12 @@ export default {
 
     .container {
         display: grid;
-        grid-template-columns: 100px 1fr 100px;
-        grid-template-rows: 150px 1fr 100px;
+        grid-template-columns: 150px 1fr 150px;
+        grid-template-rows: 40px 1fr 40px;
     }
 
     main, header, footer, aside, section {
-        display: grid;
-        /*border: solid black 1px;*/
-        padding: 0.5em;
+        padding: 1.2em;
     }
 
     main {
@@ -63,31 +78,76 @@ export default {
         grid-column: 2;
     }
 
-    .content-header {
-        position: relative;
-        padding: 10px;
-    }
-
-    header {
-        background: #4e8aba;
+    .logo {
+        display: flex;
+        background: #417DA6;
         color: #FFFFFF;
         grid-row: 1;
-        grid-column-start: 1;
-        grid-column-end: 4;
+        grid-column: 1;
+        justify-content: center;
+    }
+
+    .logo span {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: row;
+        background: #4e8aba;
+        color: #fff;
+        grid-row:1;
+        grid-column: 2/4;
+        padding: 0;
+        justify-content: space-between;
+    }
+
+    .hamburger {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0 1em;   
+    }
+
+    .hamburger:hover {
+        background: #417DA6;
+    }
+
+    ul, li {
+        list-style: none;
+    }
+
+    .nav-ul {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        margin: 0;
+    }
+
+    .nav-ul-li:hover {
+        background: #417DA6;
+    }
+
+    .nav-ul-li {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 0.5em;
     }
 
     aside {
         background: #283135;
+        color: #fff;
     }
+
     .left-side-bar {
-        grid-row-start: 2;
-        grid-row-end: 4;
+        grid-row: 2/4;
         grid-column: 1;
     }
 
     .right-side-bar {
-        grid-row-start: 2;
-        grid-row-end: 4;
+        grid-row: 2/4;
         grid-column: 3;
     }
     section {
@@ -100,7 +160,6 @@ export default {
         color: #464646;
         border-top: 1px solid #d2d6de;
         grid-row: 3;
-        grid-column-start: 2;
-        grid-column-end: 3;
+        grid-column: 2/4;
     }
 </style>

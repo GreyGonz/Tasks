@@ -18,8 +18,11 @@
         <!-- /.box-header -->
         <div class="box-body">
             <button id="reload" type="button" class="btn btn-default">Reload</button>
+            <div class="overlay" v-if="loading">
+                    <i class="fa fa-refresh fa-spin"></i>
+            </div>
             <ul class="todo-list ui-sortable">
-                <li v-for="(task, index) in tasks">
+                <li v-for="task in tasks" :key="task">
                     <span class="handle ui-sortable-handle">
                         <i class="fa fa-ellipsis-v"></i>
                         <i class="fa fa-ellipsis-v"></i>
@@ -53,7 +56,8 @@
       tasks: {
         type: Array,
         required: true
-      }
+      },
+      loading: Boolean
     },
     mounted() {
     }

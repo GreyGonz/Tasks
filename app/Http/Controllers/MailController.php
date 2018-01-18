@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use View;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DefaultMail;
 
 class MailController extends Controller
 {
@@ -14,5 +16,7 @@ class MailController extends Controller
         dump($request->emailto);
         Mail::to($request->emailto)
             ->send(new DefaultMail($request->subject, $request->content));
+        
+        return back();
     }
 }

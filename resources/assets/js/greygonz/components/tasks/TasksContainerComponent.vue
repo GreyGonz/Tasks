@@ -1,5 +1,5 @@
 <template>
-    <tasks-crud-list id="tasks-crud-list" :tasks="tasks"></tasks-crud-list>
+    <tasks-crud-list id="tasks-crud-list" :loading="loading" :tasks="tasks"></tasks-crud-list>
 </template>
 
 <style>
@@ -17,7 +17,8 @@
     name: 'TasksContainer',
     data() {
       return {
-        tasks: []
+        tasks: [],
+        loading: true
       }
     },
     mounted() {
@@ -26,6 +27,8 @@
         this.tasks = response.data.data
       }).catch( error => {
         console.log(error)
+      }).then(() => {
+        this.loading = false
       })
     }
   }
