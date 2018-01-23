@@ -17,12 +17,14 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <button id="reload" type="button" class="btn btn-default">Reload</button>
+            <button id="reload" type="button" class="btn btn-default" @click="reloadEmit">Reload</button>
+            <button id="all" type="button" class="btn btn-default" @click="changeVisibility('all')">All</button>
+            <button id="completed-tasks" type="button" class="btn btn-default" @click="changeVisibility('completed')">Completed</button>
             <div class="overlay" v-if="loading">
                     <i class="fa fa-refresh fa-spin"></i>
             </div>
             <ul class="todo-list ui-sortable">
-                <li v-for="task in tasks" :key="task">
+                <li v-for="(task, index) in filteredTasks" :key="index">
                     <span class="handle ui-sortable-handle">
                         <i class="fa fa-ellipsis-v"></i>
                         <i class="fa fa-ellipsis-v"></i>
@@ -57,9 +59,21 @@
         type: Array,
         required: true
       },
-      loading: Boolean
+      filteredTasks: Array,
+      loading: Boolean,
+    },
+    methods: {
+        reloadEmit: function () {
+            this.$emit('reload');
+        },
+        changeVisibility: function (visibilityValue) {
+            this.$emit('visibility', visibilityValue)
+        }
     },
     mounted() {
+        console.log(this.filteredTasks);
+        
     }
   }
+
 </script>

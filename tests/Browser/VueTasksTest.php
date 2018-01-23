@@ -23,7 +23,7 @@ class VueTasksTest extends DuskTestCase
     public function setUp()
     {
         parent::setUp();
-       initialize_task_permissions();
+        initialize_task_permissions();
 //        Artisan::call('passport:install');
 //        $this->withoutExceptionHandling();
     }
@@ -69,7 +69,7 @@ class VueTasksTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $this->login($browser);
-            $tasks = factory(Task::class,5)->create();
+            $tasks = factory(Task::class, 5)->create();
             $browser->maximize();
             $browser->visit(new VueTasksPage())
                     ->assert('Tasks')
@@ -85,13 +85,12 @@ class VueTasksTest extends DuskTestCase
      * Reload.
      *
      * @test
-     * @group run
      */
     public function reload()
     {
         $this->browse(function (Browser $browser) {
             $this->login($browser);
-            $tasks = factory(Task::class,5)->create();
+            $tasks = factory(Task::class, 5)->create();
             $browser->maximize();
             $browser->visit(new VueTasksPage())
                 ->seeTitle('Tasks')
@@ -103,7 +102,6 @@ class VueTasksTest extends DuskTestCase
             $task = factory(Task::class)->create();
 
             $browser->reload()
-                ->assertVisible('div.overlay>.fa-refresh')
                 ->assertVue('loading', true, '@component')
                 ->waitUntilMissing('div.overlay>.fa-refresh')
                 ->assertVue('loading', false, '@component')
@@ -115,13 +113,13 @@ class VueTasksTest extends DuskTestCase
      * See completed tasks.
      *
      * @test
-     *
+     * @group run
      */
     public function see_completed_tasks()
     {
         $this->browse(function (Browser $browser) {
             $this->login($browser);
-            $tasks = factory(Task::class,5)->create();
+            $tasks = factory(Task::class, 5)->create();
             $completed_tasks = factory(Task::class, 3)->states('completed')->create();
 
             $browser->maximize();
@@ -143,7 +141,7 @@ class VueTasksTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $this->login($browser);
-            $tasks = factory(Task::class,5)->create();
+            $tasks = factory(Task::class, 5)->create();
             $completed_tasks = factory(Task::class, 3)->states('completed')->create();
 
             $browser->maximize();
@@ -272,5 +270,4 @@ class VueTasksTest extends DuskTestCase
                 ->seeUnCompletedTask($task); //TODO
         });
     }
-
 }
