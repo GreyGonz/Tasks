@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-app>
     <v-flex>
       <h1>Tasks</h1>  
     </v-flex> 
-  </div>
+  </v-app>
 </template>

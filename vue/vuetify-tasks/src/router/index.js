@@ -5,6 +5,7 @@ import Landing from '@/components/Landing'
 import Login from '@/components/Login'
 import MainLayout from '@/components/MainLayout'
 import Tasks from '@/components/Tasks'
+import Register from '@/components/Register'
 
 Vue.use(Router)
 
@@ -14,6 +15,11 @@ export default new Router({
       path: '/',
       name: 'Landing',
       component: Landing
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
     },
     {
       path: '/login',
