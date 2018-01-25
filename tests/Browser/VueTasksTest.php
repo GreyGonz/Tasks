@@ -113,14 +113,13 @@ class VueTasksTest extends DuskTestCase
      * See completed tasks.
      *
      * @test
-     * @group run
      */
     public function see_completed_tasks()
     {
         $this->browse(function (Browser $browser) {
             $this->login($browser);
             $tasks = factory(Task::class, 5)->create();
-            $completed_tasks = factory(Task::class, 3)->states('completed')->create();
+            $completed_tasks = factory(Task::class, 1)->states('completed')->create();
 
             $browser->maximize();
             $browser->visit(new VueTasksPage())
@@ -135,6 +134,7 @@ class VueTasksTest extends DuskTestCase
      *
      * @test
      * @group current
+     *
      *
      */
     public function see_pending_tasks()
@@ -154,6 +154,8 @@ class VueTasksTest extends DuskTestCase
 
     /**
      * Add task
+     * @test
+     * @group run
      */
     public function add_task()
     {
@@ -163,9 +165,9 @@ class VueTasksTest extends DuskTestCase
             $task = factory(Task::class)->make();
             $browser->visit(new VueTasksPage())
                 ->store_task($task)
-                ->assertVue('adding', true, '@tasks') //  Test state
+                ->assertVue('adding', true, '@component') //  Test state
                 ->waitForSuccessfulCreateAlert($task) // TODO
-                ->assertVue('adding', false, '@tasks') //  Test state
+                ->assertVue('adding', false, '@component') //  Test state
                 ->seeTask($task);
         });
     }

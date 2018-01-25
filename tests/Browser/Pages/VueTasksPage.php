@@ -77,7 +77,7 @@ class VueTasksPage extends BasePage
     public function seeBox(Browser $browser, $title)
     {
         $browser->assertVisible('.box');
-        $browser->assertSeein('.box .box-title',$title);
+        $browser->assertSeein('.box .box-title', $title);
         $browser->assertVisible('.box .box-body ul');
     }
 
@@ -186,7 +186,7 @@ class VueTasksPage extends BasePage
      */
     public function store_task(Browser $browser, $task)
     {
-        $this->type('name',$task->name);
+        $browser->type('name', $task->name);
         $this->store($browser);
     }
 
@@ -200,7 +200,7 @@ class VueTasksPage extends BasePage
     {
         //Init edit
         $this->edit($browser);
-        $this->type('new-name',$newTask->name);
+        $this->type('new-name', $newTask->name);
         //Confirm edit
         $this->update($browser);
     }
@@ -215,7 +215,7 @@ class VueTasksPage extends BasePage
     {
         //Init edit
         $this->edit($browser);
-        $this->type('new-name',$newTask->name);
+        $this->type('new-name', $newTask->name);
         //Cancel edit
         $this->cancel_update($browser); // TODO
     }
@@ -273,7 +273,6 @@ class VueTasksPage extends BasePage
 
     public function toogle_complete() // TODO
     {
-
     }
 
     /**
@@ -299,5 +298,4 @@ class VueTasksPage extends BasePage
     {
         $browser->press('@cancel-delete-task');
     }
-
 }

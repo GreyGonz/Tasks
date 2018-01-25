@@ -47,7 +47,7 @@
         <widget :loading="loading">
             <p slot="title">Tasks:</p>
 
-            <div v-cloak="" class="">
+            <div>
 
                 <table class="table table-bordered table-hover">
                     <tbody>
@@ -58,7 +58,7 @@
                             <th>Description</th>
                             <th>Actions</th>
                         </tr>
-                        <tr v-for="(task, index) in filteredTasks">
+                        <tr v-for="(task, index) in filteredTasks" :key="index">
                             <td>{{ index }}</td>
                             <td>{{ task.name }}</td>
                             <td><toggle-button :value="task.completed" @change="toggleCompleted('toggle', task)"></toggle-button></td>

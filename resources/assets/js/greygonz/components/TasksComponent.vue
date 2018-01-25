@@ -18,12 +18,6 @@
                 loading: true,
             }
         },
-        // events: {
-        //     toggle: function (task) {
-        //         console.log('Yas')
-        //         console.log(task)
-        //     },
-        // },
         methods: {
             updateTask: function (task) {
 

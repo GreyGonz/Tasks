@@ -5,6 +5,8 @@ namespace App\Listeners;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+use Illuminate\Support\Facades\Log;
+
 class UserLoggedNotification
 {
     /**
@@ -25,6 +27,6 @@ class UserLoggedNotification
      */
     public function handle($event)
     {
-        //
+        Log::info('TODO userLoggedNotification');
     }
 }

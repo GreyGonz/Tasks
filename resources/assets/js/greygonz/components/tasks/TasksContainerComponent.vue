@@ -4,6 +4,8 @@
       :loading="loading"
       :tasks="tasks"
       :filteredTasks="filteredTasks"
+      :adding="adding"
+      @adding="setAdding"
       @visibility="setVisibility"
       @reload="reloadTasks"></tasks-crud-list>
 </template>
@@ -18,7 +20,7 @@
     all: function (tasks) {
       return tasks
     },
-    active: function (tasks) {
+    pending: function (tasks) {
       return tasks.filter(function (task) {
         return !task.completed
       })
@@ -41,7 +43,8 @@
       return {
         tasks: [],
         loading: true,
-        visibility: 'all'
+        visibility: 'all',
+        adding: false
       }
     },
     methods: {
@@ -56,13 +59,17 @@
         })
       },
       setVisibility: function (visibilityValue) {
-        this.visibility = visibilityValue
+        this.visibility = visibilityValue;
+      },
+      setAdding: function (addingValue) {
+        this.adding = addingValue;
       }
+
     },
     computed: {
       filteredTasks: function () {
         return filters[this.visibility](this.tasks)
-      },
+      }
     },
     mounted() {
       console.log(crud)

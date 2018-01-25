@@ -11,7 +11,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\User;
 
-class LoggedUser
+class LogedUser
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
