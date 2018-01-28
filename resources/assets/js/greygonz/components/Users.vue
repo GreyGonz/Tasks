@@ -1,6 +1,6 @@
 <template>
     <div>
-        <multiselect @select="select(this.user)" :id="id" :name="name" v-model="user" :options="users" :custom-label="customLabel"></multiselect>
+        <multiselect @select="select(this.user)" :value="value" :id="id" :name="name" v-model="user" :options="users" :custom-label="customLabel"></multiselect>
     </div>
 </template>
 
@@ -20,7 +20,8 @@
             return {
 //                numUsers: 0,
                 user: null,
-                users: []
+                users: [],
+                value: this.getValue
             }
         },
         props: ['id', 'name'],
@@ -44,8 +45,14 @@
                 return `${name} - ${email}`
             },
             select(user) {
+                console.log(this.getValue())
                 this.$emit('select', user)
             },
+            getValue() {
+                //user = this.users[0];
+                //this.value = `${user.name} - ${user.email}`;
+                return "Hola";
+            }
         },
         mounted() {
             axios.get('api/v1/users').then(response => {

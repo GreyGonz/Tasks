@@ -27,6 +27,6 @@ class UserLoggedNotification
      */
     public function handle($event)
     {
-        Log::info('TODO userLoggedNotification');
+        Mail::to($event->user)->send('Welcome');
     }
 }

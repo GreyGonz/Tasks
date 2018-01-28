@@ -44,24 +44,25 @@
         </div>
         <!-- /.modal -->
 
-        <widget :loading="loading">
-            <p slot="title">Tasks:</p>
-
-            <div>
+        <widget :loading="loading" class="box">
+            <p slot="title" class="box-title">Tasks</p>
+            <div class="box-body">
 
                 <table class="table table-bordered table-hover">
                     <tbody>
                         <tr>
                             <th style="width: 10px">#</th>
+                            <th>Id</th>
                             <th>Name</th>
                             <th>Completed</th>
                             <th>Description</th>
                             <th>Actions</th>
                         </tr>
-                        <tr v-for="(task, index) in filteredTasks" :key="index">
+                        <tr v-for="(task, index) in filteredTasks" :key="task.id">
                             <td>{{ index }}</td>
+                            <td>{{ task.id }}</td>
                             <td>{{ task.name }}</td>
-                            <td><toggle-button :value="task.completed" @change="toggleCompleted('toggle', task)"></toggle-button></td>
+                            <td><toggle-button :value="task.completed" @change="sendEmit('toggle', task)"></toggle-button></td>
                             <td class="description" data-toggle="modal" data-target="#modal-description" @click="setDescription(task.description)">{{ task.description }}</td>
                             <td>
                                 <div class="btn-group">
@@ -94,7 +95,7 @@
                         <span v-text="form.errors.get('user_id')" v-if="form.errors.has('user_id')" class="help-block"></span>
                     </transition>
                     <!--<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">-->
-                    <users id="user_id" :value="form.user_id" @select="userSelected"></users>
+                    <users id="user_id" :value="form.user_id" @select="userSelected(form.user_id)"></users>
                 </div>
 
                 <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('name') }">
@@ -102,27 +103,43 @@
                     <transition name="fade">
                         <span v-text="form.errors.get('name')" v-if="form.errors.has('name')" class="help-block"></span>
                     </transition>
-                    <input @input="form.errors.clear('name')" type="text" class="form-control" id="name" v-model="form.name" @keydown.enter="addTask">
+                    <input @input="form.errors.clear('name')" type="text" name="name" class="form-control" id="name" v-model="form.name" @keydown.enter="addTask">
+                </div>
+
+                <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('name') }">
+                    <label for="name">Task description:</label>
+                    <transition name="fade">
+                        <span v-text="form.errors.get('description')" v-if="form.errors.has('description')" class="help-block"></span>
+                    </transition>
+                    <input @input="form.errors.clear('description')" type="text" name="description" class="form-control" id="description" v-model="form.description" @keydown.enter="addTask">
                 </div>
 
                 <h2>Filtres</h2>
-                <ul>
-                    <li @click="show('all')" :class="{ active: this.filter === 'all' }">All</li>
-                    <li @click="show('pending')" :class="{ active: this.filter === 'pending' }">Pending</li>
-                    <li @click="show('completed')" :class="{ active: this.filter === 'completed' }">Completed</li>
-                </ul>
+                <div>
+                    <button class="btn btn-primary" id="completed-tasks" @click="sendEmit('filter', 'completed')">
+                        Completed
+                    </button>
+                    <button class="btn btn-primary" id="pending-tasks" @click="sendEmit('filter', 'pending')">
+                        Pending
+                    </button>
+                    <button class="btn btn-primary" id="all-tasks" @click="sendEmit('filter', 'all')">
+                        All
+                    </button>
+                </div>
 
 
             </div>
 
             <div slot="footer">
-                Pending tasks: {{pendingTasksCounter}}
-                <!-- /.box-body -->
+                {{filteredTasks.length}} tasks left
                 <div class="box-footer">
                     <slot name="footer">
-                        <button class="btn btn-primary" :disabled="form.submitting || form.errors.any()" id="add" @click="addTask">
+                        <button class="btn btn-primary" :disabled="form.submitting || form.errors.any()" id="store-task" @click="addTask">
                             <i class="fa fa-refresh fa-spin fa-lg" v-if="form.submitting"></i>
                             Add
+                        </button>
+                        <button class="btn btn-primary" id="reload" @click="sendEmit('reload', null)">
+                            Reload
                         </button>
                     </slot>
                 </div>
@@ -171,21 +188,7 @@
     import Quill from 'quill'
     import { vueQuill } from 'vue-quill-editor'
 
-    var filters = {
-        all: function (tasks) {
-            return tasks
-        },
-        pending: function (tasks) {
-            return tasks.filter(function (task) {
-                return !task.completed
-            })
-        },
-        completed: function (tasks) {
-            return tasks.filter(function (task) {
-                return task.completed
-            })
-        }
-    }
+    
 
     const LOCAL_STORAGE_KEY = 'TASKS';
 
@@ -202,11 +205,10 @@
             return {
                 editedTask: null,
                 editingTask: '',
-                filter: 'all',
                 task: '',
                 creating: false,
                 taskBeenDeleted: null,
-                form: new Form({ user_id: 1, name: 'prova' }),
+                form: new Form({ user_id: '1', name: 'prova', description: '', completed: false }),
                 description: "",
                 editorOption: {
                     modules: {
@@ -220,28 +222,20 @@
             }
         },
         props: {
-            tasks: {
-                type: Array,
-                required: true,
-            },
             loading: {
                 required: false,
-            }
-        },
-        computed: {
-            filteredTasks() {
-                return filters[this.filter](this.tasks)
             },
-            pendingTasksCounter() {
-                return filters['pending'](this.tasks).length
+            filteredTasks: {
+                type: Array,
+                required: true,
             }
-        },
-        watch: {
-            tasks() {
-//                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.tasks));
-            },
         },
         methods: {
+            // BONS
+            sendEmit(message, value) {
+                this.$emit(message, value);
+            },
+            // FIN BONS
             toggleCompleted(message, task) {
                 this.$emit(message, task)
             },
@@ -252,7 +246,7 @@
               this.description = description
             },
             userSelected(user) {
-              this.form.user_id = user.id
+              this.form.user_id = user
             },
             show(filter) {
                 this.filter = filter
@@ -264,7 +258,7 @@
                 // POST
                 this.form.post(url).then((response) =>  {
                     // Emmagatzema a fitxer JSON
-                    this.tasks.push({name: this.form.name, user_id: this.form.user_id})
+                    this.filteredTasks.push({name: this.form.name, description: this.form.description, user_id: this.form.user_id, completed: this.form.completed})
                     this.form.name=''
                 }).catch((error) => {
                     flash(error.message)

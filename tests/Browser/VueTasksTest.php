@@ -155,7 +155,6 @@ class VueTasksTest extends DuskTestCase
     /**
      * Add task
      * @test
-     * @group run
      */
     public function add_task()
     {

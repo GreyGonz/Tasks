@@ -29,6 +29,7 @@ class ApiTaskController extends Controller
             'name'        => $request->name,
             'description' => $request->description,
             'completed'   => $request->completed,
+            'user_id'     => $request->user_id
         ]);
 
         return $task;
