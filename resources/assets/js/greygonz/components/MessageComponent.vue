@@ -1,8 +1,8 @@
 <template>
-    <div class="alert alert-danger alert-dismissible" v-if="visible">
+    <div :class="getMessageType()" v-if="visible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4><i class="icon fa fa-ban"></i> {{ titleData }}</h4>
-        {{ messageData }}
+        <h4><i :class="getIcon()"></i> {{ this.msgtitle }}</h4>
+        {{ this.message }}
     </div>
 </template>
 
@@ -16,13 +16,12 @@
     export default {
         data() {
             return {
-                messageData: this.message,
-                titleData: this.title,
                 visible: false
             }
         },
         methods: {
             show() {
+                console.log('message called')
                 this.visible = true
                 var component = this
                 setTimeout( () => {
@@ -31,13 +30,26 @@
             },
             hide(){
                 this.visible = false
+            },
+            getMessageType: function () {
+                return "alert " + this.type + " alert-dimiss"
+            },
+            getIcon: function () {
+                if(this.type == "alert-success") {
+                    return "icon fa fa-check"
+                } else {
+                    return "icon fa fa-ban"
+                }
             }
         },
         props: {
-            'title': {
+            'msgtitle': {
                 required: false
             },
             'message': {
+                required: false
+            },
+            'type': {
                 required: false
             }
         },

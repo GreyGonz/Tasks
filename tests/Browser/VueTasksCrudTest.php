@@ -64,13 +64,12 @@ class VueTasksiCrudTest extends DuskTestCase
      *
      * @test
      * @return void
-     *
      */
     public function list_tasks()
     {
         $this->browse(function (Browser $browser) {
             $this->login($browser);
-            $tasks = factory(Task::class, 5)->create();
+            $tasks = factory(Task::class, 2)->create();
             $browser->maximize();
             $browser->visit(new VueTasksCrudPage())
                     ->assert('Tasks')
@@ -101,13 +100,17 @@ class VueTasksiCrudTest extends DuskTestCase
                 ->assertVue('tasks', $tasks->toArray(), '@component')
                 ->seeTasks($tasks);
 
-            $task = factory(Task::class)->create();
+            foreach ($tasks as $task) {
+                $task->delete();
+            }
+
+            $tasks = factory(Task::class, 100)->create();
 
             $browser->reload()
                 ->assertVue('loading', true, '@component')
                 ->waitUntilMissing('div.overlay>.fa-refresh')
                 ->assertVue('loading', false, '@component')
-                ->seeTask($task);
+                ->seeTasks($tasks);
         });
     }
 
@@ -115,7 +118,6 @@ class VueTasksiCrudTest extends DuskTestCase
      * See completed tasks.
      *
      * @test
-     *
      */
     public function see_completed_tasks()
     {
@@ -138,19 +140,19 @@ class VueTasksiCrudTest extends DuskTestCase
      * @test
      * @group current
      *
-     *
      */
     public function see_pending_tasks()
     {
         $this->browse(function (Browser $browser) {
             $this->login($browser);
-            $tasks = factory(Task::class, 5)->create();
+            $tasks = factory(Task::class, 1)->create();
             $completed_tasks = factory(Task::class, 3)->states('completed')->create();
 
             $browser->maximize();
             $browser->visit(new VueTasksCrudPage())
                 ->applyPendingFilter()
                 ->seeTasks($tasks)
+                ->pause(1000)
                 ->dontSeeTasks($completed_tasks);
         });
     }
@@ -158,7 +160,6 @@ class VueTasksiCrudTest extends DuskTestCase
     /**
      * Add task
      * @test
-     * @group run
      */
     public function add_task()
     {
@@ -170,14 +171,15 @@ class VueTasksiCrudTest extends DuskTestCase
                 ->store_task($task)
                 ->assertVue('adding', true, '@component') //  Test state
                 ->waitForSuccessfulCreateAlert($task) // TODO
-                ->assertVue('adding', false, '@component') //  Test state
-                ->seeTask($task);
+                ->assertVue('adding', false, '@component')
+                ->seeTask($task, '#task-name-1');
         });
     }
 
     /**
      * Edit task
-     *
+     * @test
+     * @group run
      */
     public function edit_task()
     {
@@ -188,7 +190,7 @@ class VueTasksiCrudTest extends DuskTestCase
             $newtask = factory(Task::class)->make();
             $newtask->id = $oldTask->id;
             $browser->visit(new VueTasksCrudPage())
-                ->update_task($newtask)
+                ->update_task($oldTask, $newtask)
                 ->assertVue('submit_editing', true, '@tasks') //  Test state
                 ->waitForSuccessfulEditAlert($newtask) // TODO
                 ->assertVue('submit_editing', false, '@tasks') //  Test state

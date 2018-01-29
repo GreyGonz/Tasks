@@ -1,18 +1,22 @@
 <template>
-
-    <tasks-list id="tasks-list"
-        :filteredTasks="filteredTasks"
-        :tasks="tasks"
-        :loading="loading"
-        :form="form"
-        :adding="adding"
-        @toggle="changeCompletedTask"
-        @reload="reloadTasks"
-        @filter="setFilter"
-        @store-task="storeTask"
-        @delete="deleteTask">
-    </tasks-list>
-
+    <div>
+        <tasks-list id="tasks-list"
+            :filteredTasks="filteredTasks"
+            :tasks="tasks"
+            :loading="loading"
+            :form="form"
+            :formName="formName"
+            :adding="adding"
+            :taskNameToEditProp="taskNameToEditProp"
+            @toggle="changeCompletedTask"
+            @reload="reloadTasks"
+            @editTaskName="setTaskNameToEdit"
+            @filter="setFilter"
+            @store-task="storeTask"
+            @delete="deleteTask">
+        </tasks-list>
+        <message :msgtitle="messageTitle" :message="message" :type="messageType"></message>
+    </div>
 </template>
 
 
@@ -37,6 +41,7 @@
     import createApi from './tasks/api/tasks.js'
     import { loadavg } from 'os';
     import Form from 'acacha-forms'
+    import { setTimeout } from 'timers';
 
     const crud = createApi('/api/tasks');
 
@@ -47,26 +52,41 @@
                 loading: true,
                 adding: false,
                 filter: 'all',
-                form: new Form({ user_id: '1', name: 'prova', description: '', completed: false })
+                component: null,
+                form: new Form({ user_id: '1', name: 'prova', description: '', completed: false }),
+                formName: new Form({ name: ''}),
+                messageTitle: '',
+                messageType: '',
+                message: '',
+                taskNameToEditProp: ''
             }
         },
         methods: {
+            setTaskNameToEdit: function (taskName) {
+                this.taskNameToEditProp = taskName;
+            },
+            triggerFlash: function (title, message, color) {
+                this.messageTitle = title;
+                this.messageType = color
+                this.message = message;
+                flash();
+            },
             changeCompletedTask: function (task) {
 
                 crud.update(task).then((response) => {
                     task.completed = !task.completed
                     //this.tasks[task.id-1] = task
                 }).catch((error) => {
-                    flash(error.message)
+                    this.triggerFlash('Error', error.message, 'alert-dimiss')
                 })
             },
             reloadTasks: function () {
                 
                 this.loading = true;
                 crud.getAll().then( (response) => {
-                    this.tasks = response.data.data;
+                  this.tasks = response.data.data;
                 }).catch((error) => {
-                    flash(error.message); 
+                    this.triggerFlash('Error', error.message, 'alert-dimiss') 
                 }).then(() => {
                     this.loading = false;
                 });
@@ -81,8 +101,9 @@
                     this.tasks.push({ name: form.name, description: form.description, user_id: form.user_id, completed: form.completed})
                     form.name=''
                     form.description=''
+                    this.triggerFlash('Success', 'Task added successfully!', 'alert-success')
                 }).catch((error) => {
-                    flash(error.message)
+                    this.triggerFlash('Error', error.message, 'alert-dimiss')
                 }).then( () => {
                     this.adding = false;
                 })
@@ -94,7 +115,7 @@
                 crud.delete(task).then( (response) => {
                     this.reloadTasks();
                 }).catch((error) => {
-                    flash(error.message)
+                    this.triggerFlash('Error', error.message, 'alert-dimiss')
                 })
             },
             setFilter: function (filter) {
@@ -111,7 +132,7 @@
             crud.getAll().then( (response) => {
                 this.tasks = response.data.data;
             }).catch((error) => {
-                flash(error.message); 
+                this.triggerFlash('Error', error.message, 'alert-dimiss') 
             }).then(() => {
                 this.loading = false;
             });

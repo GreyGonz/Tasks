@@ -90,9 +90,20 @@ class VueTasksCrudPage extends BasePage
     public function seeTasks(Browser $browser, $tasks)
     {
         foreach ($tasks as $task) {
-            $this->seeTask($browser, $task);
+            $this->seeTask($browser, $task, "#task-name-".$task->id);
         }
         $browser->assertSee(count($tasks) . ' tasks left');
+    }
+
+    /**
+     * See task.
+     *
+     * @param Browser $browser
+     * @param $task
+     */
+    public function seeTask(Browser $browser, $task, $selector)
+    {
+        $browser->assertSeeIn($selector, $task->name);
     }
 
     /**
@@ -104,7 +115,7 @@ class VueTasksCrudPage extends BasePage
     public function dontSeeTasks(Browser $browser, $tasks)
     {
         foreach ($tasks as $task) {
-            $this->dontSeeTask($browser, $task);
+            $this->dontSeeTask($browser, '#task-name-'.$task->id);
         }
     }
 
@@ -114,9 +125,9 @@ class VueTasksCrudPage extends BasePage
      * @param Browser $browser
      * @param $task
      */
-    public function dontSeeTask(Browser $browser, $task)
+    public function dontSeeTask(Browser $browser, $selector)
     {
-        $browser->assertDontSee($task->name);
+        $browser->assertMissing($selector);
     }
 
     /**
@@ -147,17 +158,6 @@ class VueTasksCrudPage extends BasePage
     public function applyAllFilter(Browser $browser)
     {
         $browser->press('@all');
-    }
-
-    /**
-     * See task.
-     *
-     * @param Browser $browser
-     * @param $task
-     */
-    public function seeTask(Browser $browser, $task)
-    {
-        $browser->assertSee($task->name);
     }
 
     /**
@@ -197,11 +197,11 @@ class VueTasksCrudPage extends BasePage
      * @param Browser $browser
      * @param $newTask
      */
-    public function update_task(Browser $browser, $newTask)
+    public function update_task(Browser $browser, $task, $newTask)
     {
         //Init edit
-        $this->edit($browser);
-        $this->type('new-name', $newTask->name);
+        $this->edit($browser, $task);
+        $browser->type('taskNameEdit', $newTask->name);
         //Confirm edit
         $this->update($browser);
     }
@@ -234,7 +234,7 @@ class VueTasksCrudPage extends BasePage
      */
     public function edit(Browser $browser, $task)
     {
-        $browser->press('#edit-task-' .  $task->id);
+        $browser->press('#task-name-' .  $task->id);
     }
 
     /**
@@ -302,6 +302,6 @@ class VueTasksCrudPage extends BasePage
 
     public function waitForSuccessfulCreateAlert(Browser $browser, $task)
     {
-        $browser->assertSee($task->name);
+        $browser->assertSee('Task added successfully!');
     }
 }

@@ -44,6 +44,27 @@
         </div>
         <!-- /.modal -->
 
+        <div class="modal fade" id="modal-name">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Edit task name</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" name="taskNameEdit" :value="taskNameToEdit" :input="taskNameToEdit">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
         <widget :loading="loading" class="box">
             <p slot="title" class="box-title">Tasks</p>
             <div class="box-body">
@@ -61,9 +82,18 @@
                         <tr v-for="(task, index) in filteredTasks" :key="task.id">
                             <td>{{ index }}</td>
                             <td>{{ task.id }}</td>
-                            <td>{{ task.name }}</td>
-                            <td><toggle-button :value="task.completed" @change="sendEmit('toggle', task)"></toggle-button></td>
-                            <td class="description" data-toggle="modal" data-target="#modal-description" @click="setDescription(task.description)">{{ task.description }}</td>
+                            <td :id="'task-name-' + task.id"
+                                data-toggle="modal"
+                                data-target="#modal-name"
+                                @click="sendEmit('editTaskName', task.name)">
+                                {{ task.name }}
+                            </td>
+                            <td>
+                                <toggle-button :value="task.completed" 
+                                    @change="sendEmit('toggle', task)">
+                                </toggle-button>
+                            </td>
+                            <td :id="'edit-task-desc-' + task.id" class="description" data-toggle="modal" data-target="#modal-description" @click="setDescription(task.description)">{{ task.description }}</td>
                             <td>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#modal-show" @click="showTask(task)">Show</button>
@@ -73,67 +103,34 @@
                         </tr>
                     </tbody>
                 </table>
+                    
+                <div slot="footer">
+                    <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('user_id') }">
+                        <label for="user_id">User:</label>
+                        <transition name="fade">
+                            <span v-text="form.errors.get('user_id')" v-if="form.errors.has('user_id')" class="help-block"></span>
+                        </transition>
+                        <!--<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">-->
+                        <users :id="1" :value="form.user_id" @select="userSelected(form.user_id)"></users>
+                    </div>
 
+                    <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('name') }">
+                        <label for="name">Task name:</label>
+                        <transition name="fade">
+                            <span v-text="form.errors.get('name')" v-if="form.errors.has('name')" class="help-block"></span>
+                        </transition>
+                        <input @input="form.errors.clear('name')" type="text" name="name" class="form-control" id="name" v-model="form.name" @keydown.enter="sendEmit('store-task', form)">
+                    </div>
 
-                <!--<ul>-->
-                    <!--<li v-for="task in filteredTasks" v-bind:class="{ completed: isCompleted(task) }" @dblclick="editTask(task)">-->
-                        <!--<input type="text" id="editingTask" v-model="editingTask" v-if="task == editedTask" @keydown.enter="updateTask(task)" @keydown.esc="discardUpdate(task)">-->
-                        <!--<div v-else>-->
-                            <!--{{task.name}}-->
-                            <!--<i class="fa fa-pencil" aria-hidden="true" @click="editTask(task)"></i>-->
-                            <!--<i v-if="task.id == taskBeenDeleted" class="fa fa-refresh fa-spin fa-lg"></i>-->
-                            <!--<i v-else="" class="fa fa-times" aria-hidden="true" @click="deleteTask(task)" ></i>-->
+                    <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('name') }">
+                        <label for="name">Task description:</label>
+                        <transition name="fade">
+                            <span v-text="form.errors.get('description')" v-if="form.errors.has('description')" class="help-block"></span>
+                        </transition>
+                        <input @input="form.errors.clear('description')" type="text" name="description" class="form-control" id="description" v-model="form.description" @keydown.enter="sendEmit('store-task', form)">
+                    </div>
 
-
-                        <!--</div>-->
-                    <!--</li>-->
-                <!--</ul>-->
-
-                <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('user_id') }">
-                    <label for="user_id">User:</label>
-                    <transition name="fade">
-                        <span v-text="form.errors.get('user_id')" v-if="form.errors.has('user_id')" class="help-block"></span>
-                    </transition>
-                    <!--<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">-->
-                    <users :id="1" :value="form.user_id" @select="userSelected(form.user_id)"></users>
-                </div>
-
-                <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('name') }">
-                    <label for="name">Task name:</label>
-                    <transition name="fade">
-                        <span v-text="form.errors.get('name')" v-if="form.errors.has('name')" class="help-block"></span>
-                    </transition>
-                    <input @input="form.errors.clear('name')" type="text" name="name" class="form-control" id="name" v-model="form.name" @keydown.enter="sendEmit('store-task', form)">
-                </div>
-
-                <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('name') }">
-                    <label for="name">Task description:</label>
-                    <transition name="fade">
-                        <span v-text="form.errors.get('description')" v-if="form.errors.has('description')" class="help-block"></span>
-                    </transition>
-                    <input @input="form.errors.clear('description')" type="text" name="description" class="form-control" id="description" v-model="form.description" @keydown.enter="sendEmit('store-task', form)">
-                </div>
-
-                <h2>Filtres</h2>
-                <div>
-                    <button class="btn btn-primary" id="completed-tasks" @click="sendEmit('filter', 'completed')">
-                        Completed
-                    </button>
-                    <button class="btn btn-primary" id="pending-tasks" @click="sendEmit('filter', 'pending')">
-                        Pending
-                    </button>
-                    <button class="btn btn-primary" id="all-tasks" @click="sendEmit('filter', 'all')">
-                        All
-                    </button>
-                </div>
-
-
-            </div>
-
-            <div slot="footer">
-                {{filteredTasks.length}} tasks left
-                <div class="box-footer">
-                    <slot name="footer">
+                    <div>
                         <button class="btn btn-primary" :disabled="form.submitting || form.errors.any()" id="store-task" @click="sendEmit('store-task', form)">
                             <i class="fa fa-refresh fa-spin fa-lg" v-if="adding"></i>
                             Add
@@ -141,17 +138,31 @@
                         <button class="btn btn-primary" id="reload" @click="sendEmit('reload', null)">
                             Reload
                         </button>
-                    </slot>
-                </div>
-            </div>
-        </widget>
+                    </div>
 
-        <message title="Error" message="" color="info"></message>
-        <div v-if="added" class="alert alert-success alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h4><i class="icon fa fa-check"></i> Alert!</h4>
-            Success alert preview. This alert is dismissable.
-        </div>
+                    <h2>Filtres</h2>
+                    <div>
+                        <button class="btn btn-primary" id="completed-tasks" @click="sendEmit('filter', 'completed')">
+                            Completed
+                        </button>
+                        <button class="btn btn-primary" id="pending-tasks" @click="sendEmit('filter', 'pending')">
+                            Pending
+                        </button>
+                        <button class="btn btn-primary" id="all-tasks" @click="sendEmit('filter', 'all')">
+                            All
+                        </button>
+                    </div>
+
+                    <div>
+                        <span>{{ filteredTasks.length }} tasks left</span>
+                    </div>
+                </div>
+
+
+            </div>
+
+            
+        </widget>
     </div>
 
 </template>
@@ -196,7 +207,6 @@
 
     const LOCAL_STORAGE_KEY = 'TASKS';
 
-    import { wait } from './utils.js';
     import QuillEditor from "../../../../../node_modules/vue-quill-editor/src/editor.vue";
 
     export default {
@@ -213,6 +223,7 @@
                 creating: false,
                 taskBeenDeleted: null,
                 description: "",
+                taskNameToEdit: '',
                 editorOption: {
                     modules: {
                         toolbar: [
@@ -239,8 +250,19 @@
             form: {
                 required: true
             },
+            formName: {
+                required: true
+            },
             adding: {
                 required: false
+            },
+            taskNameToEditProp: {
+                required: true
+            }
+        },
+        watch: {
+            taskNameToEditProp: function (valor) {
+                this.taskNameToEdit = valor;
             }
         },
         methods: {
