@@ -299,4 +299,9 @@ class VueTasksCrudPage extends BasePage
     {
         $browser->press('@cancel-delete-task');
     }
+
+    public function waitForSuccessfulCreateAlert(Browser $browser, $task)
+    {
+        $browser->assertSee($task->name);
+    }
 }

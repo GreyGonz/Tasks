@@ -177,6 +177,7 @@ class VueTasksiCrudTest extends DuskTestCase
 
     /**
      * Edit task
+     *
      */
     public function edit_task()
     {

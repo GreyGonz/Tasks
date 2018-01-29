@@ -2,10 +2,15 @@
 
     <tasks-list id="tasks-list"
         :filteredTasks="filteredTasks"
+        :tasks="tasks"
         :loading="loading"
+        :form="form"
+        :adding="adding"
         @toggle="changeCompletedTask"
         @reload="reloadTasks"
-        @filter="setFilter">
+        @filter="setFilter"
+        @store-task="storeTask"
+        @delete="deleteTask">
     </tasks-list>
 
 </template>
@@ -31,6 +36,7 @@
 
     import createApi from './tasks/api/tasks.js'
     import { loadavg } from 'os';
+    import Form from 'acacha-forms'
 
     const crud = createApi('/api/tasks');
 
@@ -39,7 +45,9 @@
             return {
                 tasks: [],
                 loading: true,
-                filter: 'all'
+                adding: false,
+                filter: 'all',
+                form: new Form({ user_id: '1', name: 'prova', description: '', completed: false })
             }
         },
         methods: {
@@ -62,6 +70,32 @@
                 }).then(() => {
                     this.loading = false;
                 });
+            },
+            storeTask: function (form) {
+                let url = '/api/tasks'
+
+                // POST
+                this.adding = true
+                form.post(url).then((response) =>  {
+                    // Emmagatzema a fitxer JSON
+                    this.tasks.push({ name: form.name, description: form.description, user_id: form.user_id, completed: form.completed})
+                    form.name=''
+                    form.description=''
+                }).catch((error) => {
+                    flash(error.message)
+                }).then( () => {
+                    this.adding = false;
+                })
+
+                this.reloadTasks();
+            },
+            deleteTask: function (task) {
+
+                crud.delete(task).then( (response) => {
+                    this.reloadTasks();
+                }).catch((error) => {
+                    flash(error.message)
+                })
             },
             setFilter: function (filter) {
                 this.filter = filter;

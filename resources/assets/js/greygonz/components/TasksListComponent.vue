@@ -67,7 +67,7 @@
                             <td>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#modal-show" @click="showTask(task)">Show</button>
-                                    <button type="button" class="btn btn-xs btn-primary">Delete</button>
+                                    <button type="button" class="btn btn-xs btn-primary" @click="sendEmit('delete', task)">Delete</button>
                                 </div>
                             </td>
                         </tr>
@@ -95,7 +95,7 @@
                         <span v-text="form.errors.get('user_id')" v-if="form.errors.has('user_id')" class="help-block"></span>
                     </transition>
                     <!--<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">-->
-                    <users id="user_id" :value="form.user_id" @select="userSelected(form.user_id)"></users>
+                    <users :id="1" :value="form.user_id" @select="userSelected(form.user_id)"></users>
                 </div>
 
                 <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('name') }">
@@ -103,7 +103,7 @@
                     <transition name="fade">
                         <span v-text="form.errors.get('name')" v-if="form.errors.has('name')" class="help-block"></span>
                     </transition>
-                    <input @input="form.errors.clear('name')" type="text" name="name" class="form-control" id="name" v-model="form.name" @keydown.enter="addTask">
+                    <input @input="form.errors.clear('name')" type="text" name="name" class="form-control" id="name" v-model="form.name" @keydown.enter="sendEmit('store-task', form)">
                 </div>
 
                 <div class="form-group has-feedback" :class="{ 'has-error': this.form.errors.has('name') }">
@@ -111,7 +111,7 @@
                     <transition name="fade">
                         <span v-text="form.errors.get('description')" v-if="form.errors.has('description')" class="help-block"></span>
                     </transition>
-                    <input @input="form.errors.clear('description')" type="text" name="description" class="form-control" id="description" v-model="form.description" @keydown.enter="addTask">
+                    <input @input="form.errors.clear('description')" type="text" name="description" class="form-control" id="description" v-model="form.description" @keydown.enter="sendEmit('store-task', form)">
                 </div>
 
                 <h2>Filtres</h2>
@@ -134,8 +134,8 @@
                 {{filteredTasks.length}} tasks left
                 <div class="box-footer">
                     <slot name="footer">
-                        <button class="btn btn-primary" :disabled="form.submitting || form.errors.any()" id="store-task" @click="addTask">
-                            <i class="fa fa-refresh fa-spin fa-lg" v-if="form.submitting"></i>
+                        <button class="btn btn-primary" :disabled="form.submitting || form.errors.any()" id="store-task" @click="sendEmit('store-task', form)">
+                            <i class="fa fa-refresh fa-spin fa-lg" v-if="adding"></i>
                             Add
                         </button>
                         <button class="btn btn-primary" id="reload" @click="sendEmit('reload', null)">
@@ -147,6 +147,11 @@
         </widget>
 
         <message title="Error" message="" color="info"></message>
+        <div v-if="added" class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-check"></i> Alert!</h4>
+            Success alert preview. This alert is dismissable.
+        </div>
     </div>
 
 </template>
@@ -184,7 +189,6 @@
 <script>
 
     import Users from './Users'
-    import Form from 'acacha-forms'
     import Quill from 'quill'
     import { vueQuill } from 'vue-quill-editor'
 
@@ -208,7 +212,6 @@
                 task: '',
                 creating: false,
                 taskBeenDeleted: null,
-                form: new Form({ user_id: '1', name: 'prova', description: '', completed: false }),
                 description: "",
                 editorOption: {
                     modules: {
@@ -222,12 +225,22 @@
             }
         },
         props: {
+            tasks: {
+                type: Array,
+                required: true,
+            },
             loading: {
                 required: false,
             },
             filteredTasks: {
                 type: Array,
                 required: true,
+            },
+            form: {
+                required: true
+            },
+            adding: {
+                required: false
             }
         },
         methods: {
@@ -251,23 +264,10 @@
             show(filter) {
                 this.filter = filter
             },
-            addTask() {
-                // -- Crida metode POST i emmagatzema a DB --
-                let url = '/api/tasks'
-
-                // POST
-                this.form.post(url).then((response) =>  {
-                    // Emmagatzema a fitxer JSON
-                    this.filteredTasks.push({name: this.form.name, description: this.form.description, user_id: this.form.user_id, completed: this.form.completed})
-                    this.form.name=''
-                }).catch((error) => {
-                    flash(error.message)
-                })
-            },
             isCompleted(task) {
                 return task.completed
             },
-            deleteTask(task) {
+            /* deleteTask(task) {
                 this.taskBeenDeleted = task.id
 
                 let url = 'api/tasks/' + task.id
@@ -279,7 +279,7 @@
                 }).then(() => {
                     this.taskBeenDeleted = null
                 })
-            },
+            }, */
             editTask(task) {
                 this.editedTask = task
                 this.editingTask = task.name

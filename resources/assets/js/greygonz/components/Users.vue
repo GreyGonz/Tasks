@@ -18,10 +18,9 @@
         name: 'User',
         data() {
             return {
-//                numUsers: 0,
                 user: null,
                 users: [],
-                value: this.getValue
+                value: ''
             }
         },
         props: ['id', 'name'],
@@ -45,19 +44,14 @@
                 return `${name} - ${email}`
             },
             select(user) {
-                console.log(this.getValue())
                 this.$emit('select', user)
-            },
-            getValue() {
-                //user = this.users[0];
-                //this.value = `${user.name} - ${user.email}`;
-                return "Hola";
             }
         },
         mounted() {
             axios.get('api/v1/users').then(response => {
                 this.users = response.data;
                 this.user = this.userObject(this.id)
+                this.value = this.user.name + " - " + this.user.email
 //                this.user = this.users.find( user => {
 //                    return user.id == this.value
 //                });

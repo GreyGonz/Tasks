@@ -10,6 +10,9 @@ class Crud {
   update(task) {
     return axios.put(this.endPoint + '/' + task.id, task)
   }
+  delete(task) {
+    return axios.delete(this.endPoint + '/' + task.id, task)
+  }
 }
 
 export default function createApi(endPoint) {
