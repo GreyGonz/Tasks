@@ -12,8 +12,9 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 /**
  * Class VueTasksTest
  * @package Tests\Browser
+ * @group run
  */
-class VueTasksiCrudTest extends DuskTestCase
+class VueTasksCrudTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
@@ -179,7 +180,7 @@ class VueTasksiCrudTest extends DuskTestCase
     /**
      * Edit task
      * @test
-     * @group run
+     *
      */
     public function edit_task()
     {
@@ -189,18 +190,21 @@ class VueTasksiCrudTest extends DuskTestCase
             $oldTask = factory(Task::class)->create();
             $newtask = factory(Task::class)->make();
             $newtask->id = $oldTask->id;
+            $selector = '#task-name-'.$oldTask->id;
             $browser->visit(new VueTasksCrudPage())
                 ->update_task($oldTask, $newtask)
-                ->assertVue('submit_editing', true, '@tasks') //  Test state
+                ->assertVue('loading', true, '@component') //  Test state
                 ->waitForSuccessfulEditAlert($newtask) // TODO
-                ->assertVue('submit_editing', false, '@tasks') //  Test state
-                ->seeTask($newtask)
-                ->dontSeeTask($oldTask);
+                ->assertVue('loading', false, '@component') //  Test state
+                ->seeTask($newtask, $selector)
+                ->assertDontSeeIn($selector, $oldTask->name);
         });
     }
 
     /**
      * Cancel edit
+     * @test
+     *
      */
     public function cancel_edit()
     {
@@ -211,17 +215,16 @@ class VueTasksiCrudTest extends DuskTestCase
             $newtask = factory(Task::class)->make();
             $newtask->id = $oldTask->id;
             $browser->visit(new VueTasksCrudPage())
-                ->edit_task($newtask)
-                ->assertVue('editing', true, '@tasks') //  Test state
-                ->cancel_update()
-                ->assertVue('editing', false, '@tasks') //  Test state
-                ->seeTask($oldTask)
-                ->dontSeeTask($newtask);
+                ->cancel_update_task($oldTask, $newtask)
+                ->seeTask($oldTask, '#task-name-'.$oldTask->id)
+                ->assertDontSeeIn('#task-name-'.$oldTask->id, $newtask->name);
         });
     }
 
     /**
      * Delete task
+     * @test
+     *
      */
     public function delete_task()
     {
@@ -231,15 +234,17 @@ class VueTasksiCrudTest extends DuskTestCase
             $task = factory(Task::class)->create();
             $browser->visit(new VueTasksCrudPage())
                 ->destroy_task($task)
-                ->assertVue('submitting_destroy', true, '@tasks') //  Test state
+                ->assertVue('loading', true, '@component') //  Test state
                 ->waitForSuccessfulDeleteAlert($task) // TODO
-                ->assertVue('submitting_destroy', false, '@tasks') //  Test state
-                ->dontSeeTask($task);
+                ->assertVue('loading', false, '@component') //  Test state
+                ->dontSeeTask('#task-name-'.$task->id);
         });
     }
 
     /**
      * Cancel delete task
+     * @test
+     *
      */
     public function cancel_delete_task()
     {
@@ -248,16 +253,14 @@ class VueTasksiCrudTest extends DuskTestCase
             $browser->maximize();
             $task = factory(Task::class)->create();
             $browser->visit(new VueTasksCrudPage())
-                ->delete_task($task)
-                ->assertVue('deleting', true, '@tasks') //  Test state
-                ->cancel_delete() // TODO
-                ->assertVue('deleting', false, '@tasks') //  Test state
-                ->seeTask($task);
+                ->cancel_destroy_task($task)
+                ->seeTask($task, '#task-name-'.$task->id);
         });
     }
 
     /**
      * Toogle complete task.
+     * @test
      */
     public function toogle_complete_task()
     {
@@ -267,15 +270,7 @@ class VueTasksiCrudTest extends DuskTestCase
             $task = factory(Task::class)->create();
             $browser->visit(new VueTasksCrudPage())
                 ->toogle_complete($task)
-                ->assertVue('toogle_completion', true, '@tasks') //  Test state
-                ->waitForCompletedTask() // TODO
-                ->assertVue('toogle_completion', false, '@tasks') //  Test state
-                ->seeCompletedTask($task) //TODO
-                ->toogle_complete($task)
-                ->assertVue('toogle_completion', true, '@tasks') //  Test state
-                ->waitForUnCompletedTask() // TODO
-                ->assertVue('toogle_completion', false, '@tasks') //  Test state
-                ->seeUnCompletedTask($task); //TODO
+                ->toogle_complete($task);
         });
     }
 }

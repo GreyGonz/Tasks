@@ -7,13 +7,16 @@
             :form="form"
             :formName="formName"
             :adding="adding"
-            :taskNameToEditProp="taskNameToEditProp"
+            :editingTaskProp="editingTaskProp"
+            :taskToDelete="taskToDelete"
+            @update="updateTask"
             @toggle="changeCompletedTask"
             @reload="reloadTasks"
-            @editTaskName="setTaskNameToEdit"
+            @editTask="setTaskToEdit"
             @filter="setFilter"
             @store-task="storeTask"
-            @delete="deleteTask">
+            @delete="deleteTask"
+            @destroy="destroyTask">
         </tasks-list>
         <message :msgtitle="messageTitle" :message="message" :type="messageType"></message>
     </div>
@@ -58,12 +61,13 @@
                 messageTitle: '',
                 messageType: '',
                 message: '',
-                taskNameToEditProp: ''
+                editingTaskProp: '',
+                taskToDelete: null
             }
         },
         methods: {
-            setTaskNameToEdit: function (taskName) {
-                this.taskNameToEditProp = taskName;
+            setTaskToEdit: function (task) {
+                this.editingTaskProp = task;
             },
             triggerFlash: function (title, message, color) {
                 this.messageTitle = title;
@@ -75,6 +79,7 @@
 
                 crud.update(task).then((response) => {
                     task.completed = !task.completed
+                    this.updateTask(task);
                     //this.tasks[task.id-1] = task
                 }).catch((error) => {
                     this.triggerFlash('Error', error.message, 'alert-dimiss')
@@ -111,11 +116,29 @@
                 this.reloadTasks();
             },
             deleteTask: function (task) {
-
-                crud.delete(task).then( (response) => {
+                this.taskToDelete = task;
+            },
+            destroyTask: function () {
+                this.loading = true;
+                crud.delete(this.taskToDelete).then( (response) => {
                     this.reloadTasks();
+                    this.triggerFlash('Success', 'Task deleted successfuly!', 'alert-success');
                 }).catch((error) => {
                     this.triggerFlash('Error', error.message, 'alert-dimiss')
+                }).then( () => {
+                    this.loading = false;
+                })
+            },
+            updateTask: function (task) {
+
+                this.loading = true;
+                crud.update(task).then( (response) => {
+                    this.reloadTasks();
+                    this.triggerFlash('Success', 'Task updated successfuly!', 'alert-success');
+                }).catch( (error) => {
+                    this.triggerFlash('Error', error.message, 'alert-dimiss');
+                }).then( () => {
+                    this.loading = false;
                 })
             },
             setFilter: function (filter) {

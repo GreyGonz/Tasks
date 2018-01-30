@@ -1,5 +1,5 @@
 <template>
-    <div :class="getMessageType()" v-if="visible">
+    <div id="message-box" :class="getMessageType()" v-if="visible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         <h4><i :class="getIcon()"></i> {{ this.msgtitle }}</h4>
         {{ this.message }}

@@ -50,9 +50,9 @@ class VueTasksCrudPage extends BasePage
             '@pending'              => '#pending-tasks',
             '@all'                  => '#all-tasks',
             '@store-task'           => '#store-task',       // Add task button or link or...
-            '@update-task'          => '#update-task',      // Update task button or link or... Update update task in database
+            '@update-task'          => '.update-task',      // Update task button or link or... Update update task in database
             '@destroy-task'         => '#destroy-task',     // Destroy task button or link or... Destroy delete
-            '@cancel-delete-task'   => '#cancel-delete-task',  // Cancel delete task button or link or... Destroy delete
+            '@cancel'               => '.cancel-button',  // Cancel delete task button or link or... Destroy delete
             '@toogle-complete-task' => '#complete-task',    // Toogle complete task button or link or...
 
             // TODO : sort and pagination
@@ -212,13 +212,18 @@ class VueTasksCrudPage extends BasePage
      * @param Browser $browser
      * @param $newTask
      */
-    public function cancel_update_task(Browser $browser, $newTask)
+    public function cancel_update_task(Browser $browser, $task, $newTask)
     {
         //Init edit
-        $this->edit($browser);
-        $this->type('new-name', $newTask->name);
-        //Cancel edit
-        $this->cancel_update($browser); // TODO
+        $this->edit($browser, $task);
+        $browser->type('taskNameEdit', $newTask->name);
+
+        $this->cancel($browser);
+    }
+
+    public function cancel(Browser $browser)
+    {
+        $browser->press('@cancel');
     }
 
     /**
@@ -235,6 +240,7 @@ class VueTasksCrudPage extends BasePage
     public function edit(Browser $browser, $task)
     {
         $browser->press('#task-name-' .  $task->id);
+        $browser->waitFor('#task-name-edit');
     }
 
     /**
@@ -269,11 +275,12 @@ class VueTasksCrudPage extends BasePage
         //Init delete
         $this->delete($browser, $task);
         //Cancel delete
-        $this->cancel_destroy($browser); // TODO
+        $this->cancel_delete($browser); // TODO
     }
 
-    public function toogle_complete() // TODO
+    public function toogle_complete(Browser $browser, $task) // TODO
     {
+        $browser->press('#task-toggle-'.$task->id);
     }
 
     /**
@@ -281,7 +288,7 @@ class VueTasksCrudPage extends BasePage
      */
     public function delete(Browser $browser, $task)
     {
-        $browser->press('@delete-task-' . $task->id);
+        $browser->press('#delete-task-' . $task->id);
     }
 
     /**
@@ -289,6 +296,7 @@ class VueTasksCrudPage extends BasePage
      */
     public function destroy(Browser $browser)
     {
+        $browser->waitFor('#modal-confirm-delete');
         $browser->press('@destroy-task');
     }
 
@@ -297,11 +305,25 @@ class VueTasksCrudPage extends BasePage
      */
     public function cancel_delete(Browser $browser)
     {
-        $browser->press('@cancel-delete-task');
+        $browser->waitFor('#modal-confirm-delete');
+        $browser->press('#cancel-delete');
     }
 
     public function waitForSuccessfulCreateAlert(Browser $browser, $task)
     {
+        $browser->waitFor('#message-box');
         $browser->assertSee('Task added successfully!');
+    }
+
+    public function waitForSuccessfulEditAlert(Browser $browser, $task)
+    {
+        $browser->waitFor('#message-box');
+        $browser->assertSee('Task updated successfuly!');
+    }
+
+    public function waitForSuccessfulDeleteAlert(Browser $browser, $task)
+    {
+        $browser->waitFor('#message-box');
+        $browser->assertSee('Task deleted successfuly!');
     }
 }
