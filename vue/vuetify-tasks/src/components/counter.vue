@@ -15,7 +15,9 @@
 
 <script>
 
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
+import * as actions from '../store/action-types'
+import * as mutations from '../store/mutation-types'
 
 export default {
   name: 'name',
@@ -27,17 +29,15 @@ export default {
   },
   methods: {
     // Mutations
-    // increment () {
-    //   this.$store.commit('increment')
-    // },
-    // decrement () {
-    //   this.$store.commit('decrement')
-    // }
-    ...mapMutations(['increment', 'decrement']), // Crida mutations store
-    ...mapActions(['fetchTasks'])
+    increment () {
+      this.$store.commit(mutations.INCREMENT)
+    },
+    decrement () {
+      this.$store.commit(mutations.DECREMENT)
+    }
   },
   mounted () {
-    this.$store.dispatch('fetchTasks')
+    this.$store.dispatch(actions.FETCH_TASKS)
   }
 
 }
