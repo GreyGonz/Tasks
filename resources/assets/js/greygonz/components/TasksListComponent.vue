@@ -9,18 +9,15 @@
                         <h4 class="modal-title">Description</h4>
                     </div>
                     <div class="modal-body">
-                        <quill-editor v-model="description" :options="editorOption"></quill-editor>
+                        <quill-editor v-model="editingTask.description" :options="editorOption"></quill-editor>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Update</button>
+                        <button type="button" class="cancel-button btn btn-default pull-left" data-dismiss="modal" @click="sendEmit('reload')">Close</button>
+                        <button type="button" class="update-task btn btn-primary" @click="sendEmit('update', editingTask)" data-dimiss="modal">Update</button>
                     </div>
                 </div>
-                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal -->
 
         <div class="modal fade" id="modal-name">
             <div class="modal-dialog">
@@ -102,7 +99,16 @@
                                     :id="'task-toggle-' + task.id">
                                 </toggle-button>
                             </td>
-                            <td :id="'edit-task-desc-' + task.id" class="description" data-toggle="modal" data-target="#modal-description" @click="setDescription(task.description)">{{ task.description }}</td>
+                            <!--<td :id="'edit-task-desc-' + task.id"-->
+                                <!--class="description"-->
+                                <!--data-toggle="modal"-->
+                                <!--data-target="#modal-description"-->
+                                <!--@click="sendEmit('editTask', task)">-->
+                                    <!--{{ task.description }}-->
+                            <!--</td>-->
+                            <td :id="'edit-task-desc-' + task.id">
+                                <medium-editor class="description" :text='task.description' @click="sendEmit('update', task)"></medium-editor>
+                            </td>
                             <td>
                                 <div class="btn-group">
                                     <button :id="'delete-task-' + task.id" 
@@ -217,8 +223,9 @@
     import Users from './Users'
     import Quill from 'quill'
     import { vueQuill } from 'vue-quill-editor'
+    import Medium from 'medium-editor'
 
-    
+    var medium = new Medium('.editable');
 
     const LOCAL_STORAGE_KEY = 'TASKS';
 
@@ -229,6 +236,7 @@
             QuillEditor,
             Users,
             vueQuill,
+            'medium-editor': medium,
         },
         data() {
             return {
@@ -324,6 +332,9 @@
                 this.editedTask = null
                 this.editingTask = ''
             } */
+        },
+        mounted() {
+            new Medium('.editable')
         }
     }
 </script>

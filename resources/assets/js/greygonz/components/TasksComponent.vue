@@ -1,5 +1,6 @@
 <template>
     <div>
+        <message :msgtitle="messageTitle" :message="message" :type="messageType"></message>
         <tasks-list id="tasks-list"
             :filteredTasks="filteredTasks"
             :tasks="tasks"
@@ -18,7 +19,6 @@
             @delete="deleteTask"
             @destroy="destroyTask">
         </tasks-list>
-        <message :msgtitle="messageTitle" :message="message" :type="messageType"></message>
     </div>
 </template>
 

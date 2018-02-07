@@ -1,5 +1,22 @@
 <template>
   <div>
+    <div v-for="task in tasks" :key="task.id" class="mb-3">
+    <v-card>
+        <v-card-media :src="task.image" height="200px">
+        </v-card-media>
+        <v-card-title primary-title>
+          <div>
+            <h3 class="headline mb-0">{{ task.name }}</h3>
+            <div>{{ task.description }}</div>
+          </div>
+        </v-card-title>
+        <v-card-actions>
+          <v-btn flat color="orange">Share</v-btn>
+          <v-btn flat color="orange">Explore</v-btn>
+        </v-card-actions>
+      </v-card>
+    </div>
+  
     <button @click="increment">+Button</button>
     <button @click="decrement">-Button</button>
     {{ count }}
