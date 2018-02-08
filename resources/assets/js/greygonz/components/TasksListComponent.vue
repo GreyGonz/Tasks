@@ -9,11 +9,11 @@
                         <h4 class="modal-title">Description</h4>
                     </div>
                     <div class="modal-body">
-                        <quill-editor v-model="editingTask.description" :options="editorOption"></quill-editor>
+                        <input type="text" v-model="editingTask.description" name="taskDescriptionEdit" >
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="cancel-button btn btn-default pull-left" data-dismiss="modal" @click="sendEmit('reload')">Close</button>
-                        <button type="button" class="update-task btn btn-primary" @click="sendEmit('update', editingTask)" data-dimiss="modal">Update</button>
+                        <button type="button" class="update-task btn btn-primary" @click="sendEmit('update', editingTask)" data-dismiss="modal">Update</button>
                     </div>
                 </div>
             </div>
@@ -99,16 +99,16 @@
                                     :id="'task-toggle-' + task.id">
                                 </toggle-button>
                             </td>
-                            <!--<td :id="'edit-task-desc-' + task.id"-->
-                                <!--class="description"-->
-                                <!--data-toggle="modal"-->
-                                <!--data-target="#modal-description"-->
-                                <!--@click="sendEmit('editTask', task)">-->
-                                    <!--{{ task.description }}-->
-                            <!--</td>-->
-                            <td :id="'edit-task-desc-' + task.id">
-                                <medium-editor class="description" :text='task.description' @click="sendEmit('update', task)"></medium-editor>
+                            <td :id="'edit-task-desc-' + task.id"
+                                class="description"
+                                data-toggle="modal"
+                                data-target="#modal-description"
+                                @click="sendEmit('editTask', task)">
+                                    {{ task.description }}
                             </td>
+                            <!--<td :id="'edit-task-desc-' + task.id">-->
+                                <!--<medium-editor class="description" :text='task.description' :options="options" @change="sendEmit('update', task)"></medium-editor>-->
+                            <!--</td>-->
                             <td>
                                 <div class="btn-group">
                                     <button :id="'delete-task-' + task.id" 
@@ -221,11 +221,10 @@
 <script>
 
     import Users from './Users'
-    import Quill from 'quill'
+    // import Quill from 'quill'
     import { vueQuill } from 'vue-quill-editor'
-    import Medium from 'medium-editor'
+    // import editor from 'vue2-medium-editor'
 
-    var medium = new Medium('.editable');
 
     const LOCAL_STORAGE_KEY = 'TASKS';
 
@@ -235,24 +234,28 @@
         components: {
             QuillEditor,
             Users,
-            vueQuill,
-            'medium-editor': medium,
+            // vueQuill,
+            // 'medium-editor': editor,
         },
         data() {
             return {
                 editingTask: '',
                 task: '',
-                creating: false,
-                description: "",
-                editorOption: {
-                    modules: {
-                        toolbar: [
-                            ['bold', 'italic'],
-                            [{'list': 'ordered'}, {'list': 'bullet'}],
-                            ['link'],
-                        ],
-                    }
-                }
+                creating: false
+                // description: "",
+                // editorOption: {
+                //     modules: {
+                //         toolbar: [
+                //             ['bold', 'italic'],
+                //             [{'list': 'ordered'}, {'list': 'bullet'}],
+                //             ['link'],
+                //         ],
+                //     }
+                // },
+                // options: {
+                //     disableReturn: true,
+                //     buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3', 'quote']
+                // }
             }
         },
         props: {
@@ -293,48 +296,9 @@
             sendEmit(message, value) {
                 this.$emit(message, value);
             },
-            // FIN BONS
-            /* showTask(task) {
-                this.task = task;
-            }, */
-            /* setDescription(description) {
-              this.description = description
-            }, */
             userSelected(user) {
               this.form.user_id = user
-            },
-            /* isCompleted(task) {
-                return task.completed
-            }, */
-            /* deleteTask(task) {
-                this.taskBeenDeleted = task.id
-
-                let url = 'api/tasks/' + task.id
-
-                axios.delete(url).then((response) => {
-                    this.tasks.splice(this.tasks.indexOf(task), 1)
-                }).catch((error) => {
-                    flash(error.message)
-                }).then(() => {
-                    this.taskBeenDeleted = null
-                })
-            }, */
-            /* editTask(task) {
-                this.editedTask = task
-                this.editingTask = task.name
-            }, */
-            /* updateTask(task) {
-                task.name = this.editingTask
-                this.editedTask = null
-                this.editingTask = ''
-            },
-            discardUpdate(task) {
-                this.editedTask = null
-                this.editingTask = ''
-            } */
-        },
-        mounted() {
-            new Medium('.editable')
+            }
         }
     }
 </script>
