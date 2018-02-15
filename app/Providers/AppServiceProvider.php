@@ -2,8 +2,13 @@
 
 namespace App\Providers;
 
+use Acacha\User\GuestUser;
+use App\Observer\TaskObserver;
+use App\Task;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Dusk\DuskServiceProvider;
+use View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +19,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+      View::composer('*', function ($view) {
+        if (Auth::user()) {
+          $view->with('user', Auth::user());
+        } else {
+          $view->with('user', new GuestUser);
+        }
+      });
+
+      Task::observe(TaskObserver::class);
     }
 
     /**
