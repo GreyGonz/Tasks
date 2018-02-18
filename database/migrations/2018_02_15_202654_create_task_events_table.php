@@ -16,6 +16,7 @@ class CreateTaskEventsTable extends Migration
         Schema::create('task_events', function (Blueprint $table) {
             $table->increments('id');
             $table->dateTime('time');
+            $table->string('type');
             $table->string('task_name');
             $table->string('user_name');
             $table->timestamps();

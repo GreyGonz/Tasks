@@ -7,6 +7,7 @@ import Router from 'vue-router'
 // import Tasks from '@/components/Tasks'
 // import Register from '@/components/Register'
 import Counter from '@/components/counter'
+import TaskTimeline from '@/components/TaskTimeline'
 
 Vue.use(Router)
 
@@ -17,6 +18,11 @@ export default new Router({
     //   name: 'Landing',
     //   component: Landing
     // },
+    {
+      path: '/tasks/timeline',
+      name: 'TasksTimeline',
+      component: TaskTimeline
+    },
     {
       path: '/counter',
       name: 'Counter',

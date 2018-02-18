@@ -12,6 +12,7 @@ class TaskObserver {
   {
     TaskEvent::create([
       'time' => Carbon::now(),
+      'type' => 'created',
       'task_name' => $task->name,
       'user_name' => $task->user->name
     ]);

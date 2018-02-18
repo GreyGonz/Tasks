@@ -17,13 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => ['auth']], function () {
-    Route::resource('/tasks', 'TaskController');
+Route::group(['middleware' => 'auth'], function () {
+//    Route::resource('/tasks', 'TaskController');
 
     Route::view('/tasks_component', 'taskscomponent');
     Route::view('/tasks_container', 'tasks_api/tasksContainer');
 
-    Route::get('/tasks/timeline', 'TasksTimelineController@index');
+    Route::get('tasks/timeline', 'TasksTimelineController@index');
   /*Route::get('/send_mail', function () {
         $user = 'App\User'::find(1);
         $mail = new Hello($user);
