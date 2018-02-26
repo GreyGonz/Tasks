@@ -27,7 +27,6 @@ mix.webpackConfig({
 
 mix.js('resources/assets/js/app.js', 'public/js')
    .js('resources/assets/js/app-landing.js', 'public/js/app-landing.js')
-   .sourceMaps()
    .sass('resources/assets/sass/app.scss', 'public/css')
    .less('node_modules/bootstrap-less/bootstrap/bootstrap.less', 'public/css/bootstrap.css')
    .less('resources/assets/less/adminlte-app.less','public/css/adminlte-app.css')

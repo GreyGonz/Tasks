@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Acacha\User\GuestUser;
+use App\InvitationCodeGenerator;
+use App\InvitationCodeGeneratorComplex;
+use App\InvitationCodeGeneratorSimple;
 use App\Observer\TaskObserver;
 use App\Task;
 use Illuminate\Support\Facades\Auth;
@@ -43,5 +46,15 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment() !== 'production') {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
+
+        $this->app->bind(InvitationCodeGenerator::class, function () {
+          if (config('codes.type') == 'simple') {
+            return new InvitationCodeGeneratorSimple();
+          } else if (config('codes.type') == 'complex') {
+            return new InvitationCodeGeneratorComplex();
+          } else {
+            dd('Error');
+          }
+        });
     }
 }
