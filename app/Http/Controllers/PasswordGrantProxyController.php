@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Request\PasswordGrantProxyControllerRequest;
+use App\Http\Requests\PasswordGrantProxyControllerRequest;
 
 use GuzzleHttp\Client;
 
