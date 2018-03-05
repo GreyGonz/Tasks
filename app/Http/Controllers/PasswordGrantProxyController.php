@@ -25,7 +25,7 @@ class PasswordGrantProxyController extends Controller
 //        dump($request->password);
 //        dump($client->redirect);
 
-        $response = $http->post(url('api/v1/oauth/token'), [
+        $response = $http->post(url('/oauth/token'), [
             'form_params' => [
                 'grant_type' => 'password',
                 'client_id' => $client->id,
