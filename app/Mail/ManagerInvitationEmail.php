@@ -1,9 +1,11 @@
 <?php
 namespace App\Mail;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+
 /**
  * Class ManagerInvitationEmail.
  *
@@ -28,6 +30,7 @@ class ManagerInvitationEmail extends Mailable
    */
   public function build()
   {
+    // retorna una vista amb el mail formatat
     return $this->markdown('emails.manager-invitation')->subject("Invitació per ser gestor de l'aplicació de la LAN Party Institut de l'Ebre");
   }
 }

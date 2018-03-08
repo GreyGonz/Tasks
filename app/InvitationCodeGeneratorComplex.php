@@ -6,6 +6,6 @@ class InvitationCodeGeneratorComplex implements InvitationCodeGenerator
 {
     public function generate()
     {
-      return 'adsfasdfasdksgalskdjflskadjglhasdl';
+      return str_random(60);
     }
 }
