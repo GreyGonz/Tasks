@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Mail\ManagerInvitationEmail;
 use Illuminate\Database\Eloquent\Model;
+use Mail;
 
 class Invitation extends Model
 {
@@ -10,6 +12,6 @@ class Invitation extends Model
 
   public function send()
   {
-    
+    Mail::to($this->email)->send(new ManagerInvitationEmail($this));
   }
 }
