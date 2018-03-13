@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\AsignDefaultPermissions',
             'App\Listeners\UserLoggedNotification'
         ],
+      "App\Events\RegisteredUser" => [
+        'App\Listeners\UserRegisteredNotification'
+      ]
     ];
 
     /**

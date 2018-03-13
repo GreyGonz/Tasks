@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-      
+
 //      $schedule->call(function () {
 //        Mail::to(User::find(1))->send(new DefaultMail('Hello', 'Schedule'));
 //      })->everyMinute();
