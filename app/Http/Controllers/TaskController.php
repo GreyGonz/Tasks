@@ -58,7 +58,7 @@ class TaskController extends Controller
         $task->user_id = $request->input('user_id');
         $task->save();
 
-        return redirect()->route('tasks.index');
+        return redirect('tasks');
     }
 
     /**
@@ -104,7 +104,7 @@ class TaskController extends Controller
         $task->description = $request->description;
         $task->save();
 
-        return redirect()->route('tasks.index');
+        return redirect('tasks');
     }
 
     /**
@@ -118,6 +118,6 @@ class TaskController extends Controller
     {
         $task->delete();
 
-        return redirect()->route('tasks.index');
+        return redirect('tasks');
     }
 }

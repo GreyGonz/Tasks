@@ -35,6 +35,7 @@
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="{{ url('home') }}"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
             <li><a href="/tasks"><i class='fa fa-link'></i> <span>Tasks PHP</span></a></li>
+            <li><a href="/timeline"><i class='fa fa-link'></i> <span>Tasks timeline</span></a></li>
             <li><a href="/tasks_component"><i class='fa fa-link'></i> <span>Tasks</span></a></li>
             <li><a href="/tasks_container"><i class='fa fa-link'></i><span>Tasks container</span></a></li>
             <li><a href="/mail"><i class='fa fa-link'></i>Mail</a></li>

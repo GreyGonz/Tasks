@@ -15,11 +15,11 @@
         </div>
     @endif
 
-    <div class="container-fluid box">
+    <div class="container-fluid">
 
         <nav class="navbar navbar-inverse">
             <div class="navbar-header">
-                <a class="navbar-brand box-title" href="{{ URL::to('tasks') }}">Tasks:</a>
+                <a class="navbar-brand box-title" href="{{ URL::to('tasks') }}">Tasks</a>
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="{{ URL::to('tasks') }}">View All Tasks</a></li>
@@ -29,7 +29,7 @@
 
         {{ Session::get('status') or ''}}
 
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered box">
             <thead>
                 <td>id</td>
                 <td>user id</td>

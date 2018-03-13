@@ -17,7 +17,9 @@ class CreateTaskEventsTable extends Migration
             $table->increments('id');
             $table->dateTime('time');
             $table->string('type');
-            $table->string('task_name');
+//            $table->string('task_name');
+            $table->string('task');
+//            $table->integer('task_id')->unsigned();
             $table->string('user_name');
             $table->timestamps();
         });
