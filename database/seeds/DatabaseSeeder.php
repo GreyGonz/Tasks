@@ -21,8 +21,9 @@ class DatabaseSeeder extends Seeder
 
         first_user_as_task_manager();
 
+        $this->call('TimelineSeeder');
 //        $this->call('AdminUserSeeder');
-        factory(Task::class, 50)->create();
+        factory(Task::class, 10)->create();
 
         Artisan::call('passport:install');
     }

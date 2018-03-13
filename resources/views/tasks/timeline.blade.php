@@ -12,25 +12,35 @@
     </div>
     <div class="box-body">
       <a class="btn btn-primary" href="/timeline">Refresh</a>
+      <a href="btn btn-danger" href=""></a>
+    </div>
+    <div class="box-body">
       <!-- The timeline -->
       <ul class="timeline timeline-inverse">
         <!-- timeline time label -->
         <li class="time-label">
                   <span class="bg-red">
-                    10 Feb. 2014
+                    {{ $actualDate = date('d D Y', strtotime($task_events->first()->time)) }}
                   </span>
         </li>
         <!-- /.timeline-label -->
         <!-- timeline item -->
         @foreach($task_events as $event)
 
+          @if(date('d D Y', strtotime($event->time)) != $actualDate )
+            <li class="time-label">
+                  <span class="bg-red">
+                    {{ $actualDate = date('d D Y', strtotime($event->time)) }}
+                  </span>
+            </li>
+          @endif
           @switch($event->type)
             @case('created')
               <li>
                 <i class="fa fa-plus bg-green"></i>
 
                 <div class="timeline-item">
-                  <span class="time"><i class="fa fa-clock-o"></i>{{ $event->time }}</span>
+                  <span class="time"><i class="fa fa-clock-o"></i>{{ date('H:m', strtotime($event->time)) }}</span>
 
                   <h3 class="timeline-header"><a href="#">{{ $event->user_name }}</a> {{ $event->type }} a task</h3>
 
@@ -49,7 +59,7 @@
                 <i class="fa fa-wrench bg-blue"></i>
 
                 <div class="timeline-item">
-                  <span class="time"><i class="fa fa-clock-o"></i>{{ $event->time }}</span>
+                  <span class="time"><i class="fa fa-clock-o"></i>{{ date('H:m', strtotime($event->time)) }}</span>
 
                   <h3 class="timeline-header"><a href="#">{{ $event->user_name }}</a> {{ $event->type }} a task</h3>
 
@@ -68,7 +78,7 @@
                 <i class="fa fa-trash bg-red"></i>
 
                 <div class="timeline-item">
-                  <span class="time"><i class="fa fa-clock-o"></i>{{ $event->time }}</span>
+                  <span class="time"><i class="fa fa-clock-o"></i>{{ date('H:m', strtotime($event->time)) }}</span>
 
                   <h3 class="timeline-header"><a href="#">{{ $event->user_name }}</a> {{ $event->type }} a task</h3>
 
@@ -83,6 +93,9 @@
               @break
           @endswitch
         @endforeach
+        <li>
+          <i class="fa fa-clock-o bg-gray"></i>
+        </li>
       </ul>
     </div>
   </div>
