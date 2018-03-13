@@ -19,6 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1'], function () {
   Route::post('/proxy/oauth/token', 'PasswordGrantProxyController@issueToken');
+  Route::get('/user', function() {
+    return Auth::guard('api')->user();
+  });
 });
 
 Route::group(['middleware' => 'api', 'middleware' => ['throttle', 'bindings']], function () {

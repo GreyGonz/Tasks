@@ -20,7 +20,9 @@ Route::get('/', function () {
 Route::group(['middleware' => 'auth'], function () {
 //    Route::resource('/tasks', 'TaskController');
 
-    Route::view('/tasks_component', 'taskscomponent');
+  Route::get('tasks/timeline', 'TasksTimelineController@index');
+
+  Route::view('/tasks_component', 'taskscomponent');
     Route::view('/tasks_container', 'tasks_api/tasksContainer');
 
     Route::get('tasks/timeline', 'TasksTimelineController@index');

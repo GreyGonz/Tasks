@@ -9,7 +9,7 @@ class TasksTimelineController extends Controller
 {
   public function index()
   {
-    $task_event = TaskEvent::all();
-    return view('tasks.timeline', ['task_event' => $task_event]);
+    $task_events = TaskEvent::all();
+    return view('tasks.timeline', ['task_events' => $task_events]);
   }
 }
