@@ -1,5 +1,5 @@
 @component('mail::message')
-  # Welcome {{ $user->name }}
+  # Welcome {{ $user_name }}
 
   Welcome to the tasks application!
 

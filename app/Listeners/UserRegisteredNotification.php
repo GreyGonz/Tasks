@@ -31,6 +31,6 @@ class UserRegisteredNotification implements ShouldQueue
     public function handle(RegisteredUser $event)
     {
 //      SendRegistrationWelcomeMail::dispatch($event->user);
-        Mail::to($event->user->email)->send(new RegisteredWelcomeMail($event->user));
+        Mail::to($event->user->email)->send(new RegisteredWelcomeMail($event->user->name));
     }
 }
