@@ -31,15 +31,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-
-//      $schedule->call(function () {
-//        Mail::to(User::find(1))->send(new DefaultMail('Hello', 'Schedule'));
-//      })->everyMinute();
         $schedule->call(function () {
           dispatch(new SendProjectDeliveryMail());
-        })->everyMinute();
+        })->cron(' 0 12 3 19 *');
     }
 
     /**
