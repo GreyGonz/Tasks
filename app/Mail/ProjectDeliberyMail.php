@@ -18,10 +18,10 @@ class ProjectDeliberyMail extends Mailable
      *
      * @return void
      */
-    public function __construct($subject, $message)
+    public function __construct($subject, $content)
     {
         $this->subject = $subject;
-        $this->message = $message;
+        $this->message = $content;
     }
 
     /**
