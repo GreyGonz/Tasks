@@ -31,6 +31,6 @@ class ProjectDeliberyMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.tasks_mail');
+        return $this->markdown('mail.tasks_mail');
     }
 }
