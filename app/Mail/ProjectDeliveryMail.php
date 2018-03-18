@@ -7,11 +7,11 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ProjectDeliberyMail extends Mailable
+class ProjectDeliveryMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject, $content;
+    public $content;
 
     /**
      * Create a new message instance.
@@ -31,6 +31,6 @@ class ProjectDeliberyMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mail.tasks_mail');
+        return $this->markdown('mail.delivery_mail');
     }
 }

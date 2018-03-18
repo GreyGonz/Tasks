@@ -2,7 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Mail\ProjectDeliberyMail;
+use App\Mail\DefaultMail;
+use App\Mail\ProjectDeliveryMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -31,6 +32,6 @@ class SendProjectDeliveryMail implements ShouldQueue
      */
     public function handle()
     {
-      Mail::to('gerardrey@iesebre.com')->send(new ProjectDeliberyMail('Projecte Tasks Gerard Rey!', 'Projecte llest!'));
+      Mail::to('gerardrey@iesebre.com')->send(new ProjectDeliveryMail('Projecte Tasks Gerard Rey!', 'Projecte llest!'));
     }
 }
