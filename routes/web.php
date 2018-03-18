@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider');
-Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
+Route::get('auth/{provider}/callback', 'Auth\Auth Controller@handleProviderCallback');
 
 Route::group(['middleware' => 'auth'], function () {
 //  Route::resource('/tasks', 'TaskController');

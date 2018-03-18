@@ -11,12 +11,6 @@
 <div class="box-header ui-sortable-handle" style="cursor: move;">
    <i class="fa fa-envelope"></i>
    <h3 class="box-title">Quick Email</h3>
-   <!-- tools box -->
-   <div class="pull-right box-tools">
-      <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove">
-      <i class="fa fa-times"></i></button>
-   </div>
-   <!-- /. tools -->
 </div>
 <div class="box-body">
    <form action="/send_mail" method="POST" id="send-mail-form">
@@ -28,7 +22,7 @@
          <input type="text" class="form-control" name="subject" placeholder="Subject">
       </div>
       <div>
-      <textarea class="textarea" name="content" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px;" placeholder="Message"></textarea>
+        <textarea class="textarea form-control" name="message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px;" placeholder="Message"></textarea>
       </div>
    </form>
 </div>

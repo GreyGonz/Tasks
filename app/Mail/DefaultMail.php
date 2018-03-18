@@ -30,6 +30,6 @@ class DefaultMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mail.mail');
+        return $this->markdown('mail.tasks_mail');
     }
 }
