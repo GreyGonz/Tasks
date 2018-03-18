@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
 //        Mail::to(User::find(1))->send(new DefaultMail('Hello', 'Schedule'));
 //      })->everyMinute();
         $schedule->call(function () {
-          dispatch(SendProjectDeliveryMail::class);
+          dispatch(new SendProjectDeliveryMail());
         })->everyMinute();
     }
 
