@@ -11,7 +11,7 @@ class ProjectDeliberyMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject, $message;
+    public $subject, $content;
 
     /**
      * Create a new message instance.
@@ -21,7 +21,7 @@ class ProjectDeliberyMail extends Mailable
     public function __construct($subject, $content)
     {
         $this->subject = $subject;
-        $this->message = $content;
+        $this->content = $content;
     }
 
     /**
