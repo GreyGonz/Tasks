@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\SendProjectDeliveryMail;
 use App\Mail\DefaultMail;
 use App\Mail\ManagerInvitationEmail;
 use App\User;
@@ -36,6 +37,9 @@ class Kernel extends ConsoleKernel
 //      $schedule->call(function () {
 //        Mail::to(User::find(1))->send(new DefaultMail('Hello', 'Schedule'));
 //      })->everyMinute();
+        $schedule->call(function () {
+          dispatch(SendProjectDeliveryMail::class);
+        })->everyMinute();
     }
 
     /**
