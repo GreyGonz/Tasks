@@ -43,8 +43,4 @@ Route::group(['middleware' => 'api', 'middleware' => ['throttle', 'bindings']], 
         Route::post('/v1/completed-tasks/{task}', 'ApiCompletedTaskController@store');
         Route::delete('/v1/completed-tasks/{task}', 'ApiCompletedTaskController@destroy');
     });
-    //    Route::resource('task', 'TasksController');
-
-    //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
-    //adminlte_api_routes
 });

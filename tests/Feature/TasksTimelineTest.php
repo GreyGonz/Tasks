@@ -31,23 +31,19 @@ class TasksTimelineTest extends TestCase
       $user = factory(User::class)->create();
 
       $this->actingAs($user);
-      
-      $task = Task::create([
-        'name' => 'New Task',
-        'description' => 'prova',
-        'completed' => true,
-        'user_id' => $user->id
-      ]);
-      
-      $task2 = Task::find($task->id);
-      
-      $task->update([
-        'name' => 'Updated Task'
-      ]);
-      
-      $task->delete();
 
-      $response = $this->get('/tasks/timeline');
+      $task = factory(Task::class)->create();
+      
+//      $task = Task::create([
+//        'name' => 'New Task',
+//        'description' => 'prova',
+//        'completed' => true,
+//        'user_id' => $user->id
+//      ]);
+      
+//      $task2 = Task::find($task->id);
+
+      $response = $this->get('tasks/timeline');
 
       $task_event = TaskEvent::all();
 
@@ -55,7 +51,6 @@ class TasksTimelineTest extends TestCase
       $response->assertViewIs('tasks.timeline');
       $response->assertViewHas('task_event', $task_event);
       $response->assertSee("User ".$user->name." created task ".$task->name." at ".$task->created_at);
-      $response->assertSee("User ".$user->name." retrieved task ".$task->name);
       $response->assertSee("User ".$user->name." updated task ".$task->name);
       $response->assertSee("User ".$user->name." deleted task ".$task->name);
     }

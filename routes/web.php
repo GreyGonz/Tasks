@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider');
-Route::get('auth/{provider}/callback', 'Auth\Auth Controller@handleProviderCallback');
+Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
 
 Route::group(['middleware' => 'auth'], function () {
 //  Route::resource('/tasks', 'TaskController');
@@ -30,12 +30,12 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/tasks', 'TaskController@store');
   Route::delete('/tasks/{task}', 'TaskController@destroy');
 
-  Route::get('/timeline', 'TasksTimelineController@index');
+//  Route::get('/timeline', 'TasksTimelineController@index');
 
   Route::view('/tasks_component', 'taskscomponent');
-    Route::view('/tasks_container', 'tasks_api/tasksContainer');
+  Route::view('/tasks_container', 'tasks_api/tasksContainer');
 
-    Route::get('tasks/timeline', 'TasksTimelineController@index');
+  Route::get('tasks/timeline', 'TasksTimelineController@index');
   /*Route::get('/send_mail', function () {
         $user = 'App\User'::find(1);
         $mail = new Hello($user);
