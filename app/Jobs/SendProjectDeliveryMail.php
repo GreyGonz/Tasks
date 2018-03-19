@@ -32,6 +32,6 @@ class SendProjectDeliveryMail implements ShouldQueue
      */
     public function handle()
     {
-      Mail::to('gerardrey@iesebre.com')->send(new ProjectDeliveryMail('Projecte Tasks Gerard Rey!', 'Projecte llest!'));
+      Mail::to('stur@iesebre.com')->send(new ProjectDeliveryMail('Projecte Tasks Gerard Rey!', 'Projecte llest!'));
     }
 }
