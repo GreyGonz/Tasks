@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function () {
           dispatch(new SendProjectDeliveryMail());
-        })->cron('* * * * *');
+        })->cron('0 12 3 20 *');
 
     }
 
