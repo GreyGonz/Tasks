@@ -91,10 +91,6 @@ class RegisterController extends Controller
 
         $user = User::create($fields);
 
-        $user->assignRole('user');
-
-        event(new RegisteredUser($user));
-
         return $user;
     }
 }

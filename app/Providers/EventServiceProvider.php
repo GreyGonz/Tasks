@@ -14,11 +14,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        LogedUser::class => [
-            'App\Listeners\AsignDefaultPermissions',
-            'App\Listeners\UserLoggedNotification'
-        ],
-      "App\Events\RegisteredUser" => [
+//      LogedUser::class => [
+//          'App\Listeners\AsignDefaultPermissions',
+//          'App\Listeners\UserLoggedNotification'
+//      ],
+      'App\Events\RegisteredUser' => [
+        'App\Listeners\UserRegisteredAssignRoles',
         'App\Listeners\UserRegisteredNotification'
       ]
     ];
@@ -31,7 +32,5 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        //
     }
 }

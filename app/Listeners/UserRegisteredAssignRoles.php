@@ -3,14 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\RegisteredUser;
-use App\Jobs\SendRegistrationWelcomeMail;
-use App\Mail\DefaultMail;
-use App\Mail\RegisteredWelcomeMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Mail;
 
-class UserRegisteredNotification implements ShouldQueue
+class UserRegisteredAssignRoles
 {
     /**
      * Create the event listener.
@@ -25,11 +21,12 @@ class UserRegisteredNotification implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  RegisteredUser  $event
+     * @param  object  $event
      * @return void
      */
     public function handle(RegisteredUser $event)
     {
-        Mail::to($event->user->email)->send(new RegisteredWelcomeMail($event->user->name));
+      $user = $event->user;
+      $user->assignRole('user');
     }
 }

@@ -40,7 +40,7 @@
                 <i class="fa fa-plus bg-green"></i>
 
                 <div class="timeline-item">
-                  <span class="time"><i class="fa fa-clock-o"></i>{{ date('H:m', strtotime($event->time)) }}</span>
+                  <span class="time"><i class="fa fa-clock-o"></i>{{ date('H:i', strtotime($event->time)) }}</span>
 
                   <h3 class="timeline-header"><a href="#">{{ $event->user_name }}</a> {{ $event->type }} a task</h3>
 
@@ -59,7 +59,7 @@
                 <i class="fa fa-wrench bg-blue"></i>
 
                 <div class="timeline-item">
-                  <span class="time"><i class="fa fa-clock-o"></i>{{ date('H:m', strtotime($event->time)) }}</span>
+                  <span class="time"><i class="fa fa-clock-o"></i>{{ date('H:i', strtotime($event->time)) }}</span>
 
                   <h3 class="timeline-header"><a href="#">{{ $event->user_name }}</a> {{ $event->type }} a task</h3>
 
@@ -78,7 +78,7 @@
                 <i class="fa fa-trash bg-red"></i>
 
                 <div class="timeline-item">
-                  <span class="time"><i class="fa fa-clock-o"></i>{{ date('H:m', strtotime($event->time)) }}</span>
+                  <span class="time"><i class="fa fa-clock-o"></i>{{ date('H:i', strtotime($event->time)) }}</span>
 
                   <h3 class="timeline-header"><a href="#">{{ $event->user_name }}</a> {{ $event->type }} a task</h3>
 

@@ -7,7 +7,9 @@ use App\InvitationCodeGenerator;
 use App\InvitationCodeGeneratorComplex;
 use App\InvitationCodeGeneratorSimple;
 use App\Observer\TaskObserver;
+use App\Observer\UserObserver;
 use App\Task;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Dusk\DuskServiceProvider;
@@ -31,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
       });
 
       Task::observe(TaskObserver::class);
+      User::observe(UserObserver::class);
     }
 
     /**
