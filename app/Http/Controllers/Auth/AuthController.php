@@ -45,12 +45,16 @@ class AuthController extends Controller
     if ($authUser) {
       return $authUser;
     }
-    return User::create([
+    $user = User::create([
       'name'     => $user->name,
       'email'    => $user->email,
       'provider' => $provider,
       'provider_id' => $user->id
     ]);
+
+    $user->assignRole('user');
+
+    return $user;
   }
 
 }

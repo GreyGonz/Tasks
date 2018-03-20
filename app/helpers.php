@@ -27,6 +27,10 @@ if (!function_exists('initialize_task_permissions')) {
         $role = Role::firstOrCreate(['name' => 'user-manager']);
 
         $role->givePermissionTo('destroy-users', 'list-users', 'show-users', 'store-users', 'update-users');
+
+        $role = Role::firstOrCreate(['name' => 'user']);
+
+        $role->givePermissionTo('destroy-tasks', 'list-tasks', 'show-tasks', 'store-tasks', 'update-tasks', 'list-users');
     }
 }
 

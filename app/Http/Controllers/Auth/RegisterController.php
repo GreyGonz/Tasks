@@ -91,8 +91,7 @@ class RegisterController extends Controller
 
         $user = User::create($fields);
 
-        $user->assignRole('task-manager');
-        $user->assignRole('user-manager');
+        $user->assignRole('user');
 
         event(new RegisteredUser($user));
 
